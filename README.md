@@ -1,26 +1,28 @@
 # phpblog
 
+<img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
+
 **phpblog** is a **BLOG APPLICATION** example with *PHP 7+*. this one is created for [phplec](https://github.com/pronist/phplec)
 
 * *php >= 7.2*
 * Extended Coding Style: [PSR-12](https://www.php-fig.org/psr/psr-12/)
 
-## Basic
+## Branches
 
-<https://github.com/pronist/phpblog/tree/basic>
+* [Baisc](https://github.com/pronist/phpblog/tree/basic) - PHP classic Architecture
+
+## Dynamic Extensions
+
+* *fileinfo*
+* *Multibyte String*
+* *ODBC(Open DataBase Connectivity)*
+
+## Features
 
 * **PHP classic Architecture** (URL endswith **.php**)
 * No **PSR-4 Autoloading**
 * No **OOP(Object-Oriented Programming)**
 * Not using **User components** in Application Code
-
-## Dynamic Extensions
-
-* fileinfo
-* Multibyte String
-* ODBC(Open DataBase Connectivity)
-
-## Features
 
 ### Auth
 
