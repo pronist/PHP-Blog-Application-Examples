@@ -1,0 +1,11 @@
+langauge: php
+php:
+  - 7.2
+services:
+  - mysql
+install:
+  - composer self-update
+  - travis_retry composer install --no-interaction --no-scripts --prefer-source --dev
+before_script:
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+script: phpunit

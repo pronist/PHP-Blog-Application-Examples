@@ -1,0 +1,119 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif !important;
+    box-sizing: border-box;
+}
+p {
+    line-height: 1.8em;
+    color: rgba(0, 0, 0, .6);
+}
+@media screen and (min-width: 550px) {
+    main {
+        width: 550px;
+    }
+}
+@media screen and (max-width: 550px) {
+    main {
+        width: 100%;
+        padding: 0 15px;
+    }
+}
+main {
+    margin: 0 auto;
+}
+
+/**
+ * Article
+ */
+#app article {
+    padding: 40px 0;
+}
+#app article > h1 {
+    font-size: 1.15em;
+    font-weight: 700;
+}
+#app article .uk-text-meta {
+    font-size: .8em;
+    color: rgba(0, 0, 0, .4);
+}
+#app article .uk-text-lead {
+    font-size: 1em;
+}
+
+/**
+ * Navigation
+ */
+#app nav a {
+    text-transform: none;
+}
+
+/**
+ * Read
+ */
+#app .uk-article > a {
+    font-size: .9em;
+}
+#app .uk-card .uk-card-header .uk-card-title {
+    font-size: .95em;
+    margin-bottom: 5px;
+    color: rgba(0, 0, 0, .7);
+}
+#app .uk-card .uk-card-header .uk-text-meta {
+    font-size: .85em;
+}
+
+/**
+ * Article
+ */
+#app .uk-article .uk-text-lead h2,
+#app .uk-article .uk-text-lead h3 {
+    font-size: 1em;
+    font-weight: 700;
+}
+
+/**
+ * Header
+ */
+ @media screen and (min-width: 550px) {
+    #app #header {
+        width: 550px;
+    }
+}
+@media screen and (max-width: 550px) {
+    #app #header {
+        width: 100%;
+    }
+}
+#app #header {
+    text-align: center;
+    margin: 40px auto;
+}
+#app #header h3 {
+    font-size: 1.1em;
+}
+
+/**
+ * Form
+ */
+#app form > * {
+    margin: 10px 0;
+    font-size: .85em;
+}
+#app form > input:not([type=submit]) {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+#app #main__form {
+    width: 300px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+#app #main__board-form {
+    width: 550px;
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, .1);
+}

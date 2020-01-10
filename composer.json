@@ -1,0 +1,28 @@
+{
+    "name": "pronist/phpblog",
+    "description": "a BLOG APPLICATION example with PHP 7+",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "pronist",
+            "email": "pronist@naver.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "files": [
+            "lib/CsrfToken.php",
+            "lib/Database.php",
+            "lib/Helpers.php",
+            "lib/Logger.php",
+            "lib/QueryBuilder.php",
+            "lib/Request.php",
+            "lib/Response.php",
+            "lib/Session.php"
+        ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
+}
