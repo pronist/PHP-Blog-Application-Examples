@@ -1,6 +1,8 @@
 # phpblog
 
-<img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
+<div style="text-align:center">
+    <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
+</div>
 
 **phpblog** is a **BLOG APPLICATION** example with *PHP 7+*. this one is created for [phplec](https://github.com/pronist/phplec)
 
