@@ -10,7 +10,7 @@
         <?php foreach ($posts as $post) : ?>
         <li>
             <article>
-                <h1 class="uk-text-bold">
+                <h1 class="uk-article-title">
                     <a href="<?=$post['url']?>" class="uk-link-reset"><?=$post['title']?></a>
                 </h1>
                 <p class="uk-margin"><?=$post['content']?></p>

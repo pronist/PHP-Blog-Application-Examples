@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @requires extension odbc
- * @codeCoverageIgnore
  */
 final class DatabaseTest extends TestCase
 {

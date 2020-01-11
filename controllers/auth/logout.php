@@ -10,3 +10,5 @@ switch (getRequestMethod()) {
     default:
         return http_response_code(404);
 }
+
+closeConnection($conn);

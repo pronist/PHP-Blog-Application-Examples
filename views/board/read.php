@@ -3,7 +3,7 @@
 <main id="main" role="main" class="uk-padding-small">
     <article class="uk-margin uk-article">
         <h1 class="uk-article-title"><?=$title?></h1>
-        <div class="uk-text-meta uk-margin-bottom"><?=$createdAt?></div>
+        <div class="uk-text-meta uk-margin-large-bottom"><?=$createdAt?></div>
         <div class="uk-text-lead uk-margin-bottom"><?=$content?></div>
         <?php if ($isOwner) : ?>
             <a href="#" class="uk-link-text uk-margin-small-right" id="delete">Delete</a></li>

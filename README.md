@@ -1,10 +1,15 @@
 <p align="center">
+    <a href="https://www.inflearn.com/course/php"><img src="https://cdn.inflearn.com/public/files/courses/280298/57e113b0-2f17-494b-a363-6fdc6d0da066/php2.png" width="400"></a>
+</p>
+
+<p align="center">
     <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
 </p>
 
-# phpblog
+## phpblog
 
-**phpblog** is a **BLOG APPLICATION** example with *PHP 7+*. this one is created for [phplec](https://github.com/pronist/phplec)
+**phpblog** is a **BLOG APPLICATION** example with *PHP 7+*. \
+this one is created for [phplec](https://github.com/pronist/phplec)
 
 * *php >= 7.2*
 * Extended Coding Style: [PSR-12](https://www.php-fig.org/psr/psr-12/)
@@ -61,7 +66,7 @@ php -S localhost:8080 -t public
 # Installation phpunit
 composer install
 # Unit Testing
-phpunit
+phpunit --strict-coverage
 ```
 
 ## Database
