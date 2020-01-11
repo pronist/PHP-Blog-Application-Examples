@@ -10,4 +10,4 @@ install:
   - travis_retry composer install --no-interaction --no-scripts --prefer-source --dev
 before_script:
   - mysql -e 'CREATE DATABASE myapp_test;'
-script: phpunit --strict-coverage
+script: phpunit --strict-coverage --verbose
