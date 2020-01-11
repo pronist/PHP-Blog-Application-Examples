@@ -5,8 +5,8 @@
          bootstrap="vendor/autoload.php"
          colors="true"
          processIsolation="false"
-         stopOnFailure="false">
-             <testsuites>
+         stopOnFailure="true">
+    <testsuites>
         <testsuite name="Unit">
             <directory>./tests</directory>
         </testsuite>

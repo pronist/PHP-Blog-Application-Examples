@@ -66,7 +66,7 @@ php -S localhost:8080 -t public
 # Installation phpunit
 composer install
 # Unit Testing
-phpunit --strict-coverage
+phpunit --strict-coverage --verbose
 ```
 
 ## Database
