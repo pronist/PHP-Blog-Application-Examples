@@ -12,9 +12,9 @@ switch (getRequestMethod()) {
                 ]
             ]);
             if ($id) {
-                list('user_id' => $userId) = first(wheres(select('posts'), 'id'), $id);
+                list('user_id' => $userId) = first($conn, wheres(select('posts'), 'id'), $id);
                 if ($user['id'] == $userId) {
-                    if (execute(wheres(delete('posts'), 'id'), $id)) {
+                    if (execute($conn, wheres(delete('posts'), 'id'), $id)) {
                         info('Post::delete:: Successful', [ $id ]);
                         http_response_code(204);
                         break;

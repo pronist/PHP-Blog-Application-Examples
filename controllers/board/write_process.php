@@ -17,6 +17,7 @@ switch (getRequestMethod()) {
             ]);
             if ($title && $content && verity($token, getSession('CSRF_TOKEN'))) {
                 $is = execute(
+                    $conn,
                     insert('posts', [ 'user_id ', 'created_at', 'title', 'content' ]),
                     $user['id'],
                     date('Y-m-d H:i:s', time()),

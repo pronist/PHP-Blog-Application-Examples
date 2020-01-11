@@ -16,12 +16,12 @@ switch (getRequestMethod()) {
                 'title'         => $title,
                 'content'       => $content,
                 'created_at'    => $createdAt
-            ) = first(wheres(select('posts'), 'id'), $id);
+            ) = first($conn, wheres(select('posts'), 'id'), $id);
             list(
                 'username'      => $username,
                 'email'         => $email,
                 'description'   => $description
-            ) = first(wheres(select('users'), 'id'), $userId);
+            ) = first($conn, wheres(select('users'), 'id'), $userId);
             $user = getSession('user');
             $isOwner = false;
             if ($user && array_key_exists('id', $user)) {

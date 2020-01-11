@@ -28,6 +28,7 @@ switch (getRequestMethod()) {
             ]);
             if ($email && $username && $description && $password && verity($token, getSession('CSRF_TOKEN'))) {
                 $is = execute(
+                    $conn,
                     wheres(update('users', [ 'email', 'password', 'username', 'description' ]), 'id'),
                     $email,
                     password_hash($password, PASSWORD_DEFAULT),

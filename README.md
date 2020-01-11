@@ -1,8 +1,8 @@
-# phpblog
-
-<div style="text-align:center">
+<p align="center">
     <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
-</div>
+</p>
+
+# phpblog
 
 **phpblog** is a **BLOG APPLICATION** example with *PHP 7+*. this one is created for [phplec](https://github.com/pronist/phplec)
 
@@ -11,22 +11,24 @@
 
 ## Branches
 
-* [Baisc](https://github.com/pronist/phpblog/tree/basic) - PHP classic Architecture
+* [Baisc](https://github.com/pronist/phpblog/tree/basic) - PHP **Classic Architecture**
 
-## Dynamic Extensions
+## Basic
+
+* PHP **Classic Architecture** (URL endswith **.php**)
+* No **PSR-4 Autoloading**
+* No **OOP(Object-Oriented Programming)**
+* Not using **User components** in Application Code
+
+### Dynamic Extensions
 
 * *fileinfo*
 * *Multibyte String*
 * *ODBC(Open DataBase Connectivity)*
 
-## Features
+### Features
 
-* **PHP classic Architecture** (URL endswith **.php**)
-* No **PSR-4 Autoloading**
-* No **OOP(Object-Oriented Programming)**
-* Not using **User components** in Application Code
-
-### Auth
+#### Auth
 
 * [/auth/register.php](https://github.com/pronist/phpblog/tree/basic/public/auth/register.php) - Register **Form** for a new User (GET)
 * [/auth/register_process.php](https://github.com/pronist/phpblog/tree/basic/public/auth/register_process.php) - **Create** a new User (POST)
@@ -36,7 +38,7 @@
 * [/auth/update_process.php](https://github.com/pronist/phpblog/tree/basic/public/auth/update_process.php) - **Update** User informations (PATCH)
 * [/auth/logout.php](https://github.com/pronist/phpblog/tree/basic/public/auth/logout.php) - Delete a User **Session** (GET)
 
-### Board
+#### Board
 
 * [/board/write.php](https://github.com/pronist/phpblog/tree/basic/public/board/write.php) - Write **Form** for a new Post (GET)
 * [/board/write_process.php](https://github.com/pronist/phpblog/tree/basic/public/board/write_process.php) - **Write** a new Post (POST)
@@ -49,6 +51,7 @@
 ## Serve
 
 ```bash
+# PHP Built-in Server at http://localhost:8080
 php -S localhost:8080 -t public
 ```
 
@@ -62,10 +65,6 @@ phpunit
 ```
 
 ## Database
-
-Database settings *<https://github.com/pronist/phpblog/tree/basic/config/database.php>*
-
-### MySQL Tables
 
 ```sql
 use board;

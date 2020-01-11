@@ -14,7 +14,7 @@ switch (getRequestMethod()) {
             list(
                 'title'     => $title,
                 'content'   => $content
-            ) = first(wheres(select('posts'), 'id'), $id);
+            ) = first($conn, wheres(select('posts'), 'id'), $id);
         } else {
             header("Location: /auth/login.php");
             break;

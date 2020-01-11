@@ -16,13 +16,13 @@ switch (getRequestMethod()) {
                 'id'            => $id,
                 'username'      => $username,
                 'description'   => $description
-            ) = first(wheres(select('users'), 'username'), $user);
+            ) = first($conn, wheres(select('users'), 'username'), $user);
             $posts = array_map(function ($post) {
                 $post['content'] = getSubContentWithoutHTMLTags($post['content'], 200);
                 $post['created_at'] = getPostCreatedAt($post['created_at']);
                 $post['url'] = "/board/read.php?id=" . $post['id'];
                 return $post;
-            }, get(wheres(select('posts'), 'user_id'), $id));
+            }, get($conn, wheres(select('posts'), 'user_id'), $id));
         } else {
             http_response_code(404);
             break;

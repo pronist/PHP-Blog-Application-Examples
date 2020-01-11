@@ -10,29 +10,33 @@ use PHPUnit\Framework\TestCase;
  */
 final class DatabaseTest extends TestCase
 {
-    public function setUp(): void
-    {
-        $this->assertTrue(execute("CREATE TABLE tests (
-            id INT PRIMARY KEY AUTO_INCREMENT,
-            message TEXT NOT NULL
-        )"));
-    }
-
     /**
      * @covers \getConnection
      */
     public function testGetConnection()
     {
-        $this->assertIsResource(getConnection());
+        $conn = getConnection([
+            'driver'   => 'MySQL ODBC 5.3 Unicode Driver',
+            'database' => 'myapp_test',
+            'hostname' => '127.0.0.1',
+            'username' => 'travis',
+            'password' => '',
+            'charset'  => 'UTF8'
+        ]);
+
+        $this->assertIsResource($conn);
+
+        return $conn;
     }
 
     /**
-     * @covers \query
+     * @covers \raw
+     * @depends testGetConnection
      */
-    public function testQuery()
+    public function testRaw($conn)
     {
-        $this->assertTrue(query("SELECT 1", []));
-        $this->assertIsArray(query("SELECT 1", [], function ($result) {
+        $this->assertTrue(raw($conn, "SELECT 1", []));
+        $this->assertIsArray(raw($conn, "SELECT 1", [], function ($result) {
             $rows = [];
             if ((odbc_num_rows($result) > 0)) {
                 while ($row = odbc_fetch_array($result)) {
@@ -45,36 +49,29 @@ final class DatabaseTest extends TestCase
 
     /**
      * @covers \execute
+     * @depends testGetConnection
      */
-    public function testExecute()
+    public function testExecute($conn)
     {
-        $this->assertTrue(execute("SELECT 1"));
+        $this->assertTrue(execute($conn, "SELECT 1"));
     }
 
     /**
      * @covers \first
+     * @depends testGetConnection
      */
-    public function testFirst(): void
+    public function testFirst($conn): void
     {
-        $this->assertTrue(
-            execute(insert('tests', ['message']), 'Hello, world')
-        );
-        $this->assertIsArray(first(select('tests')));
+        $this->assertIsArray(first($conn, "SELECT 1"));
     }
 
     /**
      * @covers \get
+     * @depends testGetConnection
      */
-    public function testGet(): void
+    public function testGet($conn): void
     {
-        $this->assertTrue(
-            execute(insert('tests', ['message']), 'Hello, world')
-        );
-        $this->assertTrue(
-            execute(insert('tests', ['message']), 'Who are you?')
-        );
-
-        $rows = get(select('tests'));
+        $rows = get($conn, "SELECT 1 UNION SELECT 2");
 
         $this->assertIsArray($rows);
         $this->assertCount(2, $rows);
@@ -82,17 +79,23 @@ final class DatabaseTest extends TestCase
 
     /**
      * @covers \rows
+     * @depends testGetConnection
      */
-    public function testRows(): void
+    public function testRows($conn): void
     {
-        $rows = rows("SELECT 1");
+        $rows = rows($conn, "SELECT 1");
 
         $this->assertIsArray($rows);
         $this->assertCount(1, $rows);
     }
 
-    public function tearDown(): void
+    /**
+     * @covers \closeConnection
+     * @depends testGetConnection
+     */
+    public function testCloseConnection($conn)
     {
-        $this->assertTrue(execute("DROP TABLE tests"));
+        closeConnection($conn);
+        $this->assertEquals(get_resource_type($conn), 'Unknown');
     }
 }

@@ -9,7 +9,7 @@ switch (getRequestMethod()) {
                 'email'       => $email,
                 'username'    => $username,
                 'description' => $description
-            ) = first(wheres(select('users'), 'id'), $user['id']);
+            ) = first($conn, wheres(select('users'), 'id'), $user['id']);
         } else {
             header('Location: /auth/login.php');
             break;

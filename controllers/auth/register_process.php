@@ -27,8 +27,12 @@ switch (getRequestMethod()) {
         ]);
         if ($email && $username && $description && $password && verity($token, getSession('CSRF_TOKEN'))) {
             $is = execute(
+                $conn,
                 insert('users', [ 'email', 'password', 'username', 'description' ]),
-                [ $email, password_hash($password, PASSWORD_DEFAULT), $username, $description ]
+                $email,
+                password_hash($password, PASSWORD_DEFAULT),
+                $username,
+                $description
             );
             if ($is) {
                 info('Auth::register:: Successful', [ $email ]);

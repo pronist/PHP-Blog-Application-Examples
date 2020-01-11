@@ -3,14 +3,15 @@
 /**
  * get Rows
  *
+ * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return bool|array
  */
-function rows($qs, ...$args)
+function rows($conn, $qs, ...$args)
 {
-    $rows = query($qs, $args, function ($result) {
+    $rows = raw($conn, $qs, $args, function ($result) {
         $rows = [];
         if ((odbc_num_rows($result) > 0)) {
             while ($row = odbc_fetch_array($result)) {
@@ -25,57 +26,60 @@ function rows($qs, ...$args)
 /**
  * just execute a Query
  *
+ * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return bool|array
  */
-function execute($qs, ...$args)
+function execute($conn, $qs, ...$args)
 {
-    return query($qs, $args);
+    return raw($conn, $qs, $args);
 }
 
 /**
  * get a first content
  *
+ * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return array
  */
-function first($qs, ...$args)
+function first($conn, $qs, ...$args)
 {
-    return current(rows(limit($qs, 1), ...$args));
+    return current(rows($conn, limit($qs, 1), ...$args));
 }
 
 /**
  * get all contents
  *
+ * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return array[]
  */
-function get($qs, ...$args)
+function get($conn, $qs, ...$args)
 {
-    return rows($qs, ...$args);
+    return rows($conn, $qs, ...$args);
 }
 
 /**
  * execute a Query
  *
+ * @param resource $conn
  * @param string $qs
  * @param array $args
  * @param callback $callback
  *
  * @return bool|array
  */
-function query($qs, $args, $callback = null)
+function raw($conn, $qs, $args, $callback = null)
 {
     $is = false;
-    $connection = getConnection();
-    if ($connection) {
-        $result = odbc_prepare($connection, $qs);
+    if ($conn) {
+        $result = odbc_prepare($conn, $qs);
         if (odbc_execute($result, $args)) {
             info("Database::query:: Successful", [ $qs ]);
             $rows = null;
@@ -85,7 +89,6 @@ function query($qs, $args, $callback = null)
             $is = $rows ?: true;
         }
         odbc_free_result($result);
-        odbc_close($connection);
     }
     return $is;
 }
@@ -93,25 +96,27 @@ function query($qs, $args, $callback = null)
 /**
  * get ODBC Connection
  *
+ * @param array $config
+ *
  * @return resource
  */
-function getConnection()
+function getConnection($config)
 {
-    list(
-        'driver'    => $driver,
-        'hostname'  => $hostname,
-        'database'  => $database,
-        'charset'   => $charset,
-        'username'  => $username,
-        'password'  => $password
-    ) = include dirname(__DIR__) . "/config/database.php";
-
     $format = "Driver={%s};Server=%s;Database=%s;charset=%s";
-
     $connection = odbc_connect(
-        sprintf($format, $driver, $hostname, $database, $charset),
-        $username,
-        $password
+        sprintf($format, $config['driver'], $config['hostname'], $config['database'], $config['charset']),
+        $config['username'],
+        $config['password']
     );
     return $connection;
+}
+
+/**
+ * @param resource $conn
+ *
+ * @return void
+ */
+function closeConnection($conn)
+{
+    odbc_close($conn);
 }

@@ -23,6 +23,8 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     return true;
 });
 
+$conn = getConnection(require_once dirname(__DIR__, 2) . '/config/database.php');
+
 /**
  * Sessions
  */

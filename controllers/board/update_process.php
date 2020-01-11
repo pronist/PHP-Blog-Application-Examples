@@ -18,9 +18,10 @@ switch (getRequestMethod()) {
                 ]
             ]);
             if ($id && $title && $content && verity($token, getSession('CSRF_TOKEN'))) {
-                list('user_id' => $userId) = first(wheres(select('posts'), 'id'), $id);
+                list('user_id' => $userId) = first($conn, wheres(select('posts'), 'id'), $id);
                 if ($user['id'] == $userId) {
                     $is = execute(
+                        $conn,
                         wheres(update('posts', [ 'title', 'content' ]), 'id'),
                         $title,
                         removeTags($content, 'script'),
