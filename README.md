@@ -8,13 +8,13 @@
 
 ## phpblog
 
-**phpblog** is a **BLOG APPLICATION** example with *PHP 7+*. \
+A simple **blog application** example with *PHP 7+* \
 this one is created for [phplec](https://github.com/pronist/phplec)
 
 * *php >= 7.2*
 * Extended Coding Style: [PSR-12](https://www.php-fig.org/psr/psr-12/)
 
-## Branches
+### Branches
 
 * [Baisc](https://github.com/pronist/phpblog/tree/basic) - PHP **Classic Architecture**
 
@@ -53,14 +53,14 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 * [/board/update_process.php](https://github.com/pronist/phpblog/tree/basic/public/board/update_process.php) - **Update** for Post informations (PATCH)
 * [/board/delete.php](https://github.com/pronist/phpblog/tree/basic/public/board/delete.php) - **Delete** a Post (DELETE)
 
-## Serve
+### Serve
 
 ```bash
 # PHP Built-in Server at http://localhost:8080
 php -S localhost:8080 -t public
 ```
 
-## Testing
+### Testing
 
 ```bash
 # Installation phpunit
@@ -69,7 +69,7 @@ composer install
 phpunit --strict-coverage --verbose
 ```
 
-## Database
+### Database
 
 ```sql
 use board;

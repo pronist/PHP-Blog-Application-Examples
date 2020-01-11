@@ -4,6 +4,7 @@ require_once dirname(__DIR__) . '/includes/common.php';
 
 switch (getRequestMethod()) {
     case 'GET':
+        setSession('CSRF_TOKEN', getToken());
         list('id' => $id) = getParamsWithFilters([
             'params' => getInputParams('get'),
             'filterMappings' => [
@@ -37,7 +38,8 @@ switch (getRequestMethod()) {
                 'content'   => $content,
                 'picture'   => getUserProfile($email, 100),
                 'createdAt' => getPostCreatedAt($createdAt),
-                'update'    => "/board/update.php?id=" . $id
+                'update'    => "/board/update.php?id=" . $id,
+                'token'     => getSession('CSRF_TOKEN')
             ]
         ));
         break;

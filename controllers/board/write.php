@@ -4,6 +4,7 @@ require_once dirname(__DIR__) . '/includes/common.php';
 
 switch (getRequestMethod()) {
     case 'GET':
+        setSession('CSRF_TOKEN', getToken());
         if ($user = getSession('user')) {
             view('board/write', array_merge(
                 compact('user'),

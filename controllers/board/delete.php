@@ -5,13 +5,16 @@ require_once dirname(__DIR__) . '/includes/common.php';
 switch (getRequestMethod()) {
     case 'DELETE':
         if ($user = getSession('user')) {
-            list('id' => $id) = getParamsWithFilters([
+            list(
+                'id'    => $id,
+                'token' => $token
+            ) = getParamsWithFilters([
                 'params' => getInputParams('delete'),
                 'filterMappings' => [
                     'id' => [ FILTER_VALIDATE_INT ]
                 ]
             ]);
-            if ($id) {
+            if ($id && verity($token, getSession('CSRF_TOKEN'))) {
                 list('user_id' => $userId) = first($conn, wheres(select('posts'), 'id'), $id);
                 if ($user['id'] == $userId) {
                     if (execute($conn, wheres(delete('posts'), 'id'), $id)) {
@@ -19,9 +22,9 @@ switch (getRequestMethod()) {
                         http_response_code(204);
                         break;
                     }
-                    info('Post::delete:: Failed', [ $id ]);
                 }
             }
+            info('Post::delete:: Failed', [ $id ]);
             http_response_code(400);
             break;
         }

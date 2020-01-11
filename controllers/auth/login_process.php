@@ -27,8 +27,8 @@ switch (getRequestMethod()) {
                     break;
                 }
             }
-            info('Auth::login:: Failed', [ $email ]);
         }
+        info('Auth::login:: Failed', [ $email ]);
         header("Location: /auth/login.php");
         break;
     default:

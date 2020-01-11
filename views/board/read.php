@@ -36,7 +36,8 @@
             e.preventDefault();
             axios.delete("/board/delete.php", {
                 data: {
-                    id: <?=$id?>
+                    id: <?=$id?>,
+                    token: "<?=$token?>"
                 }
             }).then(() => {
                 location.href = '/board/list.php?user=' + '<?=$username?>';

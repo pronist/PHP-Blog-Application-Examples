@@ -29,8 +29,8 @@ switch (getRequestMethod()) {
                     header("Location: /board/list.php?user=" . $user['username']);
                     break;
                 }
-                info('Post::write:: Failed', [ $user['id'] ]);
             }
+            info('Post::write:: Failed', [ $user['id'] ]);
             header("Location: /board/write.php");
             break;
         } else {

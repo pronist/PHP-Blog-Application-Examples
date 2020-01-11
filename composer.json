@@ -1,6 +1,6 @@
 {
     "name": "pronist/phpblog",
-    "description": "a BLOG APPLICATION example with PHP 7+",
+    "description": "A simple blog application example with PHP 7+",
     "type": "project",
     "license": "MIT",
     "authors": [

@@ -32,9 +32,9 @@ switch (getRequestMethod()) {
                         header("Location: /board/read.php?id=" . $id);
                         break;
                     }
-                    info('Post::update:: Failed', [ $id ]);
                 }
             }
+            info('Post::update:: Failed', [ $id ]);
             header("Location: /board/update.php?id=" . $id);
             break;
         } else {

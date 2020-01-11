@@ -24,6 +24,13 @@ main {
 }
 
 /**
+ * List
+ */
+#app .uk-list h1 {
+    font-size: 1.25em;
+}
+
+/**
  * Article
  */
 #app article {

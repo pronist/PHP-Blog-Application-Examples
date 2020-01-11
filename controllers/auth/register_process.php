@@ -39,8 +39,8 @@ switch (getRequestMethod()) {
                 header("Location: /");
                 break;
             }
-            info('Auth::register:: Failed', [ $email ]);
         }
+        info('Auth::register:: Failed', [ $email ]);
         header("Location: /auth/register.php");
         break;
     default:

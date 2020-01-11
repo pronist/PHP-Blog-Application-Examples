@@ -29,9 +29,3 @@ $conn = getConnection(require_once dirname(__DIR__, 2) . '/config/database.php')
  * Sessions
  */
 startSession();
-
-switch (getRequestMethod()) {
-    case 'GET':
-        setSession('CSRF_TOKEN', getToken());
-        break;
-}

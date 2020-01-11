@@ -42,8 +42,8 @@ switch (getRequestMethod()) {
                     header('Location: /');
                     break;
                 }
-                info("Auth::update:: Failed", [ $email ]);
             }
+            info("Auth::update:: Failed", [ $email ]);
             header("Location: /auth/update.php");
             break;
         }
