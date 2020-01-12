@@ -28,13 +28,13 @@ switch (getRequestMethod()) {
                         $id
                     );
                     if ($is) {
-                        info('Post::update:: Successful', [ $id ]);
+                        history('info',  'Post::update:: Successful', [ $id ]);
                         header("Location: /board/read.php?id=" . $id);
                         break;
                     }
                 }
             }
-            info('Post::update:: Failed', [ $id ]);
+            history('info', 'Post::update:: Failed', [ $id ]);
             header("Location: /board/update.php?id=" . $id);
             break;
         } else {

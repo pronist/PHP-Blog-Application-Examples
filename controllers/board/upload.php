@@ -13,15 +13,17 @@ switch (getRequestMethod()) {
                 'jpg'
             ];
             $pathParts = pathinfo($file['name']);
-            if (in_array($pathParts['extension'], $accepts) && upload($file, $path)) {
-                info('Post::upload:: Successful', [ $path ]);
-                echo json_encode([
-                    'uploaded' => 1,
-                    'url' => '/board/image.php?url=' . $filename
-                ]);
-                break;
+            if (in_array($pathParts['extension'], $accepts) && is_uploaded_file($file['tmp_name'])) {
+                if (move_uploaded_file($file['tmp_name'], $path)) {
+                    history('info', 'Post::upload:: Successful', [ $path ]);
+                    echo json_encode([
+                        'uploaded' => 1,
+                        'url' => '/board/image.php?url=' . $filename
+                    ]);
+                    break;
+                }
             } else {
-                info('Post::upload:: Failed', [ $file['name'] ]);
+                history('info', 'Post::upload:: Failed', [ $file['name'] ]);
                 http_response_code(400);
                 break;
             }

@@ -37,13 +37,13 @@ switch (getRequestMethod()) {
                     $user['id']
                 );
                 if ($is) {
-                    info("Auth::update:: Successful", [ $email ]);
+                    history('info', "Auth::update:: Successful", [ $email ]);
                     destroySession();
                     header('Location: /');
                     break;
                 }
             }
-            info("Auth::update:: Failed", [ $email ]);
+            history('info', "Auth::update:: Failed", [ $email ]);
             header("Location: /auth/update.php");
             break;
         }

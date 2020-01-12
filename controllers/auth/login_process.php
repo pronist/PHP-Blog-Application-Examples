@@ -21,14 +21,14 @@ switch (getRequestMethod()) {
             $user = first($conn, wheres(select('users'), 'email'), $email);
             if ($user) {
                 if (password_verify($password, $user['password'])) {
-                    info('Auth::login:: Successful', [ $email ]);
+                    history('info', 'Auth::login:: Successful', [ $email ]);
                     setSession('user', $user);
                     header("Location: /");
                     break;
                 }
             }
         }
-        info('Auth::login:: Failed', [ $email ]);
+        history('info', 'Auth::login:: Failed', [ $email ]);
         header("Location: /auth/login.php");
         break;
     default:

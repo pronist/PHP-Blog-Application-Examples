@@ -6,21 +6,10 @@
     <div class="uk-text-meta"><?=$description?></div>
 </header>
 <main id="main" role="main">
-    <ul class="uk-list uk-list-divider">
-        <?php foreach ($posts as $post) : ?>
-        <li>
-            <article>
-                <h1 class="uk-article-title">
-                    <a href="<?=$post['url']?>" class="uk-link-reset"><?=$post['title']?></a>
-                </h1>
-                <p class="uk-margin"><?=$post['content']?></p>
-                <div class="uk-text-meta">
-                    <?=$post['created_at']?>
-                </div>
-            </article>
-        </li>
-        <?php endforeach; ?>
-    </ul>
+    <div class="uk-container">
+        <?php require_once dirname(__DIR__) . '/layouts/list.php'; ?>
+    </div>
 </main>
 
 <?php require_once dirname(__DIR__) . '/layouts/footer.php'; ?>
+

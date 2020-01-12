@@ -18,7 +18,7 @@ foreach ($libraries as $lib) {
 date_default_timezone_set('Asia/Seoul');
 
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-    error($errstr, [ $errfile, $errline ]);
+    history('error', $errstr, [ $errfile, $errline ]);
     error_log(sprintf("[error] %s\t%s\t%s", $errstr, $errfile, $errline));
     return true;
 });

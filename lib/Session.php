@@ -9,7 +9,7 @@ function startSession()
 {
     list('save_path' => $savePath) = include dirname(__DIR__) . "/config/session.php";
     session_save_path($savePath);
-    return session_start() ?: alert("Session:: Cannot start");
+    return session_start() ?: history('alert', "Session:: Cannot start");
 }
 
 /**

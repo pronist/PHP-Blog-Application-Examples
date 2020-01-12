@@ -35,12 +35,12 @@ switch (getRequestMethod()) {
                 $description
             );
             if ($is) {
-                info('Auth::register:: Successful', [ $email ]);
+                history('info', 'Auth::register:: Successful', [ $email ]);
                 header("Location: /");
                 break;
             }
         }
-        info('Auth::register:: Failed', [ $email ]);
+        history('info', 'Auth::register:: Failed', [ $email ]);
         header("Location: /auth/register.php");
         break;
     default:

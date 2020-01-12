@@ -17,11 +17,8 @@ switch (getRequestMethod()) {
                 'username'      => $username,
                 'description'   => $description
             ) = first($conn, wheres(select('users'), 'username'), $user);
-            $posts = array_map(function ($post) {
-                $post['content'] = getSubContentWithoutHTMLTags($post['content'], 200);
-                $post['created_at'] = getPostCreatedAt($post['created_at']);
-                $post['url'] = "/board/read.php?id=" . $post['id'];
-                return $post;
+            $posts = array_map(function ($post) use ($username) {
+                return getPostsWithTransform($post, $username);
             }, get($conn, wheres(select('posts'), 'user_id'), $id));
         } else {
             http_response_code(404);

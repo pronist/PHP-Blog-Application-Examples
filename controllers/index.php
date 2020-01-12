@@ -11,12 +11,7 @@ switch (getRequestMethod()) {
                 $userQuery,
                 $post['user_id']
             );
-            $post['username'] = $username;
-            $post['author'] = "/board/list.php?user=" . urlencode($post['username']);
-            $post['content'] = getSubContentWithoutHTMLTags($post['content'], 200);
-            $post['created_at'] = getPostCreatedAt($post['created_at']);
-            $post['url'] = "/board/read.php?id=" . $post['id'];
-            return $post;
+            return getPostsWithTransform($post, $username);
         }, get($conn, select('posts')));
         return view('index', array_merge(
             compact('posts'),

@@ -18,13 +18,13 @@ switch (getRequestMethod()) {
                 list('user_id' => $userId) = first($conn, wheres(select('posts'), 'id'), $id);
                 if ($user['id'] == $userId) {
                     if (execute($conn, wheres(delete('posts'), 'id'), $id)) {
-                        info('Post::delete:: Successful', [ $id ]);
+                        history('info', 'Post::delete:: Successful', [ $id ]);
                         http_response_code(204);
                         break;
                     }
                 }
             }
-            info('Post::delete:: Failed', [ $id ]);
+            history('info', 'Post::delete:: Failed', [ $id ]);
             http_response_code(400);
             break;
         }

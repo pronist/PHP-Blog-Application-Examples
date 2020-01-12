@@ -5,10 +5,12 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
             if (document.getElementById('editor')) {
-                CKEDITOR.replace('editor', {
-                    height: 420,
+                CKEDITOR.inline('editor', {
                     extraPlugins: 'image2, uploadimage',
                     uploadUrl: '/board/upload.php'
+                });
+                CKEDITOR.instances.editor.on('instanceReady', function(event) {
+                    CKEDITOR.instances.editor.focus();
                 });
             }
         </script>

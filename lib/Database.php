@@ -95,7 +95,7 @@ function raw($conn, $qs, $args, $callback = null)
             mysqli_stmt_bind_param($stmt, $bs, ...$args);
         }
         if (mysqli_stmt_execute($stmt)) {
-            info("Database::query:: Successful", [ $qs ]);
+            history('info', "Database::query:: Successful", [ $qs ]);
             $rows = null;
             if (is_callable($callback)) {
                 $rows = call_user_func($callback, mysqli_stmt_get_result($stmt));

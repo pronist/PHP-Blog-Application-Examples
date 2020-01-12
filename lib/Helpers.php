@@ -53,3 +53,39 @@ function removeTags($content, ...$tags)
     }
     return $content;
 }
+
+/**
+ * get a post thumbnail
+ *
+ * @param string $content
+ *
+ * @return string
+ */
+function getPostThumbnail($content)
+{
+    preg_match('/(\<img .*\/\>)/m', $content, $matches);
+    if (count($matches) > 1) {
+        return $matches[1];
+    }
+    return null;
+}
+
+/**
+ * get posts with transform
+ *
+ * @param array $post
+ * @param string $username
+ *
+ * @return array
+ */
+function getPostsWithTransform($post, $username)
+{
+    $post['username'] = $username;
+    $post['author'] = "/board/list.php?user=" . urlencode($post['username']);
+    $post['thumbnail'] = getPostThumbnail($post['content']);
+    $post['content'] = getSubContentWithoutHTMLTags($post['content'], 200);
+    $post['created_at'] = getPostCreatedAt($post['created_at']);
+    $post['url'] = "/board/read.php?id=" . $post['id'];
+
+    return $post;
+}

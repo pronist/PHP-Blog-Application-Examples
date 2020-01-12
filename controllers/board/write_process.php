@@ -25,12 +25,12 @@ switch (getRequestMethod()) {
                     removeTags($content, 'script')
                 );
                 if ($is) {
-                    info('Post::write:: Successful', [ $user['id'] ]);
+                    history('info', 'Post::write:: Successful', [ $user['id'] ]);
                     header("Location: /board/list.php?user=" . $user['username']);
                     break;
                 }
             }
-            info('Post::write:: Failed', [ $user['id'] ]);
+            history('info', 'Post::write:: Failed', [ $user['id'] ]);
             header("Location: /board/write.php");
             break;
         } else {

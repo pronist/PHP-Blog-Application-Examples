@@ -2,27 +2,22 @@
 
 return [
     /**
-     * Name
+     * Database
      */
     'database'  => 'board',
 
     /**
-     * Host name
+     * Host
      */
     'hostname'  => '127.0.0.1',
 
     /**
-     * User name
+     * User
      */
     'username'  => 'root',
 
     /**
      * User password
      */
-    'password'  => 'root',
-
-    /**
-     * Charset
-     */
-    'charset'   => 'UTF8'
+    'password'  => 'root'
 ];

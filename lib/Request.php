@@ -57,24 +57,6 @@ function getRequestMethod()
 }
 
 /**
- * Upload a file
- *
- * @param array $file
- * @param string $path
- *
- * @codeCoverageIgnore
- *
- * @return bool
- */
-function upload($file, $path)
-{
-    if (is_uploaded_file($file['tmp_name'])) {
-        return move_uploaded_file($file['tmp_name'], $path);
-    }
-    return false;
-}
-
-/**
  * get variable with filters
  *
  * @param $method

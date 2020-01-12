@@ -8,102 +8,22 @@ p {
     line-height: 1.8em;
     color: rgba(0, 0, 0, .6);
 }
-@media screen and (min-width: 550px) {
-    main {
-        width: 550px;
-    }
-}
-@media screen and (max-width: 550px) {
-    main {
-        width: 100%;
-        padding: 0 15px;
-    }
-}
 main {
     margin: 0 auto;
 }
 
 /**
- * List
+ * Container
  */
-#app .uk-list h1 {
+#app .uk-container {
+    width: 550px;
+    margin: 35px auto;
+}
+#app .uk-container .uk-list article h1 {
     font-size: 1.25em;
 }
-
-/**
- * Article
- */
-#app article {
-    padding: 40px 0;
-}
-#app article > h1 {
-    font-size: 1.4em;
-    font-weight: bold;
-}
-#app article .uk-text-meta {
-    font-size: .8em;
-    color: rgba(0, 0, 0, .4);
-}
-#app article .uk-text-lead {
-    font-size: 1em;
-}
-#app article .uk-text-lead h2 {
-    font-weight: 400;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-    font-weight: 500;
-}
-#app article .uk-text-lead h2::before {
-    content: "#";
-    color: #ed5207;
-    font-weight: 400;
-    margin-right: 10px;
-}
-#app article .uk-text-lead h3 {
-    font-weight: 500;
-    margin-top: 25px;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-}
-#app article .uk-text-lead h4 {
-    font-weight: 500;
-    margin-bottom: 5px;
-    font-size: 1.1em;
-}
-#app article .uk-text-lead p {
-    margin-bottom: 15px;
-    color: rgba(0,0,0,0.85);
-    line-height: 1.9em;
-}
-#app article .uk-text-lead b {
-    color: #ed5207;
-    font-weight: 500;
-}
-#app article .uk-text-lead a {
-    color: #000;
-    box-shadow: inset 0 -2px 0 #fcdae9;
-    transition: all .35s;
-    transition-timing-function: cubic-bezier(.7, 0, .3, 1);
-    text-decoration: none;
-}
-#app article .uk-text-lead a:hover {
-    box-shadow: inset 0 -20px 0 #fcdae9;
-}
-#app article .uk-text-lead pre {
-    border-radius: 5px;
-}
-#app article .uk-text-lead blockquote {
-    border-color: #acacac;
-    border-width: 0 0 0 2px;
-    border-style: solid;
-    padding: 1px 0 0 12px;
-    color: #666;
-    line-height: 1.8em;
-    text-align: left;
-    font-size: 0.9em;
-}
-#app article .uk-text-lead blockquote p {
-    margin: 0;
+#app .uk-container .uk-list article {
+    padding: 30px 0;
 }
 
 /**
@@ -114,11 +34,100 @@ main {
 }
 
 /**
+ * Header
+ */
+#app #header {
+    width: 550px;
+    text-align: center;
+    margin: 40px auto;
+}
+#app #header h3 {
+    font-size: 1.1em;
+}
+
+/**
+ * Article
+ */
+#app article > h1 {
+    font-weight: bold;
+}
+#app article .uk-text-meta {
+    font-size: .8em;
+    color: rgba(0, 0, 0, .4);
+}
+#app article .uk-text-lead {
+    font-size: 1em;
+}
+
+/**
  * Read
  */
-#app .uk-article > a {
-    font-size: .9em;
+#app .uk-article .owner {
+    margin-left: 5px;
 }
+#app .uk-article .owner > a {
+    margin: 0 2px;
+}
+
+#app .uk-article .uk-article-title {
+    font-size: 1.5em;
+}
+#app .uk-article .uk-text-meta {
+    margin-bottom: 35px;
+}
+#app .uk-article .uk-text-lead h2 {
+    font-weight: 400;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    font-weight: 500;
+}
+#app .uk-article .uk-text-lead h3 {
+    font-weight: 500;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+#app .uk-article .uk-text-lead h4 {
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+#app .uk-article .uk-text-lead p {
+    margin-bottom: 15px;
+    color: rgba(0,0,0,0.85);
+    line-height: 1.9em;
+}
+#app .uk-article .uk-text-lead b {
+    color: #ed5207;
+    font-weight: 500;
+}
+#app .uk-article .uk-text-lead a {
+    color: #000;
+    box-shadow: inset 0 -2px 0 #fcdae9;
+    transition: all .35s;
+    transition-timing-function: cubic-bezier(.7, 0, .3, 1);
+    text-decoration: none;
+}
+#app .uk-article .uk-text-lead a:hover {
+    box-shadow: inset 0 -20px 0 #fcdae9;
+}
+#app .uk-article .uk-text-lead pre {
+    border-radius: 5px;
+}
+#app .uk-article .uk-text-lead blockquote {
+    border-color: #acacac;
+    border-width: 0 0 0 2px;
+    border-style: solid;
+    padding: 1px 0 0 12px;
+    color: #666;
+    line-height: 1.8em;
+    text-align: left;
+    font-size: 0.9em;
+}
+#app .uk-article .uk-text-lead blockquote p {
+    margin: 0;
+}
+
 #app .uk-card .uk-card-header .uk-card-title {
     font-size: .95em;
     margin-bottom: 5px;
@@ -129,47 +138,50 @@ main {
 }
 
 /**
- * Header
+ * Form - Auth
  */
- @media screen and (min-width: 550px) {
-    #app #header {
-        width: 550px;
-    }
-}
-@media screen and (max-width: 550px) {
-    #app #header {
-        width: 100%;
-    }
-}
-#app #header {
-    text-align: center;
-    margin: 40px auto;
-}
-#app #header h3 {
-    font-size: 1.1em;
-}
-
-/**
- * Form
- */
-#app form > * {
-    margin: 10px 0;
+#app #main__form-auth form > * {
+    margin: 15px 0;
     font-size: .85em;
+    text-transform: none;
 }
-#app form > input:not([type=submit]) {
+#app #main__form-auth {
+    width: 320px;
+    text-align: center;
+    box-sizing: border-box;
+}
+#app #main__form-auth form > input:not([type=submit]) {
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
-#app #main__form {
-    width: 300px;
-    text-align: center;
-    box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, .1);
+/**
+ * Form - Board
+ */
+#app #main__form-board {
+    margin-top: 200px;
+    margin-bottom: 75px;
 }
-#app #main__board-form {
+#app #main__form-board form > * {
+    outline: none;
+}
+#app #main__form-board form input,
+#app #main__form-board form .cke_textarea_inline {
+    padding: 0;
+    margin: 0 auto;
+    display: block;
     width: 550px;
-    text-align: center;
-    box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, .1);
+    text-transform: none;
+}
+#app #main__form-board form .uk-article-title {
+    margin-bottom: 45px;
+    height: 60px;
+}
+#app #main__form-board form .cke_textarea_inline {
+    text-align: left;
+    margin: 35px auto;
+    min-height: 420px;
+}
+#app #main__form-board form input:not([type=submit]) {
+    border: none;
 }
