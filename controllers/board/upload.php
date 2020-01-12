@@ -27,10 +27,9 @@ switch (getRequestMethod()) {
                 http_response_code(400);
                 break;
             }
-        } else {
-            http_response_code(403);
-            break;
         }
+        http_response_code(403);
+        break;
     default:
         http_response_code(404);
 }

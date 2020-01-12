@@ -28,7 +28,7 @@ switch (getRequestMethod()) {
                         $id
                     );
                     if ($is) {
-                        history('info',  'Post::update:: Successful', [ $id ]);
+                        history('info', 'Post::update:: Successful', [ $id ]);
                         header("Location: /board/read.php?id=" . $id);
                         break;
                     }

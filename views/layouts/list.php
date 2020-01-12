@@ -11,7 +11,7 @@
                         <?=$post['username']?>
                     </a>
                 </div>
-                <?php if ($post['thumbnail']): ?>
+                <?php if ($post['thumbnail']) : ?>
                     <div class="uk-margin"><?=$post['thumbnail']?></div>
                 <?php endif; ?>
                 <p class="uk-margin"><?=$post['content']?></p>
