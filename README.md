@@ -4,6 +4,7 @@
 
 <p align="center">
     <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
+    <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
 </p>
 
 ## phpblog
@@ -16,7 +17,7 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 
 ### Branches
 
-* [Baisc](https://github.com/pronist/phpblog/tree/basic) - PHP **Classic Architecture**
+* [Basic](https://github.com/pronist/phpblog/tree/basic) - PHP **Classic Architecture**
 
 ## Basic
 
@@ -29,7 +30,7 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 
 * *fileinfo*
 * *Multibyte String*
-* *ODBC(Open DataBase Connectivity)*
+* *mysqli(Open DataBase Connectivity)*
 
 ### Features
 

@@ -2,11 +2,6 @@
 
 return [
     /**
-     * ODBC Database Connection Driver
-     */
-    'driver'    => 'MySQL ODBC 5.3 Unicode Driver',
-
-    /**
      * Name
      */
     'database'  => 'board',

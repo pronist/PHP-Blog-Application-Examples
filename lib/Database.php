@@ -13,8 +13,8 @@ function rows($conn, $qs, ...$args)
 {
     $rows = raw($conn, $qs, $args, function ($result) {
         $rows = [];
-        if ((odbc_num_rows($result) > 0)) {
-            while ($row = odbc_fetch_array($result)) {
+        if ((mysqli_num_rows($result) > 0)) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 array_push($rows, $row);
             }
         }
@@ -79,44 +79,57 @@ function raw($conn, $qs, $args, $callback = null)
 {
     $is = false;
     if ($conn) {
-        $result = odbc_prepare($conn, $qs);
-        if (odbc_execute($result, $args)) {
+        $stmt = mysqli_prepare($conn, $qs);
+        if (count($args) > 0) {
+            $bs = '';
+            $bindMappings = [
+                'string'    => 's',
+                'integer'   => 'i',
+                'double'    => 'd'
+            ];
+            foreach ($args as $arg) {
+                if (array_key_exists(gettype($arg), $bindMappings)) {
+                    $bs .= $bindMappings[gettype($arg)];
+                }
+            }
+            mysqli_stmt_bind_param($stmt, $bs, ...$args);
+        }
+        if (mysqli_stmt_execute($stmt)) {
             info("Database::query:: Successful", [ $qs ]);
             $rows = null;
             if (is_callable($callback)) {
-                $rows = call_user_func($callback, $result);
+                $rows = call_user_func($callback, mysqli_stmt_get_result($stmt));
             }
             $is = $rows ?: true;
         }
-        odbc_free_result($result);
+        mysqli_stmt_close($stmt);
     }
     return $is;
 }
 
 /**
- * get ODBC Connection
+ * get mysqli Connection
  *
  * @param array $config
  *
- * @return resource
+ * @return object
  */
 function getConnection($config)
 {
-    $format = "Driver={%s};Server=%s;Database=%s;charset=%s";
-    $connection = odbc_connect(
-        sprintf($format, $config['driver'], $config['hostname'], $config['database'], $config['charset']),
+    return mysqli_connect(
+        $config['hostname'],
         $config['username'],
-        $config['password']
+        $config['password'],
+        $config['database']
     );
-    return $connection;
 }
 
 /**
  * @param resource $conn
  *
- * @return void
+ * @return bool
  */
 function closeConnection($conn)
 {
-    odbc_close($conn);
+    return mysqli_close($conn);
 }

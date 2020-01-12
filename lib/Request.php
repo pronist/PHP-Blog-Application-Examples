@@ -35,8 +35,7 @@ function getInputParams($method)
         case 'PATCH':
         case 'PUT':
         case 'DELETE':
-            $isFormRequest = filter_var(isset($_POST) ? $_POST['_method'] : null, FILTER_SANITIZE_STRING);
-            if ($isFormRequest) {
+            if (isset($_POST) && array_key_exists('_method', $_POST)) {
                 return $_POST;
             }
             return json_decode(file_get_contents('php://input'), true);

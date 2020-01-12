@@ -5,7 +5,7 @@ namespace Pronist\PHPBlog\Tests;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @requires extension odbc
+ * @requires extension mysqli
  */
 final class DatabaseTest extends TestCase
 {
@@ -15,15 +15,13 @@ final class DatabaseTest extends TestCase
     public function testGetConnection()
     {
         $conn = getConnection([
-            'driver'   => 'MySQL ODBC 5.3 Unicode Driver',
             'database' => 'myapp_test',
             'hostname' => '127.0.0.1',
             'username' => 'travis',
-            'password' => '',
-            'charset'  => 'UTF8'
+            'password' => ''
         ]);
 
-        $this->assertIsResource($conn);
+        $this->assertIsObject($conn);
 
         return $conn;
     }
@@ -35,10 +33,11 @@ final class DatabaseTest extends TestCase
     public function testRaw($conn)
     {
         $this->assertTrue(raw($conn, "SELECT 1", []));
-        $this->assertIsArray(raw($conn, "SELECT 1", [], function ($result) {
+        $this->assertTrue(raw($conn, "SELECT ?", [ 'Hello, world' ]));
+        $this->assertIsArray(raw($conn, "SELECT ? UNION SELECT ?", [ 1, 2 ], function ($result) {
             $rows = [];
-            if ((odbc_num_rows($result) > 0)) {
-                while ($row = odbc_fetch_array($result)) {
+            if ((mysqli_num_rows($result) > 0)) {
+                while ($row = mysqli_fetch_array($result)) {
                     array_push($rows, $row);
                 }
             }
@@ -94,7 +93,6 @@ final class DatabaseTest extends TestCase
      */
     public function testCloseConnection($conn)
     {
-        closeConnection($conn);
-        $this->assertEquals(get_resource_type($conn), 'Unknown');
+        $this->assertTrue(closeConnection($conn));
     }
 }
