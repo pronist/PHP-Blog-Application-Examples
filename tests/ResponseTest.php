@@ -12,9 +12,10 @@ final class ResponseTest extends TestCase
     public function testView()
     {
         ob_start();
-        $this->assertIsInt(view('auth/login', [
-            'user'  => [],
-            'token' => getToken()
+        $this->assertIsInt(view('auth/form', [
+            'user'          => [],
+            'token'         => getToken(),
+            'requestUrl'    => '/login.php'
         ]));
         ob_get_clean();
     }

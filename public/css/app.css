@@ -19,31 +19,6 @@ main {
     width: 550px;
     margin: 35px auto;
 }
-#app .uk-container .uk-list article h1 {
-    font-size: 1.25em;
-}
-#app .uk-container .uk-list article {
-    padding: 30px 0;
-}
-
-/**
- * Navigation
- */
-#app nav a {
-    text-transform: none;
-}
-
-/**
- * Header
- */
-#app #header {
-    width: 550px;
-    text-align: center;
-    margin: 40px auto;
-}
-#app #header h3 {
-    font-size: 1.1em;
-}
 
 /**
  * Article
@@ -60,61 +35,89 @@ main {
 }
 
 /**
+ * Navigation
+ */
+#app #nav a {
+    text-transform: none;
+}
+
+/**
+ * List
+ */
+#app #main__index article h1 {
+    font-size: 1.25em;
+}
+#app #main__index article {
+    padding: 25px 0;
+}
+
+/**
+ * Read more
+ */
+#app #readmore {
+    text-transform: none;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 35px;
+    width: 550px;
+}
+
+/**
  * Read
  */
-#app .uk-article .owner {
+#app #main__article > .uk-article .owner {
     margin-left: 5px;
 }
-#app .uk-article .owner > a {
+#app #main__article > .uk-article .owner > a {
     margin: 0 2px;
 }
 
-#app .uk-article .uk-article-title {
+#app #main__article > .uk-article .uk-article-title {
     font-size: 1.5em;
 }
-#app .uk-article .uk-text-meta {
-    margin-bottom: 35px;
+#app #main__article > .uk-article .uk-text-meta {
+    margin-bottom: 20px;
 }
-#app .uk-article .uk-text-lead h2 {
+#app #main__article > .uk-article .uk-text-lead h2 {
     font-weight: 400;
     margin-bottom: 15px;
     font-size: 1.4em;
     font-weight: 500;
 }
-#app .uk-article .uk-text-lead h3 {
+#app #main__article > .uk-article .uk-text-lead h3 {
     font-weight: 500;
     margin-top: 25px;
     margin-bottom: 20px;
     font-size: 1.2em;
 }
-#app .uk-article .uk-text-lead h4 {
+#app #main__article > .uk-article .uk-text-lead h4 {
     font-weight: 500;
     margin-bottom: 5px;
     font-size: 1.1em;
 }
-#app .uk-article .uk-text-lead p {
+#app #main__article > .uk-article .uk-text-lead p {
     margin-bottom: 15px;
     color: rgba(0,0,0,0.85);
     line-height: 1.9em;
 }
-#app .uk-article .uk-text-lead b {
+#app #main__article > .uk-article .uk-text-lead b {
     color: #ed5207;
     font-weight: 500;
 }
-#app .uk-article .uk-text-lead a {
+#app #main__article > .uk-article .uk-text-lead a {
     color: #000;
     box-shadow: inset 0 -2px 0 #fcdae9;
     transition: all .35s;
     transition-timing-function: cubic-bezier(.7, 0, .3, 1);
     text-decoration: none;
 }
-#app .uk-article .uk-text-lead a:hover {
+#app #main__article > .uk-article .uk-text-lead a:hover {
     box-shadow: inset 0 -20px 0 #fcdae9;
 }
-#app .uk-article .uk-text-lead pre {
+#app #main__article > .uk-article .uk-text-lead pre {
     border-radius: 5px;
 }
-#app .uk-article .uk-text-lead blockquote {
+#app #main__article > .uk-article .uk-text-lead blockquote {
     border-color: #acacac;
     border-width: 0 0 0 2px;
     border-style: solid;
@@ -124,17 +127,8 @@ main {
     text-align: left;
     font-size: 0.9em;
 }
-#app .uk-article .uk-text-lead blockquote p {
+#app #main__article .uk-article .uk-text-lead blockquote p {
     margin: 0;
-}
-
-#app .uk-card .uk-card-header .uk-card-title {
-    font-size: .95em;
-    margin-bottom: 5px;
-    color: rgba(0, 0, 0, .7);
-}
-#app .uk-card .uk-card-header .uk-text-meta {
-    font-size: .85em;
 }
 
 /**

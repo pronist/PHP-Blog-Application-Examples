@@ -88,6 +88,37 @@ function limit($qs, $count)
 }
 
 /**
+ * limit
+ *
+ * @param string $qs
+ * @param int $start
+ *
+ * @return string
+ */
+function offset($qs, $start)
+{
+    return $qs .= " OFFSET " . $start;
+}
+
+
+/**
+ * order by
+ *
+ * @param string $qs
+ * @param array $fields
+ */
+function orderBy($qs, $fields)
+{
+    $args = [];
+    foreach ($fields as $field => $method) {
+        array_push($args, $field . ' ' . $method);
+    }
+    return $qs .= queryString(' ORDER BY %s', [
+        [ $args, '%s', ', ' ]
+    ]);
+}
+
+/**
  * get Query string
  *
  * @param string $format

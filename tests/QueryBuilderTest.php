@@ -72,6 +72,25 @@ final class QueryBuilderTest extends TestCase
         );
     }
 
+    public function testOffset()
+    {
+        $this->assertEquals(
+            offset(select('tests'), 5),
+            'SELECT * FROM tests OFFSET 5'
+        );
+    }
+
+    public function testOrderBy()
+    {
+        $this->assertEquals(
+            orderBy(select('tests'), [
+                'id'        => 'DESC',
+                'message'   => 'ASC'
+            ]),
+            'SELECT * FROM tests ORDER BY id DESC, message ASC'
+        );
+    }
+
     /**
      * @covers \queryString
      */

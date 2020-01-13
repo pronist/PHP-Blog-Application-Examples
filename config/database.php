@@ -4,7 +4,7 @@ return [
     /**
      * Database
      */
-    'database'  => 'board',
+    'database'  => 'phpblog',
 
     /**
      * Host

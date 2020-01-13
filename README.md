@@ -1,13 +1,4 @@
-<p align="center">
-    <a href="https://www.inflearn.com/course/php"><img src="https://cdn.inflearn.com/public/files/courses/280298/57e113b0-2f17-494b-a363-6fdc6d0da066/php2.png" width="400"></a>
-</p>
-
-<p align="center">
-    <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
-    <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
-</p>
-
-## phpblog
+## What is this?
 
 A simple **blog application** example with *PHP 7+* \
 this one is created for [phplec](https://github.com/pronist/phplec)
@@ -17,70 +8,34 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 
 ### Branches
 
-* [Basic](https://github.com/pronist/phpblog/tree/basic) - PHP **Classic Architecture**
+* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Classic Architecture**
 
-## Basic
-
-* PHP **Classic Architecture** (URL endswith **.php**)
-* No **PSR-4 Autoloading**
-* No **OOP(Object-Oriented Programming)**
-* Not using **User components** in Application Code
-
-### Dynamic Extensions
-
-* *fileinfo*
-* *Multibyte String*
-* *mysqli(Open DataBase Connectivity)*
-
-### Features
-
-#### Auth
-
-* [/auth/register.php](https://github.com/pronist/phpblog/tree/basic/public/auth/register.php) - Register **Form** for a new User (GET)
-* [/auth/register_process.php](https://github.com/pronist/phpblog/tree/basic/public/auth/register_process.php) - **Create** a new User (POST)
-* [/auth/login.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login.php) - Login **Form** for a User (GET)
-* [/auth/login_process.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login_process.php) - Create a User **Session** (POST)
-* [/auth/update.php](https://github.com/pronist/phpblog/tree/basic/public/auth/update.php) - Update **Form** for User informations (GET)
-* [/auth/update_process.php](https://github.com/pronist/phpblog/tree/basic/public/auth/update_process.php) - **Update** User informations (PATCH)
-* [/auth/logout.php](https://github.com/pronist/phpblog/tree/basic/public/auth/logout.php) - Delete a User **Session** (GET)
-
-#### Board
-
-* [/board/write.php](https://github.com/pronist/phpblog/tree/basic/public/board/write.php) - Write **Form** for a new Post (GET)
-* [/board/write_process.php](https://github.com/pronist/phpblog/tree/basic/public/board/write_process.php) - **Write** a new Post (POST)
-* [/board/list.php](https://github.com/pronist/phpblog/tree/basic/public/board/list.php) - **Posts** by a username (GET)
-* [/board/read.php](https://github.com/pronist/phpblog/tree/basic/public/board/read.php) - **Read** a Post by a post id (GET)
-* [/board/update.php](https://github.com/pronist/phpblog/tree/basic/public/board/update.php) -  Update **Form** for Post informations (GET)
-* [/board/update_process.php](https://github.com/pronist/phpblog/tree/basic/public/board/update_process.php) - **Update** for Post informations (PATCH)
-* [/board/delete.php](https://github.com/pronist/phpblog/tree/basic/public/board/delete.php) - **Delete** a Post (DELETE)
-
-### Serve
+## Getting started
 
 ```bash
 # PHP Built-in Server at http://localhost:8080
 php -S localhost:8080 -t public
 ```
 
-### Testing
+## Testing
 
 ```bash
 # Installation phpunit
 composer install
 # Unit Testing
-phpunit --strict-coverage --verbose
+vendor/bin/phpunit --strict-coverage --verbose
 ```
 
-### Database
+## Database (MySQL)
 
 ```sql
-use board;
+use phpblog;
 
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL
+    username VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE posts (
@@ -93,3 +48,57 @@ CREATE TABLE posts (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 ```
+
+## Basic - Classic Architecture
+
+<p>
+    <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
+    <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
+</p>
+
+* Not using **OOP(Object-Oriented Programming)**
+* Not using **PSR-4 Autoloading**
+* Not using **User components** in Application Code
+
+### Dynamic Extensions
+
+* *MySQLi*
+* *Multibyte String*
+* *fileinfo*
+
+### Features
+
+#### Auth
+
+* [/login.php](https://github.com/pronist/phpblog/tree/basic/controllers/login.php) - Login **Form** for a User (GET)
+* [/login.php](https://github.com/pronist/phpblog/tree/basic/controllers/login.php) - Create a User **Session** (POST)
+* [/logout.php](https://github.com/pronist/phpblog/tree/basic/controllers/logout.php) - Delete a User **Session** (POST)
+
+#### User
+
+* [/user/register.php](https://github.com/pronist/phpblog/tree/basic/controllers/user/register.php) - Register **Form** for a new User (GET)
+* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user/index.php) - **Create** a new User
+**Session** (POST)
+* [/user/update.php](https://github.com/pronist/phpblog/tree/basic/controllers/user/update.php) - Update **Form** for User informations (GET)
+* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user/index.php) - **Update** User informations (PATCH)
+
+#### Post
+
+* [/](https://github.com/pronist/phpblog/tree/basic/controllers/index.php) - **Get** posts (GET)
+* [/post/write.php](https://github.com/pronist/phpblog/tree/basic/controllers/post/write.php) - Write **Form** for a new Post (GET)
+* [/post/](https://github.com/pronist/phpblog/tree/basic/controllers/post/index.php) - **Write** a new Post (POST)
+* [/post/?id={id}](https://github.com/pronist/phpblog/tree/basic/controllers/post/index.php) - **Read** a Post by a post id (GET)
+* [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/basic/controllers/post/update.php) - Update **Form** for Post informations (GET)
+* [/post/?id={id}](https://github.com/pronist/phpblog/tree/basic/controllers/post/index.php) - **Update** for Post informations (PATCH)
+* [/post/?id={id}](https://github.com/pronist/phpblog/tree/basic/controllers/post/index.php) - **Delete** a Post (DELETE)
+
+#### Image
+
+* [/image/](https://github.com/pronist/phpblog/tree/basic/controllers/image/index.php) - **Upload** a Image (POST)
+* [/image/?id={id}](https://github.com/pronist/phpblog/tree/basic/controllers/image/index.php) - **Get** a Image (GET)
+
+# License
+
+[MIT](https://github.com/pronist/phpblog/blob/basic/LICENSE)
+
+Copyright (c) [SangWoo Jeong](https://github.com/pronist). All rights reserved.

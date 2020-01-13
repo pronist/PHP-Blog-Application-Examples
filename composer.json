@@ -12,9 +12,10 @@
     "require": {},
     "autoload": {
         "files": [
+            "lib/Auth.php",
             "lib/CsrfToken.php",
             "lib/Database.php",
-            "lib/Helpers.php",
+            "lib/String.php",
             "lib/Logger.php",
             "lib/QueryBuilder.php",
             "lib/Request.php",
