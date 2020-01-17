@@ -1,6 +1,6 @@
 <?php
 
-namespace Pronist\PHPBlog\Tests;
+namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
@@ -56,7 +56,7 @@ final class QueryBuilderTest extends TestCase
     public function testWheres()
     {
         $this->assertEquals(
-            wheres(select('tests'), 'id'),
+            wheres(select('tests'), [ 'id' ]),
             'SELECT * FROM tests WHERE id = ?'
         );
     }
@@ -72,6 +72,9 @@ final class QueryBuilderTest extends TestCase
         );
     }
 
+    /**
+     * @covers \offset
+     */
     public function testOffset()
     {
         $this->assertEquals(
@@ -80,6 +83,9 @@ final class QueryBuilderTest extends TestCase
         );
     }
 
+    /**
+     * @covers \orderBy
+     */
     public function testOrderBy()
     {
         $this->assertEquals(

@@ -10,23 +10,25 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 
 * [Basic](https://github.com/pronist/phpblog/tree/basic) - **Classic Architecture**
 
-## Getting started
+### Getting started
 
 ```bash
 # PHP Built-in Server at http://localhost:8080
 php -S localhost:8080 -t public
 ```
 
-## Testing
+### Testing
 
 ```bash
 # Installation phpunit
 composer install
 # Unit Testing
-vendor/bin/phpunit --strict-coverage --verbose
+vendor/bin/phpunit --verbose
+# Coverage
+vendor/bin/phpunit --coverage-text
 ```
 
-## Database (MySQL)
+### Database (MySQL)
 
 ```sql
 use phpblog;
@@ -77,8 +79,7 @@ CREATE TABLE posts (
 #### User
 
 * [/user/register.php](https://github.com/pronist/phpblog/tree/basic/controllers/user/register.php) - Register **Form** for a new User (GET)
-* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user/index.php) - **Create** a new User
-**Session** (POST)
+* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user/index.php) - **Create** a new User (POST)
 * [/user/update.php](https://github.com/pronist/phpblog/tree/basic/controllers/user/update.php) - Update **Form** for User informations (GET)
 * [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user/index.php) - **Update** User informations (PATCH)
 
@@ -97,7 +98,7 @@ CREATE TABLE posts (
 * [/image/](https://github.com/pronist/phpblog/tree/basic/controllers/image/index.php) - **Upload** a Image (POST)
 * [/image/?id={id}](https://github.com/pronist/phpblog/tree/basic/controllers/image/index.php) - **Get** a Image (GET)
 
-# License
+## License
 
 [MIT](https://github.com/pronist/phpblog/blob/basic/LICENSE)
 

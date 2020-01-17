@@ -1,6 +1,6 @@
 <?php
 
-namespace Pronist\PHPBlog\Tests;
+namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
@@ -9,6 +9,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class DatabaseTest extends TestCase
 {
+    /**
+     * @var Faker\Factory
+     */
+    private $faker = null;
+
+    public function setUp(): void
+    {
+        $this->faker = \Faker\Factory::create();
+    }
+
     /**
      * @covers \getConnection
      */
@@ -24,6 +34,60 @@ final class DatabaseTest extends TestCase
         $this->assertIsObject($conn);
 
         return $conn;
+    }
+
+    /**
+     * @covers \create
+     * @depends testGetConnection
+     */
+    public function testCreate($conn)
+    {
+        $user = create($conn, 'users', [
+            'email'     =>  $this->faker->email,
+            'password'  => password_hash($this->faker->password, PASSWORD_DEFAULT),
+            'username'  => $this->faker->userName
+        ]);
+
+        $this->assertIsArray($user);
+
+        return $user;
+    }
+
+
+    /**
+     * @covers \get
+     * @depends testGetConnection
+     * @depends testCreate
+     */
+    public function testGet($conn, $user)
+    {
+        $this->assertIsArray(get($conn, 'users', 'all', [
+            'wheres'    => [ 'id' ],
+            'orderBy'   => [ 'id' => 'DESC' ],
+            'limit'     => 3
+        ], $user['id']));
+    }
+
+    /**
+     * @covers \patch
+     * @depends testGetConnection
+     * @depends testCreate
+     */
+    public function testPatch($conn, $user)
+    {
+        $this->assertTrue(patch($conn, 'users', $user['id'], [
+            'email' => $this->faker->email
+        ]));
+    }
+
+    /**
+     * @covers \remove
+     * @depends testGetConnection
+     * @depends testCreate
+     */
+    public function testRemove($conn, $user)
+    {
+        $this->assertTrue(remove($conn, 'users', $user['id']));
     }
 
     /**
@@ -64,12 +128,12 @@ final class DatabaseTest extends TestCase
     }
 
     /**
-     * @covers \get
+     * @covers \all
      * @depends testGetConnection
      */
-    public function testGet($conn): void
+    public function testAll($conn)
     {
-        $rows = get($conn, "SELECT 1 UNION SELECT 2");
+        $rows = all($conn, "SELECT 1 UNION SELECT 2");
 
         $this->assertIsArray($rows);
         $this->assertCount(2, $rows);

@@ -15,4 +15,4 @@ storage/images/*
 *.code-workspace
 
 .phpunit.result.cache
-coverage
+coverage-report

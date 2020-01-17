@@ -1,6 +1,6 @@
 <?php
 
-namespace Pronist\PHPBlog\Tests;
+namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +25,7 @@ final class RequestTest extends TestCase
     /**
      * @covers \getInputParams
      */
-    public function testGetInputParams(): void
+    public function testGetInputParams()
     {
         $this->assertIsArray(getInputParams('get'));
         $this->assertIsArray(getInputParams('post'));
@@ -43,22 +43,22 @@ final class RequestTest extends TestCase
     /**
      * @covers \getRequestMethod
      */
-    public function testGetRequestMethod(): void
+    public function testGetRequestMethod()
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $this->assertEquals(getRequestMethod(), 'GET');
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['_method'] = 'PATCH';
+        $this->assertEquals(getRequestMethod(), 'PATCH');
     }
 
     /**
      * @covers \param
      */
-    public function testParam(): void
+    public function testParam()
     {
-        $_POST = [
-            'message' => 'Hello, world',
-            'name' => ''
-        ];
-        $this->assertNull(param($_POST['name']));
-        $this->assertIsString(param($_POST['message'], [ FILTER_SANITIZE_STRING ]));
+        $this->assertIsString(param('Hello, world', [ FILTER_SANITIZE_STRING ]));
+        $this->assertNull(param('', [ FILTER_SANITIZE_STRING ]));
     }
 }

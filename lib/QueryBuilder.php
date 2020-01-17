@@ -67,7 +67,7 @@ function delete($table)
  *
  * @return string
  */
-function wheres($qs, ...$wheres)
+function wheres($qs, $wheres)
 {
     return $qs .= queryString(' WHERE %s', [
         [ $wheres, '%s = ?', ' AND' ]
@@ -109,12 +109,11 @@ function offset($qs, $start)
  */
 function orderBy($qs, $fields)
 {
-    $args = [];
-    foreach ($fields as $field => $method) {
-        array_push($args, $field . ' ' . $method);
+    foreach ($fields as $key => $value) {
+        $fields[$key] = $key . ' ' . $value;
     }
     return $qs .= queryString(' ORDER BY %s', [
-        [ $args, '%s', ', ' ]
+        [ $fields, '%s', ', ' ]
     ]);
 }
 
@@ -129,7 +128,7 @@ function orderBy($qs, $fields)
 function queryString($format, $args = [])
 {
     $queryStrings = [];
-    foreach ($args as list($a, $f, $t)) {
+    foreach ($args as [ $a, $f, $t ]) {
         $qs = null;
         if (count($a) > 0) {
             foreach ($a as $k => $v) {

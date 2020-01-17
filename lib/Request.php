@@ -9,10 +9,10 @@
  */
 function getParamsWithFilters($options)
 {
-    list(
+    [
         'params'         => $params,
         'filterMappings' => $filterMappings
-    ) = $options;
+    ] = $options;
 
     $inputs = [];
     foreach ($params as $key => $param) {
@@ -53,19 +53,21 @@ function getInputParams($method)
  */
 function getRequestMethod()
 {
-    return strtoupper(filter_input(INPUT_POST, '_method', FILTER_SANITIZE_STRING)) ?: $_SERVER['REQUEST_METHOD'];
+    if (isset($_POST['_method'])) {
+        return strtoupper(param($_POST['_method'], [ FILTER_SANITIZE_STRING ]));
+    }
+    return $_SERVER['REQUEST_METHOD'];
 }
 
 /**
  * get variable with filters
  *
- * @param $method
- * @param $name
+ * @param $var
  * @param $filters
  *
  * @return mixed|null
  */
-function param($method, $filters = [])
+function param($var, $filters = [])
 {
-    return filter_var($method, ...$filters) ?: null;
+    return filter_var($var, ...$filters) ?: null;
 }

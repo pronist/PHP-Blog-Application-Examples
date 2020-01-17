@@ -1,46 +1,47 @@
 <?php
 
-require_once dirname(__DIR__) . '/app/bootstrap.php';
+/**
+ * Login Form for a User (GET)
+ */
+function showLoginForm()
+{
+    setSession('CSRF_TOKEN', getToken());
 
-switch (getRequestMethod()) {
-    case 'GET':
-        setSession('CSRF_TOKEN', getToken());
-        view('auth/form', [
-            'user'       => getSession('user'),
-            'token'      => getSession('CSRF_TOKEN'),
-            'requestUrl' => '/login.php'
-        ]);
-        break;
-    case 'POST':
-        list(
-            'email'     => $email,
-            'password'  => $password,
-            'token'     => $token
-        ) = getParamsWithFilters([
-            'params' => getInputParams('post'),
-            'filterMappings' => [
-                'email' => [
-                    FILTER_VALIDATE_EMAIL,
-                    FILTER_SANITIZE_EMAIL
-                ]
-            ]
-        ]);
-        if ($email && $password && verity($token, getSession('CSRF_TOKEN'))) {
-            $user = first($conn, wheres(select('users'), 'email'), $email);
-            if ($user) {
-                if (password_verify($password, $user['password'])) {
-                    history('info', 'Auth::login:: Successful', [ $email ]);
-                    setSession('user', $user);
-                    header("Location: /");
-                    break;
-                }
-            }
-        }
-        history('info', 'Auth::login:: Failed', [ $email ]);
-        header("Location: /login.php");
-        break;
-    default:
-        http_response_code(404);
+    return view('auth/form', [
+        'user'       => getSession('user'),
+        'token'      => getSession('CSRF_TOKEN'),
+        'requestUrl' => '/login.php'
+    ]);
 }
 
-closeConnection($conn);
+/**
+ * Create a User Session (POST)
+ */
+function login($conn)
+{
+    [
+        'email'     => $email,
+        'password'  => $password,
+        'token'     => $token
+    ] = getParamsWithFilters([
+        'params' => getInputParams('post'),
+        'filterMappings' => [
+            'email' => [
+                FILTER_VALIDATE_EMAIL,
+                FILTER_SANITIZE_EMAIL
+            ]
+        ]
+    ]);
+    if ($email && $password && verity($token, getSession('CSRF_TOKEN'))) {
+        $user = get($conn, 'users', 'first', [ 'wheres' => [ 'email' ] ], $email);
+        if ($user) {
+            if (password_verify($password, $user['password'])) {
+                history('info', 'Auth::login:: Successful', [ $email ]);
+                setSession('user', $user);
+                return header("Location: /");
+            }
+        }
+    }
+    history('info', 'Auth::login:: Failed', [ $email ]);
+    return header("Location: /login.php");
+}

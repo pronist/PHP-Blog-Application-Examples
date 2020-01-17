@@ -1,6 +1,6 @@
 <?php
 
-namespace Pronist\PHPBlog\Tests;
+namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
@@ -12,11 +12,13 @@ final class ResponseTest extends TestCase
     public function testView()
     {
         ob_start();
-        $this->assertIsInt(view('auth/form', [
+
+        $this->assertEquals(view('auth/form', [
             'user'          => [],
             'token'         => getToken(),
             'requestUrl'    => '/login.php'
-        ]));
-        ob_get_clean();
+        ]), 1);
+
+        ob_end_clean();
     }
 }

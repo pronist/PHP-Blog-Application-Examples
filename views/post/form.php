@@ -9,7 +9,10 @@
         <input type="hidden" name="token" value="<?=$token?>">
         <input type="text" name="title" placeholder="Type a post title" class="uk-input uk-article-title" value="<?=$title ?? ''?>">
         <hr>
-        <textarea name="content" placeholder="Content" id="editor" contenteditable="true"><?=$content ?? ''?></textarea>
+        <div class="editor uk-align-center">
+            <textarea name="content" placeholder="Content"></textarea>
+            <div id="editor"><?=$content ?? ''?></div>
+        </div>
         <input type="submit" value="Submit" class="uk-button uk-button-default uk-width-1-1">
     </form>
 </div>

@@ -9,16 +9,18 @@
  */
 function guard($methods)
 {
-    foreach ($methods as $method) {
-        if (strtoupper($method) == getRequestMethod()) {
-            $user = getSession('user');
-            if ($user) {
-                return $user;
-            } else {
-                header("Location: /login.php");
-                return;
-            }
+    $request  = array_filter(
+        $methods,
+        function ($method) {
+            return strtoupper($method) == getRequestMethod();
         }
+    );
+    if ($request) {
+        if ($user = getSession('user')) {
+            return $user;
+        }
+        header("Location: /login.php");
+        return;
     }
     return true;
 }

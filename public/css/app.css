@@ -159,14 +159,37 @@ main {
 #app #main__form-board form > * {
     outline: none;
 }
-#app #main__form-board form input,
-#app #main__form-board form .cke_textarea_inline {
+#app #main__form-board form input {
     padding: 0;
     margin: 0 auto;
     display: block;
     width: 550px;
     text-transform: none;
 }
+#app #main__form-board form textarea {
+    display: none;
+}
+#app #main__form-board form .editor {
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+    width: 550px;
+    text-transform: none;
+}
+#app #main__form-board form .ck.ck-content.ck-editor__editable_inline {
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#app #main__form-board form .ck.ck-content.ck-editor__editable {
+    min-height: 420px;
+    border: none;
+}
+#app #main__form-board form .ck.ck-content.ck-editor__editable.ck-focused {
+    border: none;
+    box-shadow: none;
+}
+
 #app #main__form-board form .uk-article-title {
     margin-bottom: 45px;
     height: 60px;

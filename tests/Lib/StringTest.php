@@ -1,6 +1,6 @@
 <?php
 
-namespace Pronist\PHPBlog\Tests;
+namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 

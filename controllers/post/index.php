@@ -1,156 +1,166 @@
 <?php
 
-require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
+/**
+ * Write a new Post (POST)
+ */
+function createNewPost($conn, $user)
+{
+    [
+        'title'     => $title,
+        'content'   => $content,
+        'token'     => $token
+    ] = getParamsWithFilters([
+        'params' => getInputParams('post'),
+        'filterMappings' => [
+            'title'     => [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]
+        ]
+    ]);
+    if ($title && $content && verity($token, getSession('CSRF_TOKEN'))) {
+        $is = create($conn, 'posts', [
+            'user_id'       => $user['id'],
+            'created_at'    => date('Y-m-d H:i:s', time()),
+            'title'         => $title,
+            'content'       => removeTags($content, 'script')
+        ]);
+        if ($is) {
+            history('info', 'Post::write:: Successful', [ $user['id'] ]);
+            return header('Location: /');
+        }
+    }
+    history('info', 'Post::write:: Failed', [ $user['id'] ]);
+    return header("Location: /post/write.php");
+}
+
 
 /**
- * Auth
+ * Get posts (GET)
  */
-$user = guard([ 'POST', 'PATCH', 'DELETE' ]) ?? exit;
+function getPost($conn)
+{
+    setSession('CSRF_TOKEN', getToken());
 
-switch (getRequestMethod()) {
-    case 'POST':
-        list(
-            'title'     => $title,
-            'content'   => $content,
-            'token'     => $token
-        ) = getParamsWithFilters([
-            'params' => getInputParams('post'),
+    if (isset($_GET['id'])) {
+        [ 'id' => $id ] = getParamsWithFilters([
+            'params' => getInputParams('get'),
             'filterMappings' => [
-                'title'     => [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]
+                'id' => [ FILTER_VALIDATE_INT ]
             ]
         ]);
-        if ($title && $content && verity($token, getSession('CSRF_TOKEN'))) {
-            $is = execute(
-                $conn,
-                insert('posts', [ 'user_id ', 'created_at', 'title', 'content' ]),
-                $user['id'],
-                date('Y-m-d H:i:s', time()),
-                $title,
-                removeTags($content, 'script')
-            );
-            if ($is) {
-                history('info', 'Post::write:: Successful', [ $user['id'] ]);
-                header('Location: /');
-                break;
-            }
+        [
+            'user_id'       => $userId,
+            'title'         => $title,
+            'content'       => $content,
+            'created_at'    => $createdAt
+        ] = get($conn, 'posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
+        [
+            'username'      => $username,
+            'email'         => $email
+        ] = get($conn, 'users', 'first', [ 'wheres' => [ 'id' ] ], $userId);
+
+        $isOwner = false;
+        $user = getSession('user');
+        if ($user && array_key_exists('id', $user)) {
+            $isOwner = $userId == $user['id'];
         }
-        history('info', 'Post::write:: Failed', [ $user['id'] ]);
-        header("Location: /post/write.php");
-        break;
-    case 'GET':
-        setSession('CSRF_TOKEN', getToken());
-        if (isset($_GET['id'])) {
-            list('id' => $id) = getParamsWithFilters([
-                'params' => getInputParams('get'),
-                'filterMappings' => [
-                    'id' => [ FILTER_VALIDATE_INT ]
-                ]
-            ]);
-            list(
-                'user_id'       => $userId,
-                'title'         => $title,
-                'content'       => $content,
-                'created_at'    => $createdAt
-            ) = first($conn, wheres(select('posts'), 'id'), $id);
-
-            list(
-                'username'      => $username,
-                'email'         => $email
-            ) = first($conn, wheres(select('users'), 'id'), $userId);
-
-            $isOwner = false;
-            $user = getSession('user');
-
-            if ($user && array_key_exists('id', $user)) {
-                $isOwner = $userId == $user['id'];
-            }
-            view('post/read', array_merge(
-                compact('username', 'title', 'isOwner', 'user'),
-                [
-                    'content'   => $content,
-                    'createdAt' => getPostCreatedAt($createdAt),
-                    'update'    => "/post/update.php?id=" . $id
-                ]
-            ));
-            echo jsVar(array_merge(
+        view('post/read', array_merge(
+            compact('username', 'title', 'isOwner', 'user'),
+            [
+                'content'   => $content,
+                'createdAt' => getPostCreatedAt($createdAt),
+                'update'    => "/post/update.php?id=" . $id
+            ]
+        ));
+        echo go(
+            array_merge(
                 compact('id'),
                 [
                     'token' => getSession('CSRF_TOKEN')
                 ]
-            ));
-        } else {
-            http_response_code(404);
-        }
-        break;
-    case 'PATCH':
-        list(
-            'title'     => $title,
-            'content'   => $content,
-            'token'     => $token
-        ) = getParamsWithFilters([
-            'params' => getInputParams('patch'),
-            'filterMappings' => [
-                'title' => [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]
-            ]
-        ]);
-
-        list('id' => $id) = getParamsWithFilters([
-            'params' => getInputParams('get'),
-            'filterMappings' => [
-                'id'    => [ FILTER_VALIDATE_INT ]
-            ]
-        ]);
-
-        if ($id && $title && $content && verity($token, getSession('CSRF_TOKEN'))) {
-            list('user_id' => $userId) = first($conn, wheres(select('posts'), 'id'), $id);
-            if ($user['id'] == $userId) {
-                $is = execute(
-                    $conn,
-                    wheres(update('posts', [ 'title', 'content' ]), 'id'),
-                    $title,
-                    removeTags($content, 'script'),
-                    $id
-                );
-                if ($is) {
-                    history('info', 'Post::update:: Successful', [ $id ]);
-                    header("Location: /post/?id=" . $id);
-                    break;
-                }
-            }
-        }
-        history('info', 'Post::update:: Failed', [ $id ]);
-        header("Location: /post/update.php?id=" . $id);
-        break;
-    case 'DELETE':
-        list('token' => $token) = getParamsWithFilters([
-            'params' => getInputParams('delete'),
-            'filterMappings' => [
-                'token' => [ FILTER_SANITIZE_STRING ]
-            ]
-        ]);
-
-        list('id' => $id) = getParamsWithFilters([
-            'params' => getInputParams('get'),
-            'filterMappings' => [
-                'id'    => [ FILTER_VALIDATE_INT ]
-            ]
-        ]);
-
-        if ($id && verity($token, getSession('CSRF_TOKEN'))) {
-            list('user_id' => $userId) = first($conn, wheres(select('posts'), 'id'), $id);
-            if ($user['id'] == $userId) {
-                if (execute($conn, wheres(delete('posts'), 'id'), $id)) {
-                    history('info', 'Post::delete:: Successful', [ $id ]);
-                    http_response_code(204);
-                    break;
-                }
-            }
-        }
-        history('info', 'Post::delete:: Failed', [ $id ]);
-        http_response_code(400);
-        break;
-    default:
-        http_response_code(404);
+            ),
+            pipe('jsVar')
+        );
+        return http_response_code(200);
+    }
+    return http_response_code(404);
 }
 
-closeConnection($conn);
+/**
+ * Update for Post informations (PATCH)
+ */
+function updatePost($conn, $user)
+{
+    [
+        'title'     => $title,
+        'content'   => $content,
+        'token'     => $token
+    ] = getParamsWithFilters([
+        'params' => getInputParams('patch'),
+        'filterMappings' => [
+            'title' => [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]
+        ]
+    ]);
+
+    [ 'id' => $id ] = getParamsWithFilters([
+        'params' => getInputParams('get'),
+        'filterMappings' => [
+            'id'    => [ FILTER_VALIDATE_INT ]
+        ]
+    ]);
+
+    if ($id && $title && $content && verity($token, getSession('CSRF_TOKEN'))) {
+        [ 'user_id' => $userId ] = get(
+            $conn,
+            'posts',
+            'first',
+            [
+                'wheres' => [ 'id' ]
+            ],
+            $id
+        );
+        if ($user['id'] == $userId) {
+            $is = patch($conn, 'posts', $id, [
+                'title'     => $title,
+                'content'   => removeTags($content, 'script')
+            ]);
+            if ($is) {
+                history('info', 'Post::update:: Successful', [ $id ]);
+                return header("Location: /post/?id=" . $id);
+            }
+        }
+    }
+    history('info', 'Post::update:: Failed', [ $id ]);
+    return header("Location: /post/update.php?id=" . $id);
+}
+
+/**
+ * Delete a Post (DELETE)
+ */
+function deletePost($conn, $user)
+{
+    [ 'token' => $token ] = getParamsWithFilters([
+        'params' => getInputParams('delete'),
+        'filterMappings' => [
+            'token' => [ FILTER_SANITIZE_STRING ]
+        ]
+    ]);
+
+    [ 'id' => $id ] = getParamsWithFilters([
+        'params' => getInputParams('get'),
+        'filterMappings' => [
+            'id'    => [ FILTER_VALIDATE_INT ]
+        ]
+    ]);
+
+    if ($id && verity($token, getSession('CSRF_TOKEN'))) {
+        [ 'user_id' => $userId ] = get($conn, 'posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
+        if ($user['id'] == $userId) {
+            $is = remove($conn, 'posts', $id);
+            if ($is) {
+                history('info', 'Post::delete:: Successful', [ $id ]);
+                return http_response_code(204);
+            }
+        }
+    }
+    history('info', 'Post::delete:: Failed', [ $id ]);
+    return http_response_code(400);
+}

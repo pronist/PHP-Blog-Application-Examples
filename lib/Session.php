@@ -2,13 +2,11 @@
 
 /**
  * start Session
- *
- * @codeCoverageIgnore
  */
 function startSession()
 {
-    list('save_path' => $savePath) = include dirname(__DIR__) . "/config/session.php";
-    session_save_path($savePath);
+    [ 'session' => $session ] = include dirname(__DIR__) . "/config/storage.php";
+    session_save_path($session);
     return session_start() ?: history('alert', "Session:: Cannot start");
 }
 
@@ -55,11 +53,9 @@ function removeSession($key)
 
 /**
  * destroy Session
- *
- * @codeCoverageIgnore
  */
 function destroySession()
 {
     session_unset();
-    session_destroy();
+    return session_destroy();
 }

@@ -1,25 +1,17 @@
 <?php
 
-require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
-
 /**
- * Auth
+ * Write Form for a new Post (GET)
  */
-$user = guard([ 'GET' ]) ?? exit;
+function showWriteForm($user)
+{
+    setSession('CSRF_TOKEN', getToken());
 
-switch (getRequestMethod()) {
-    case 'GET':
-        setSession('CSRF_TOKEN', getToken());
-        view('post/form', array_merge(
-            compact('user'),
-            [
-                'token'      => getSession('CSRF_TOKEN'),
-                'requestUrl' => '/post/'
-            ]
-        ));
-        break;
-    default:
-        http_response_code(404);
+    return view('post/form', array_merge(
+        compact('user'),
+        [
+            'token'      => getSession('CSRF_TOKEN'),
+            'requestUrl' => '/post/'
+        ]
+    ));
 }
-
-closeConnection($conn);

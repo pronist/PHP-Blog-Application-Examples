@@ -2,24 +2,19 @@
  * Logout
  */
 function logout() {
-  fetch('/logout.php', {
-    method: 'post'
-  })
-  .then(() => location.href = '/');
+  fetch('/logout.php', { method: 'post' }).then(() => location.href = '/');
 }
 
 /**
- * Request pppend posts
+ * Request append posts
  *
  * @param {string} to
+ * @param {number} page
  *
  * https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
  */
-function append(to) {
-  let page = 0;
-  fetch('/?page=' + ++page, {
-    method: 'get'
-  })
+function append(to, page) {
+  fetch('/?page=' + page, { method: 'get' })
   .then((response) => response.text())
   .then((html) => {
     let doc = (new DOMParser).parseFromString(html, "text/html");
@@ -47,19 +42,17 @@ function remove(id, token) {
 }
 
 /**
- * Render CKEditor 4
+ * Render CKEditor 5
  *
- * https://ckeditor.com/ckeditor-4/
+ * https://ckeditor.com/ckeditor-5/
  *
- * @param {string} selector
+ * @param {HTMLElement} $editor
  */
-function editor(selector) {
-  CKEDITOR.inline(selector, {
-    extraPlugins: 'image2, uploadimage',
-    uploadUrl: '/image/'
-  });
-  CKEDITOR.instances.editor.on('instanceReady', function (event) {
-    CKEDITOR.instances.editor.focus();
+function editor($editor) {
+  return BalloonEditor.create($editor, {
+    ckfinder: {
+      uploadUrl: '/image/'
+    }
   });
 }
 
@@ -79,8 +72,9 @@ window.addEventListener('load', () => {
    */
   let $readMore = document.getElementById('readmore');
   if ($readMore instanceof HTMLElement) {
+    let page = 0;
     $readMore.addEventListener('click', () => {
-      append('.uk-container');
+      append('.uk-container', ++page);
     });
   }
   /**
@@ -96,8 +90,15 @@ window.addEventListener('load', () => {
  /**
    * post/write.php, post/update.php
    */
-  if (document.getElementById('editor') instanceof HTMLElement) {
-    editor('editor');
+  let $editor = document.getElementById('editor');
+  let $form = document.getElementById('main__form-board');
+  if ($editor instanceof HTMLElement) {
+    editor($editor).then(editor => {
+      $form.addEventListener('submit', e => {
+        let data = document.createTextNode(editor.getData());
+        document.querySelector('#main__form-board textarea[name=content]').appendChild(data);
+      });
+    });
   }
 });
 

@@ -1,33 +1,38 @@
 <?php
 
-require_once dirname(__DIR__) . '/app/bootstrap.php';
+/**
+ * Get posts (GET)
+ */
+function index($conn)
+{
+    $page = $_GET['page'] ?? $_GET['page'] = 0;
 
-switch (getRequestMethod()) {
-    case 'GET':
-        $page = $_GET['page'] ?? $_GET['page'] = 0;
-        $userQuery = wheres(select('users'), 'id');
-        $posts = array_map(function ($post) use ($conn, $userQuery) {
-            list('username' => $username) = first(
-                $conn,
-                $userQuery,
-                $post['user_id']
-            );
-            $post['username'] = $username;
-            $post['content'] = strip_tags(mb_substr($post['content'], 0, 200));
-            $post['created_at'] = getPostCreatedAt($post['created_at']);
-            $post['url'] = "/post/?id=" . $post['id'];
-            return $post;
-        }, get($conn, offset(limit(orderBy(select('posts'), [ 'id' => 'DESC' ]), 3), $page * 3)));
-
-        view('index', array_merge(
-            compact('posts'),
+    $posts = array_map(function ($post) use ($conn) {
+        [ 'username' => $username ] = get(
+            $conn,
+            'users',
+            'first',
             [
-               'user' => getSession('user')
-            ]
-        ));
-        break;
-    default:
-        http_response_code(404);
+                'wheres' => [ 'id' ]
+            ],
+            $post['user_id']
+        );
+        $mappings = [
+            'username'   => $username,
+            'content'    => strip_tags(mb_substr($post['content'], 0, 200)),
+            'created_at' => getPostCreatedAt($post['created_at']),
+            'url'        => "/post/?id=" . $post['id']
+        ];
+        return array_merge($post, $mappings);
+    }, get($conn, 'posts', 'all', [
+        'orderBy' => [ 'id' => 'DESC' ],
+        'limit'   => 3,
+        'offset'  => $page * 3
+    ]));
+    return view('index', array_merge(
+        compact('posts'),
+        [
+           'user' => getSession('user')
+        ]
+    ));
 }
-
-closeConnection($conn);
