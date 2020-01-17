@@ -23,7 +23,7 @@ function __load($folder)
                 require_once dirname(__DIR__) . $path;
             }
         }
-    };
+    }
 }
 
 __load('/lib');
