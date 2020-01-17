@@ -25,4 +25,4 @@ before_script:
 
     FOREIGN KEY(user_id) REFERENCES users(id) \
 );'
-script: phpunit --strict-coverage --verbose
+script: phpunit --verbose
