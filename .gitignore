@@ -1,4 +1,5 @@
 vendor
+node_modules
 
 storage/sessions/*
 !storage/sessions/README.md

@@ -7,7 +7,6 @@
  *
  * Not using OOP(Object-Oriented Programming)
  * Not using PSR-4 Autoloading
- * Not using User components in Application Code
  */
 
 /**

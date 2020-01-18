@@ -38,10 +38,10 @@ function login($conn)
             if (password_verify($password, $user['password'])) {
                 history('info', 'Auth::login:: Successful', [ $email ]);
                 setSession('user', $user);
-                return header("Location: /");
+                return header('Location: /');
             }
         }
     }
     history('info', 'Auth::login:: Failed', [ $email ]);
-    return header("Location: /login.php");
+    return header('Location: /login.php');
 }

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * @requires extension mysqli
  * @requires extension xdebug
  */
-final class indexTest extends TestCase
+final class IndexTest extends TestCase
 {
     use \Pronist\PHPBlog\Tests\DatabaseTrait;
 
