@@ -48,12 +48,9 @@ function append (to, page) {
 /**
  * Request remove a post
  *
- * @param {number} id
- * @param {string} token
- *
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-function remove (id, token) {
+function remove () {
   fetch('/post/?id=' + id, {
     method: 'delete',
     body: JSON.stringify({ token })
@@ -92,10 +89,10 @@ if ($readMore instanceof HTMLElement) {
  * /post/?id={id} -> post/index.php
  */
 const $delete = document.getElementById('delete')
-if ($delete instanceof HTMLElement && id && token) {
+if ($delete instanceof HTMLElement) {
   $delete.addEventListener('click', e => {
     e.preventDefault()
-    remove(id, token)
+    remove()
   })
 }
 

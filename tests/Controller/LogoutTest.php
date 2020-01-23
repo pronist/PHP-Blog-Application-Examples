@@ -4,11 +4,13 @@ namespace Pronist\PHPBlog\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 final class LogoutTest extends TestCase
 {
     /**
      * @covers \logout
-     * @runInSeparateProcess
      */
     public function testLogout()
     {

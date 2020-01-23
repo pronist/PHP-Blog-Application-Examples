@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @requires extension mysqli
  * @requires extension xdebug
+ * @runTestsInSeparateProcesses
  */
 final class IndexTest extends TestCase
 {
@@ -14,7 +15,6 @@ final class IndexTest extends TestCase
 
     /**
      * @covers \createNewUser
-     * @runInSeparateProcess
      */
     public function testCreateNewUser()
     {
@@ -41,7 +41,6 @@ final class IndexTest extends TestCase
 
     /**
      * @covers \updateUser
-     * @runInSeparateProcess
      */
     public function testUpdateUser()
     {

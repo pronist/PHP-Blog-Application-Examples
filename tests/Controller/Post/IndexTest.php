@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @requires extension mysqli
  * @requires extension xdebug
+ * @runTestsInSeparateProcesses
  */
 final class IndexTest extends TestCase
 {
@@ -14,7 +15,6 @@ final class IndexTest extends TestCase
 
     /**
      * @covers \createNewPost
-     * @runInSeparateProcess
      */
     public function testCreateNewPost()
     {
@@ -45,7 +45,6 @@ final class IndexTest extends TestCase
     /**
      * @covers \getPost
      * @depends testCreateNewPost
-     * @runInSeparateProcess
      */
     public function testGetPost($user)
     {
@@ -75,7 +74,6 @@ final class IndexTest extends TestCase
      * @covers \updatePost
      * @depends testCreateNewPost
      * @depends testGetPost
-     * @runInSeparateProcess
      */
     public function testUpdatePost($user, $post)
     {
@@ -107,7 +105,6 @@ final class IndexTest extends TestCase
      * @covers \deletePost
      * @depends testCreateNewPost
      * @depends testGetPost
-     * @runInSeparateProcess
      */
     public function testDeletePost($user, $post)
     {

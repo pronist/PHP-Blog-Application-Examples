@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @requires extension mysqli
+ * @runTestsInSeparateProcesses
  */
 final class UpdateTest extends TestCase
 {
@@ -13,7 +14,6 @@ final class UpdateTest extends TestCase
 
     /**
      * @covers \showUserUpdateForm
-     * @runInSeparateProcess
      */
     public function testShowUserUpdateForm()
     {

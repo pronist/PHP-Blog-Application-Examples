@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @requires extension mysqli
+ * @runTestsInSeparateProcesses
  */
 final class IndexTest extends TestCase
 {
@@ -13,7 +14,6 @@ final class IndexTest extends TestCase
 
     /**
      * @covers \index
-     * @runInSeparateProcess
      */
     public function testIndex()
     {

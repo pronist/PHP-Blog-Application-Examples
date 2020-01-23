@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @requires extension mysqli
+ * @runTestsInSeparateProcesses
  */
 final class RegisterTest extends TestCase
 {
@@ -13,7 +14,6 @@ final class RegisterTest extends TestCase
 
     /**
      * @covers \showRegisterForm
-     * @runInSeparateProcess
      */
     public function testShowRegisterForm()
     {

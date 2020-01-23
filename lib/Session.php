@@ -31,7 +31,7 @@ function getSession($key)
  * @param string $key
  * @param mixed $value
  *
- * @return bool
+ * @return mixed|bool
  */
 function setSession($key, $value)
 {

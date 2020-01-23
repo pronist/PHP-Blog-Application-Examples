@@ -4,11 +4,13 @@ namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 final class AuthTest extends TestCase
 {
     /**
      * @covers \guard
-     * @runInSeparateProcess
      */
     public function testGuard()
     {

@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @requires extension xdebug
  * @requires extension mysqli
+ * @runTestsInSeparateProcesses
  */
 final class LoginTest extends TestCase
 {
@@ -14,7 +15,6 @@ final class LoginTest extends TestCase
 
     /**
      * @covers \login
-     * @runInSeparateProcess
      */
     public function testLogin()
     {
@@ -43,7 +43,6 @@ final class LoginTest extends TestCase
 
     /**
      * @covers \showLoginForm
-     * @runInSeparateProcess
      */
     public function testShowLoginForm()
     {

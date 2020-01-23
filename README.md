@@ -13,7 +13,6 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 ### Getting started
 
 ```bash
-# PHP Built-in Server at http://localhost:8080
 php -S localhost:8080 -t public
 ```
 
@@ -22,10 +21,8 @@ php -S localhost:8080 -t public
 ```bash
 # Installation phpunit
 composer install
-# Unit Testing
-vendor/bin/phpunit --verbose
-# Coverage
-vendor/bin/phpunit --coverage-text
+# phpunit
+composer run test
 ```
 
 ### Database (MySQL)
@@ -101,4 +98,4 @@ CREATE TABLE posts (
 
 [MIT](https://github.com/pronist/phpblog/blob/basic/LICENSE)
 
-Copyright (c) [SangWoo Jeong](https://github.com/pronist). All rights reserved.
+Copyright 2020. [SangWoo Jeong](https://github.com/pronist). All rights reserved.
