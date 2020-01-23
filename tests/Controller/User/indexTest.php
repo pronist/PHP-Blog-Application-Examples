@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @requires extension xdebug
  * @runTestsInSeparateProcesses
  */
-final class IndexTest extends TestCase
+final class indexTest extends TestCase
 {
     use \Pronist\PHPBlog\Tests\DatabaseTrait;
 
