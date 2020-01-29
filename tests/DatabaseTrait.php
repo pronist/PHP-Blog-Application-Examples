@@ -5,11 +5,6 @@ namespace Pronist\PHPBlog\Tests;
 trait DatabaseTrait
 {
     /**
-     * @var $conn
-     */
-    private $conn = null;
-
-    /**
      * @var Faker\Factory
      */
     private $faker = null;
@@ -19,13 +14,14 @@ trait DatabaseTrait
      */
     public function setUp(): void
     {
-        $this->conn = getConnection([
-            'database' => 'myapp_test',
-            'hostname' => '127.0.0.1',
-            'username' => 'travis',
-            'password' => ''
-        ]);
         $this->faker = \Faker\Factory::create();
+
+        $GLOBALS['DB_CONNECTION'] = mysqli_connect(
+            env('DB_HOSTNAME'),
+            env('DB_USERNAME'),
+            env('DB_PASSWORD'),
+            env('DB_DATABASE')
+        );
     }
 
     /**
@@ -38,7 +34,7 @@ trait DatabaseTrait
      */
     public function user($email = null, $password = null)
     {
-        return create($this->conn, 'users', [
+        return create('users', [
             'email'     => $email ?? $this->faker->email,
             'password'  => password_hash($password ?? $this->faker->password, PASSWORD_DEFAULT),
             'username'  => $this->faker->userName
@@ -54,7 +50,7 @@ trait DatabaseTrait
      */
     public function post($id)
     {
-        return create($this->conn, 'posts', [
+        return create('posts', [
             'user_id'    => $id,
             'title'      => $this->faker->sentence(),
             'content'    => $this->faker->paragraph(),
@@ -62,11 +58,13 @@ trait DatabaseTrait
         ]);
     }
 
-    /**
-     * PHPUnit\Framework\TestCase::tearDown
-     */
     public function tearDown(): void
     {
-        closeConnection($this->conn);
+        /**
+         * Close Database Connection
+         */
+        if (array_key_exists('DB_CONNECTION', $GLOBALS)) {
+            mysqli_close($GLOBALS['DB_CONNECTION']);
+        }
     }
 }

@@ -5,7 +5,8 @@ module.exports = {
     es6: true
   },
   extends: [
-    'standard'
+    'standard',
+    'plugin:vue/essential'
   ],
   globals: {
     Atomics: 'readonly',
@@ -15,5 +16,6 @@ module.exports = {
     ecmaVersion: 2018
   },
   rules: {
+    "no-new": 0
   }
 }

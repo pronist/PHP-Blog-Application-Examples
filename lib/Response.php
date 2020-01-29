@@ -1,17 +1,20 @@
 <?php
 
 /**
- * Response with view
+ * Response with Vue component
  *
- * @param string $view
+ * @param string $component
  * @param array $args
  *
  * @return void
  */
-function view($view, $args = [])
+function component($component, $args = [])
 {
+    $componentString = "<component is='{$component}'";
     foreach ($args as $name => $value) {
-        $$name = $value;
+        $componentString .= " {$name} = '{$value}'";
     }
-    return include dirname(__DIR__) . "/views/" . $view . ".php";
+    $componentString .= "></component>";
+
+    return require_once dirname(__DIR__) . "/resources/views/app.php";
 }

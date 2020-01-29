@@ -30,18 +30,4 @@ final class StringTest extends TestCase
             '<html><head></head><body>console.log("Hello, world");</body></html>'
         );
     }
-
-    /**
-     * @covers \jsVar
-     */
-    public function testJsVar()
-    {
-        $this->assertEquals(jsVar([
-            'id'        => 1,
-            'message'   => 'Hello, world',
-            'args'      => [
-                'email' => 'pronist@naver.com'
-            ]
-        ]), "<script>let id = 1;let message = 'Hello, world';let args = {\"email\":\"pronist@naver.com\"};</script>");
-    }
 }

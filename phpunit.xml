@@ -4,7 +4,6 @@
          xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          colors="true"
-         processIsolation="false"
          stopOnFailure="true">
     <testsuites>
         <testsuite name="unit">
@@ -17,4 +16,10 @@
             <directory suffix=".php">./controllers</directory>
         </whitelist>
     </filter>
+    <php>
+        <env name="DB_HOSTNAME" value="127.0.0.1" />
+        <env name="DB_USERNAME" value="travis" />
+        <env name="DB_PASSWORD" value="" />
+        <env name="DB_DATABASE" value="myapp_test" />
+    </php>
 </phpunit>

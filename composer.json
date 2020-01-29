@@ -1,8 +1,8 @@
 {
     "name": "pronist/phpblog",
     "scripts":{
-        "lint": "phpcs --standard=PSR12 -n controllers lib tests views app.php",
-        "test": "phpunit"
+        "lint": "phpcs --standard=PSR12 -n --extensions=php --ignore=vendor .",
+        "test": "phpunit --verbose"
     },
     "autoload-dev": {
         "psr-4": {

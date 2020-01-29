@@ -4,29 +4,36 @@ namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
+$_SESSION = [];
+
 /**
+ * @requires xdebug
  * @runTestsInSeparateProcesses
  */
 final class AuthTest extends TestCase
 {
+    protected $backupGlobalsBlacklist = ['_SESSION'];
+
     /**
      * @covers \guard
      */
     public function testGuard()
     {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-
-        startSession();
-
-        setSession('user', [
-            'message' => 'Hello, world'
-        ]);
-        $this->assertIsArray(guard([ 'POST' ]));
+        setSession('user', true);
+        $this->assertTrue(guard());
 
         removeSession('user');
-        $this->assertNull(guard([ 'POST' ]));
 
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->assertTrue(guard([ 'POST' ]));
+        guard();
+        $this->assertContains('Location: /auth/login', xdebug_get_headers());
+    }
+
+    /**
+     * @covers \user
+     */
+    public function testUser()
+    {
+        setSession('user', true);
+        $this->assertTrue(user());
     }
 }

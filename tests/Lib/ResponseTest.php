@@ -4,20 +4,19 @@ namespace Pronist\PHPBlog\Tests\Lib;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 final class ResponseTest extends TestCase
 {
     /**
-     * @covers \view
+     * @covers \component
      */
-    public function testView()
+    public function testComponent()
     {
         ob_start();
 
-        $this->assertEquals(view('auth/form', [
-            'user'          => [],
-            'token'         => getToken(),
-            'requestUrl'    => '/login.php'
-        ]), 1);
+        $this->assertEquals(component('app-index'), 1);
 
         ob_end_clean();
     }

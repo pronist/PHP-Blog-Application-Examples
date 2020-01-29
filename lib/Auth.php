@@ -3,24 +3,23 @@
 /**
  * Guard
  *
- * @param array $methods
+ * @return bool
+ */
+function guard()
+{
+    if (getSession('user')) {
+        return true;
+    }
+    return header('Location: /auth/login');
+}
+
+
+/**
+ * get User
  *
  * @return bool|array
  */
-function guard($methods)
+function user()
 {
-    $request  = array_filter(
-        $methods,
-        function ($method) {
-            return strtoupper($method) == getRequestMethod();
-        }
-    );
-    if ($request) {
-        if ($user = getSession('user')) {
-            return $user;
-        }
-        header("Location: /login.php");
-        return;
-    }
-    return true;
+    return getSession('user');
 }

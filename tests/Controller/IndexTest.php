@@ -3,6 +3,9 @@
 namespace Pronist\PHPBlog\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
+use Pronist\PHPBlog\Tests\DatabaseTrait;
+
+$_SESSION = [];
 
 /**
  * @requires extension mysqli
@@ -10,7 +13,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class IndexTest extends TestCase
 {
-    use \Pronist\PHPBlog\Tests\DatabaseTrait;
+    use DatabaseTrait;
+
+    protected $backupGlobalsBlacklist = ['_SESSION'];
 
     /**
      * @covers \index
@@ -19,12 +24,10 @@ final class IndexTest extends TestCase
     {
         ob_start();
 
-        startSession();
-
         $user = $this->user();
         $this->post($user['id']);
 
-        $this->assertEquals(index($this->conn), 1);
+        $this->assertEquals(index(), 1);
 
         ob_end_clean();
     }

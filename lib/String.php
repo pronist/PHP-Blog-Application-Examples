@@ -13,7 +13,7 @@ function getPostCreatedAt($timestamp)
 }
 
 /**
- * remove specific tags
+ * strip tags without editor HTML
  *
  * @param string $content
  * @param array $tags
@@ -26,32 +26,4 @@ function removeTags($content, ...$tags)
         $content = preg_replace("/\<(\/?)$tag\>/", '', $content);
     }
     return $content;
-}
-
-/**
- * Define javascript variables
- *
- * @param array $args
- *
- * @return string
- */
-function jsVar($args)
-{
-    $script = "<script>";
-    foreach ($args as $name => $value) {
-        $var = "let {$name} = ";
-        switch (gettype($value)) {
-            case 'integer':
-                $var .= $value;
-                break;
-            case 'string':
-                $var .= "'$value'";
-                break;
-            case 'array':
-                $var .= json_encode($value);
-                break;
-        }
-        $script .= $var .= ';';
-    }
-    return $script .= "</script>";
 }

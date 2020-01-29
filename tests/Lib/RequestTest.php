@@ -36,6 +36,7 @@ final class RequestTest extends TestCase
         $this->assertIsArray(getInputParams('patch'));
 
         unset($_POST);
+
         $this->assertNull(getInputParams('delete'));
         $this->assertNull(getInputParams('put'));
     }
@@ -51,6 +52,8 @@ final class RequestTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST['_method'] = 'PATCH';
         $this->assertEquals(getRequestMethod(), 'PATCH');
+
+        unset($_POST['_method']);
     }
 
     /**

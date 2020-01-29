@@ -3,15 +3,14 @@
 /**
  * get Rows
  *
- * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return bool|array
  */
-function rows($conn, $qs, ...$args)
+function rows($qs, ...$args)
 {
-    $rows = raw($conn, $qs, $args, function ($result) {
+    $rows = raw($qs, $args, function ($result) {
         $rows = [];
         if ((mysqli_num_rows($result) > 0)) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -26,49 +25,46 @@ function rows($conn, $qs, ...$args)
 /**
  * just execute a Query
  *
- * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return bool|array
  */
-function execute($conn, $qs, ...$args)
+function execute($qs, ...$args)
 {
-    return raw($conn, $qs, $args);
+    return raw($qs, $args);
 }
 
 /**
  * Create a new resource
  *
- * @param resource $conn
  * @param string $table
  * @param array $args
  *
  * @return bool|array
  */
-function create($conn, $table, $args)
+function create($table, $args)
 {
-    execute($conn, insert($table, array_keys($args)), ...array_values($args));
-    return array_merge([ 'id' => mysqli_insert_id($conn) ], $args);
+    execute(insert($table, array_keys($args)), ...array_values($args));
+    return array_merge([ 'id' => mysqli_insert_id($GLOBALS['DB_CONNECTION']) ], $args);
 }
 
 /**
  * Get resources
  *
- * @param resource $conn
  * @param string $table
  * @param string $mode
  * @param array $queries
  *
  * @return bool|array
  */
-function get($conn, $table, $mode = 'all', $queries = [], ...$args)
+function get($table, $mode = 'all', $queries = [], ...$args)
 {
     $mappings = [];
     foreach ($queries as $method => $value) {
         array_push($mappings, pipe($method, $value));
     }
-    return call_user_func($mode, $conn, go(
+    return call_user_func($mode, go(
         select($table),
         ...$mappings
     ), ...$args);
@@ -77,16 +73,15 @@ function get($conn, $table, $mode = 'all', $queries = [], ...$args)
 /**
  * Patch a resource
  *
- * @param resource $conn
  * @param string $table
  * @param int $id
  * @param array $args
  *
  * @return bool|array
  */
-function patch($conn, $table, $id, $args)
+function patch($table, $id, $args)
 {
-    return execute($conn, go(
+    return execute(go(
         update($table, array_keys($args)),
         pipe('wheres', [ 'id' ])
     ), ...array_merge(array_values($args), [ $id ]));
@@ -95,15 +90,14 @@ function patch($conn, $table, $id, $args)
 /**
  * Remove a resource
  *
- * @param resource $conn
  * @param string $table
  * @param int $id
  *
  * @return bool|array
  */
-function remove($conn, $table, $id)
+function remove($table, $id)
 {
-    return execute($conn, go(
+    return execute(go(
         delete($table),
         pipe('wheres', [ 'id' ])
     ), $id);
@@ -112,46 +106,43 @@ function remove($conn, $table, $id)
 /**
  * get a first content
  *
- * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return array
  */
-function first($conn, $qs, ...$args)
+function first($qs, ...$args)
 {
-    return current(rows($conn, limit($qs, 1), ...$args));
+    return current(rows(limit($qs, 1), ...$args));
 }
 
 /**
  * get all contents
  *
- * @param resource $conn
  * @param string $qs
  * @param array $args
  *
  * @return array[]
  */
-function all($conn, $qs, ...$args)
+function all($qs, ...$args)
 {
-    return rows($conn, $qs, ...$args);
+    return rows($qs, ...$args);
 }
 
 /**
  * execute a Query
  *
- * @param resource $conn
  * @param string $qs
  * @param array $args
  * @param callback $callback
  *
  * @return bool|array
  */
-function raw($conn, $qs, $args, $callback = null)
+function raw($qs, $args, $callback = null)
 {
     $is = false;
-    if ($conn) {
-        $stmt = mysqli_prepare($conn, $qs);
+    if ($GLOBALS['DB_CONNECTION']) {
+        $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], $qs);
         if (count($args) > 0) {
             $bindMappings = [
                 'string'    => 's',
@@ -174,31 +165,4 @@ function raw($conn, $qs, $args, $callback = null)
         mysqli_stmt_close($stmt);
     }
     return $is;
-}
-
-/**
- * get mysqli Connection
- *
- * @param array $config
- *
- * @return object
- */
-function getConnection($config)
-{
-    return mysqli_connect(
-        $config['hostname'],
-        $config['username'],
-        $config['password'],
-        $config['database']
-    );
-}
-
-/**
- * @param resource $conn
- *
- * @return bool
- */
-function closeConnection($conn)
-{
-    return mysqli_close($conn);
 }

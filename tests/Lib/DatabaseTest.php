@@ -17,32 +17,21 @@ final class DatabaseTest extends TestCase
     public function setUp(): void
     {
         $this->faker = \Faker\Factory::create();
-    }
 
-    /**
-     * @covers \getConnection
-     */
-    public function testGetConnection()
-    {
-        $conn = getConnection([
-            'database' => 'myapp_test',
-            'hostname' => '127.0.0.1',
-            'username' => 'travis',
-            'password' => ''
-        ]);
-
-        $this->assertIsObject($conn);
-
-        return $conn;
+        $GLOBALS['DB_CONNECTION'] = mysqli_connect(
+            env('DB_HOSTNAME'),
+            env('DB_USERNAME'),
+            env('DB_PASSWORD'),
+            env('DB_DATABASE')
+        );
     }
 
     /**
      * @covers \create
-     * @depends testGetConnection
      */
-    public function testCreate($conn)
+    public function testCreate()
     {
-        $user = create($conn, 'users', [
+        $user = create('users', [
             'email'     =>  $this->faker->email,
             'password'  => password_hash($this->faker->password, PASSWORD_DEFAULT),
             'username'  => $this->faker->userName
@@ -53,15 +42,13 @@ final class DatabaseTest extends TestCase
         return $user;
     }
 
-
     /**
      * @covers \get
-     * @depends testGetConnection
      * @depends testCreate
      */
-    public function testGet($conn, $user)
+    public function testGet($user)
     {
-        $this->assertIsArray(get($conn, 'users', 'all', [
+        $this->assertIsArray(get('users', 'all', [
             'wheres'    => [ 'id' ],
             'orderBy'   => [ 'id' => 'DESC' ],
             'limit'     => 3
@@ -70,35 +57,32 @@ final class DatabaseTest extends TestCase
 
     /**
      * @covers \patch
-     * @depends testGetConnection
      * @depends testCreate
      */
-    public function testPatch($conn, $user)
+    public function testPatch($user)
     {
-        $this->assertTrue(patch($conn, 'users', $user['id'], [
+        $this->assertTrue(patch('users', $user['id'], [
             'email' => $this->faker->email
         ]));
     }
 
     /**
      * @covers \remove
-     * @depends testGetConnection
      * @depends testCreate
      */
-    public function testRemove($conn, $user)
+    public function testRemove($user)
     {
-        $this->assertTrue(remove($conn, 'users', $user['id']));
+        $this->assertTrue(remove('users', $user['id']));
     }
 
     /**
      * @covers \raw
-     * @depends testGetConnection
      */
-    public function testRaw($conn)
+    public function testRaw()
     {
-        $this->assertTrue(raw($conn, "SELECT 1", []));
-        $this->assertTrue(raw($conn, "SELECT ?", [ 'Hello, world' ]));
-        $this->assertIsArray(raw($conn, "SELECT ? UNION SELECT ?", [ 1, 2 ], function ($result) {
+        $this->assertTrue(raw("SELECT 1", []));
+        $this->assertTrue(raw("SELECT ?", [ 'Hello, world' ]));
+        $this->assertIsArray(raw("SELECT ? UNION SELECT ?", [ 1, 2 ], function ($result) {
             $rows = [];
             if ((mysqli_num_rows($result) > 0)) {
                 while ($row = mysqli_fetch_array($result)) {
@@ -111,29 +95,26 @@ final class DatabaseTest extends TestCase
 
     /**
      * @covers \execute
-     * @depends testGetConnection
      */
-    public function testExecute($conn)
+    public function testExecute()
     {
-        $this->assertTrue(execute($conn, "SELECT 1"));
+        $this->assertTrue(execute("SELECT 1"));
     }
 
     /**
      * @covers \first
-     * @depends testGetConnection
      */
-    public function testFirst($conn): void
+    public function testFirst(): void
     {
-        $this->assertIsArray(first($conn, "SELECT 1"));
+        $this->assertIsArray(first("SELECT 1"));
     }
 
     /**
      * @covers \all
-     * @depends testGetConnection
      */
-    public function testAll($conn)
+    public function testAll()
     {
-        $rows = all($conn, "SELECT 1 UNION SELECT 2");
+        $rows = all("SELECT 1 UNION SELECT 2");
 
         $this->assertIsArray($rows);
         $this->assertCount(2, $rows);
@@ -141,22 +122,12 @@ final class DatabaseTest extends TestCase
 
     /**
      * @covers \rows
-     * @depends testGetConnection
      */
-    public function testRows($conn): void
+    public function testRows(): void
     {
-        $rows = rows($conn, "SELECT 1");
+        $rows = rows("SELECT 1");
 
         $this->assertIsArray($rows);
         $this->assertCount(1, $rows);
-    }
-
-    /**
-     * @covers \closeConnection
-     * @depends testGetConnection
-     */
-    public function testCloseConnection($conn)
-    {
-        $this->assertTrue(closeConnection($conn));
     }
 }
