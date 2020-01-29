@@ -109,7 +109,7 @@
         ],
         '/image'    => [
             [ '/{id}',          'get',      'getImage',             [] ],
-            [ '/',              'post',     'updateImage',          [ 'guard' ] ]
+            [ '/',              'post',     'uploadImage',          [ 'guard' ] ]
         ]
     ]);
 })();
