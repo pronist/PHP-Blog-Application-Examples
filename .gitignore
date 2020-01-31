@@ -1,12 +1,8 @@
 vendor
 node_modules
 
-storage/sessions/*
-!storage/sessions/README.md
-storage/logs/*
-!storage/logs/README.md
-storage/images/*
-!storage/images/README.md
+images/*
+!images/README.md
 
 .vscode/*
 !.vscode/settings.json
