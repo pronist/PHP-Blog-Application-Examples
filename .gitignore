@@ -17,3 +17,6 @@ storage/images/*
 
 .phpunit.result.cache
 coverage-report
+
+public/*
+!public/index.php
