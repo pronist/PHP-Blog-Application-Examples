@@ -38,6 +38,8 @@ final class UserTest extends TestCase
      */
     public function testCreateNewUser()
     {
+        startSession();
+
         $token = getToken();
 
         $_POST = [
@@ -79,6 +81,8 @@ final class UserTest extends TestCase
     public function testUpdateUser()
     {
         $token = getToken();
+
+        startSession();
 
         $_POST = [
             '_method'   => 'patch',

@@ -50,6 +50,5 @@ function login()
  */
 function logout()
 {
-    session_unset();
-    return session_destroy();
+    return destroySession();
 }

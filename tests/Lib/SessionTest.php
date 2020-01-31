@@ -10,9 +10,11 @@ use PHPUnit\Framework\TestCase;
 final class SessionTest extends TestCase
 {
     /**
+     * @covers \startSession
      * @covers \getSession
      * @covers \setSession
      * @covers \removeSession
+     * @covers \destroySession
      */
     public function testGetSession()
     {
@@ -20,12 +22,14 @@ final class SessionTest extends TestCase
 
         $this->assertFalse(setSession('key', 'Hello, world'));
 
-        $_SESSION = [];
+        startSession();
 
         $this->assertIsString(setSession('key', 'Hello, world'));
         $this->assertIsString(getSession('key'));
 
         removeSession('key');
         $this->assertNull(getSession('key'));
+
+        destroySession();
     }
 }

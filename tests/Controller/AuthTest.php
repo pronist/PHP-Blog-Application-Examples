@@ -61,7 +61,7 @@ final class AuthTest extends TestCase
      */
     public function testLogout()
     {
-        session_start();
+        startSession();
 
         setSession('message', 'Hello, world');
         $this->assertEquals('Hello, world', getSession('message'));

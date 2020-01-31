@@ -9,6 +9,7 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 ### Branches
 
 * [Basic](https://github.com/pronist/phpblog/tree/basic) - **Function based MVC(Model, View, Controller)**
+* [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classical Architecture**
 
 ### Getting started
 
@@ -74,31 +75,31 @@ CREATE TABLE posts (
 
 #### Auth
 
-* [/auth/login](https://github.com/pronist/phpblog/tree/basic/controllers/Auth.php) - Login **Form** for a User (GET)
-* [/auth/login](https://github.com/pronist/phpblog/tree/basic/controllers/Auth.php) - Create a User **Session** (POST)
-* [/auth/logout](https://github.com/pronist/phpblog/tree/basic/controllers/Auth.php) - Delete a User **Session** (POST)
+* [/auth/login](https://github.com/pronist/phpblog/tree/basic/controllers/auth.php) - Login **Form** for a User (GET)
+* [/auth/login](https://github.com/pronist/phpblog/tree/basic/controllers/auth.php) - Create a User **Session** (POST)
+* [/auth/logout](https://github.com/pronist/phpblog/tree/basic/controllers/auth.php) - Delete a User **Session** (POST)
 
 #### User
 
-* [/user/register](https://github.com/pronist/phpblog/tree/basic/controllers/User.php) - Register **Form** for a new User (GET)
-* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/User.php) - **Create** a new User (POST)
-* [/user/update](https://github.com/pronist/phpblog/tree/basic/controllers/User.php) - Update **Form** for User informations (GET)
-* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/User.php) - **Update** User informations (PATCH)
+* [/user/register](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - Register **Form** for a new User (GET)
+* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - **Create** a new User (POST)
+* [/user/update](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - Update **Form** for User informations (GET)
+* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - **Update** User informations (PATCH)
 
 #### Post
 
-* [/](https://github.com/pronist/phpblog/tree/basic/controllers/Index.php) - **Get** posts (GET)
-* [/post/write](https://github.com/pronist/phpblog/tree/basic/controllers/Post.php) - Write **Form** for a new Post (GET)
-* [/post/](https://github.com/pronist/phpblog/tree/basic/controllers/Post.php) - **Write** a new Post (POST)
-* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/Post.php) - **Read** a Post by a post id (GET)
-* [/post/update/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/Post.php) - Update **Form** for Post informations (GET)
-* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/Post.php) - **Update** for Post informations (PATCH)
-* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/Post.php) - **Delete** a Post (DELETE)
+* [/](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Get** posts (GET)
+* [/post/write](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - Write **Form** for a new Post (GET)
+* [/post/](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Write** a new Post (POST)
+* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Read** a Post by a post id (GET)
+* [/post/update/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - Update **Form** for Post informations (GET)
+* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Update** for Post informations (PATCH)
+* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Delete** a Post (DELETE)
 
 #### Image
 
-* [/image/](https://github.com/pronist/phpblog/tree/basic/controllers/Image.php) - **Upload** a Image (POST)
-* [/image/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/Image.php) - **Get** a Image (GET)
+* [/image/](https://github.com/pronist/phpblog/tree/basic/controllers/image.php) - **Upload** a Image (POST)
+* [/image/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/image.php) - **Get** a Image (GET)
 
 ### Commands
 

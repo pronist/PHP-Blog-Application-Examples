@@ -39,6 +39,7 @@ function createNewUser()
             'username'  => $username
         ]);
         if ($is) {
+            destroySession();
             history('info', 'Auth::register:: Successful', [ $email ]);
             return header("Location: /auth/login");
         }
@@ -95,6 +96,7 @@ function updateUser()
             'username'  => $username,
         ]);
         if ($is) {
+            destroySession();
             history('info', "Auth::update:: Successful", [ $email ]);
             return header('Location: /');
         }

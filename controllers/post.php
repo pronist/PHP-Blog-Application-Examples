@@ -23,7 +23,6 @@ function getPosts()
 function showWriteForm()
 {
     setSession('CSRF_TOKEN', getToken());
-    $user = user();
 
     return component('app-post-form', [
         'token'      => getSession('CSRF_TOKEN'),
@@ -112,9 +111,14 @@ function showPostUpdateForm($id)
     $user = user();
 
     [
+        'user_id'   => $userId,
         'title'     => $title,
         'content'   => $content
     ] = get('posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
+
+    if ($user['id'] != $userId) {
+        return header('Location: /');
+    }
 
     return component('app-post-form', array_merge(
         compact('id', 'title'),

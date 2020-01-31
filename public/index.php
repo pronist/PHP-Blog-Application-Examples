@@ -68,17 +68,7 @@
     /**
      * Start a Session
      */
-    [
-        'lifetime'          => $lifetime,
-        'cookie_lifetime'   => $cookieLifeTime
-    ] = include dirname(__DIR__) . "/config/session.php";
-
-    ini_set('session.gc_maxlietime', $lifetime);
-    session_set_cookie_params($cookieLifeTime);
-
-    [ 'session' => $session ] = include dirname(__DIR__) . "/config/storage.php";
-    session_save_path($session);
-    session_start() ?: history('alert', "Session:: Cannot start");
+    startSession();
 
     /**
      * Routes

@@ -1,6 +1,26 @@
 <?php
 
 /**
+ * start Session
+ *
+ * @return void
+ */
+function startSession()
+{
+    [
+        'lifetime'          => $lifetime,
+        'cookie_lifetime'   => $cookieLifeTime
+    ] = include dirname(__DIR__) . "/config/session.php";
+
+    ini_set('session.gc_maxlietime', $lifetime);
+    session_set_cookie_params($cookieLifeTime);
+
+    [ 'session' => $session ] = include dirname(__DIR__) . "/config/storage.php";
+    session_save_path($session);
+    return session_start() ?: history('alert', "Session:: Cannot start");
+}
+
+/**
  * get Session with key
  *
  * @param string $key
@@ -39,4 +59,15 @@ function setSession($key, $value)
 function removeSession($key)
 {
     unset($_SESSION[$key]);
+}
+
+/**
+ * destroy Session
+ *
+ * @return void
+ */
+function destroySession()
+{
+    session_unset();
+    return session_destroy();
 }

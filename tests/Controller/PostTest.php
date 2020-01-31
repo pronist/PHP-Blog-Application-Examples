@@ -115,6 +115,12 @@ final class PostTest extends TestCase
 
         $this->assertEquals(showPostUpdateForm($post['id']), 1);
 
+        $user = $this->user();
+        setSession('user', $user);
+
+        showPostUpdateForm($post['id']);
+        $this->assertContains('Location: /', xdebug_get_headers());
+
         ob_end_clean();
     }
 
