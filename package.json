@@ -5,7 +5,7 @@
     "url": "git+https://github.com/pronist/phpblog.git"
   },
   "scripts": {
-    "lint": "eslint public/app.js"
+    "lint": "eslint app.js"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

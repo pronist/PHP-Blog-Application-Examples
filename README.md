@@ -15,7 +15,7 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 
 ```bash
 # PHP Built-in Server
-php -S localhost:8080 -t public
+php -S localhost:8080
 ```
 
 ### Testing
@@ -59,7 +59,7 @@ CREATE TABLE posts (
 
 * URL is endswith **'.php'**
 * Only using **GET**, **POST** HTTP Method
-* Execution environment and view is not separated from **Application Logic** (**Classical Architecture**)
+* Execution environment and view is not separated from **Application Logic**
 * Only using **PHP built-in Functions**
 * No **Testing and Logging**
 * **Document root directory** is not safe

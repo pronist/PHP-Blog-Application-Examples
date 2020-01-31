@@ -1,3 +1,3 @@
-## images
+## uploads
 
-Uploaded images are saved in **images**
+Uploaded images are saved in **uploads**
