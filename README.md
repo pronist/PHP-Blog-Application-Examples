@@ -18,15 +18,6 @@ this one is created for [phplec](https://github.com/pronist/phplec)
 php -S localhost:8080
 ```
 
-### Testing
-
-```bash
-# Installation phpunit
-composer install
-# phpunit
-composer run test
-```
-
 ### Database (MySQL)
 
 ```sql
