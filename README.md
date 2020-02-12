@@ -1,17 +1,14 @@
-## What is this?
-
-A simple **blog application** example with *PHP 7+* \
-this one is created for [phplec](https://github.com/pronist/phplec)
+# PHP 7+ Blog Application Examples
 
 * *php >= 7.2*
 * Extended Coding Style: [PSR-12](https://www.php-fig.org/psr/psr-12/)
 
-### Branches
+## Branches
 
 * [Basic](https://github.com/pronist/phpblog/tree/basic) - **Function based MVC(Model, View, Controller)**
 * [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classical Architecture**
 
-### Getting started
+## Getting started
 
 ```bash
 # PHP Built-in Server
@@ -20,7 +17,7 @@ php -S localhost:8080 -t public
 npm run watch
 ```
 
-### Testing
+## Testing
 
 ```bash
 # Installation phpunit
@@ -29,7 +26,17 @@ composer install
 composer run test
 ```
 
-### Database (MySQL)
+## Commands
+
+Name|Description|
+----|-----------|
+composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
+composer run **test**|*PHPUnit*
+npm run **lint**|*ESLint*
+npm run **build**|Build with *Webpack*
+npm run **watch**|*Webpack Dev Server*
+
+## Database (MySQL)
 
 ```sql
 use phpblog;
@@ -100,16 +107,6 @@ CREATE TABLE posts (
 
 * [/image/](https://github.com/pronist/phpblog/tree/basic/controllers/image.php) - **Upload** a Image (POST)
 * [/image/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/image.php) - **Get** a Image (GET)
-
-### Commands
-
-Name|Description|
-----|-----------|
-composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
-composer run **test**|*PHPUnit*
-npm run **lint**|*ESLint*
-npm run **build**|Build with *Webpack*
-npm run **watch**|*Webpack Dev Server*
 
 ## License
 
