@@ -65,11 +65,14 @@ npm run **lint**|*ESLint*
 
 * *MySQLi*
 * *Multibyte String*
-* *fileinfo*
 
 ### Features
 
 <https://github.com/pronist/phpblog/tree/beginning/bootstrap/app.php>
+
+#### Index
+
+* [/](https://github.com/pronist/phpblog/tree/beginning/index.php) - **Show** Posts (GET)
 
 #### Auth
 
