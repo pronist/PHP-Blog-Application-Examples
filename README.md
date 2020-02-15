@@ -96,8 +96,8 @@ npm run **lint**|*ESLint*
 
 #### Image
 
-* [/image.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Get** a Image (GET)
-* [/image.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Upload** a Image (POST)
+* [/image/index.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Get** a Image (GET)
+* [/image/index.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Upload** a Image (POST)
 
 ## License
 
