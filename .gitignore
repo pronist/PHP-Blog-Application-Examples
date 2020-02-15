@@ -1,12 +1,8 @@
 vendor
 node_modules
 
-storage/sessions/*
-!storage/sessions/README.md
-storage/logs/*
-!storage/logs/README.md
-storage/images/*
-!storage/images/README.md
+uploads/*
+!uploads/README.md
 
 .vscode/*
 !.vscode/settings.json
@@ -14,9 +10,3 @@ storage/images/*
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
-.phpunit.result.cache
-coverage-report
-
-public/*
-!public/index.php

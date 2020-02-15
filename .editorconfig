@@ -10,5 +10,5 @@ insert_final_newline = true
 indent_style = space
 trim_trailing_whitespace = true
 
-[*.{yml,yaml,js,vue}]
+[*.{yml,yaml,js}]
 indent_size = 2

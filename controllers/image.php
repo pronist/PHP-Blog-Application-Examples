@@ -1,39 +1,31 @@
 <?php
 
 /**
- * Get a Image (GET)
+ * Upload a Image (POST)
  */
-function getImage($id)
+function create()
 {
-    if (!outputFile($id)) {
-        return http_response_code(404);
-    }
-    return http_response_code(200);
+    $file = $_FILES['upload'];
+    return upload(
+        $file,
+        [
+            'png',
+            'jpg'
+        ],
+        $_SESSION['user']['id'] . "_" . time() . "_" . hash('md5', $file['name'])
+    );
 }
 
 /**
- * Upload a Image (POST)
+ * Get a Image (GET)
+ *
+ * @param string $path
  */
-function uploadImage()
+function show($path)
 {
-    $user = user();
-
-    $file = $_FILES['upload'];
-    $filename = $user['id'] . "_" . time() . "_" . hash('md5', $file['name']);
-    $accepts = [
-        'png',
-        'jpg'
-    ];
-    // @codeCoverageIgnoreStart
-    if ($path = upload($_FILES['upload'], $accepts, $filename)) {
-        history('info', 'Post::upload:: Successful', [ $path ]);
-        echo json_encode([
-            'uploaded' => 1,
-            'url' => '/image/' . $filename
-        ]);
-        return;
+    $filepath = realpath(dirname(__DIR__) . '/uploads/' . basename($path));
+    if (file_exists($filepath)) {
+        header("Content-type:" . mime_content_type($path));
+        return readfile($filepath);
     }
-    // @codeCoverageIgnoreEnd
-    history('info', 'Post::upload:: Failed', [ $file['name'] ]);
-    return http_response_code(400);
 }

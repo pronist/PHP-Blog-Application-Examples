@@ -1,25 +1,44 @@
 <?php
 
 /**
- * Guard
+ * Register auth guard
+ *
+ * @param array $guards
  *
  * @return bool
  */
-function guard()
+function guard($guards)
 {
-    if (getSession('user')) {
-        return true;
+    foreach ($guards as $path) {
+        if ($_SERVER['SCRIPT_NAME'] == $path) {
+            if (array_key_exists('user', $_SESSION)) {
+                continue;
+            }
+            return false;
+        }
     }
-    return header('Location: /auth/login');
+    return true;
 }
 
-
 /**
- * get User
+ * login
  *
- * @return bool|array
+ * @param string $redirectOnSuccess
+ * @param string $redirectOnFailure
+ *
+ * @return void
  */
-function user()
+function auth($redirectOnSuccess, $redirectOnFailure)
 {
-    return getSession('user');
+    return __auth($redirectOnSuccess, $redirectOnFailure, function ($args) {
+        if (check($args)) {
+            if ($user = current(rows('SELECT * FROM users WHERE email = ? LIMIT 1', $args['email']))) {
+                if (password_verify($args['password'], $user['password'])) {
+                    $_SESSION['user'] = $user;
+                    return true;
+                }
+            }
+        }
+        return false;
+    });
 }

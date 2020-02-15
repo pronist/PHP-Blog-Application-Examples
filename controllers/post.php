@@ -1,195 +1,107 @@
 <?php
 
 /**
- * Get posts (GET)
- */
-function getPosts()
-{
-    $page = $_GET['page'] ?? $_GET['page'] = 0;
-
-    $posts = transform(get('posts', 'all', [
-        'orderBy' => [ 'id' => 'DESC' ],
-        'limit'   => 3,
-        'offset'  => $page * 3
-    ]));
-    echo json_encode($posts);
-
-    return $posts;
-}
-
-/**
  * Write Form for a new Post (GET)
  */
-function showWriteForm()
+function showCreateForm()
 {
-    setSession('CSRF_TOKEN', getToken());
-
-    return component('app-post-form', [
-        'token'      => getSession('CSRF_TOKEN'),
-        'request_url' => '/post'
+    return view('post', [
+        'requestUrl' => '/post/write.php'
     ]);
 }
 
 /**
  * Write a new Post (POST)
  */
-function createNewPost()
+function create()
 {
-    $user = user();
-
-    [
-        'title'     => $title,
-        'content'   => $content,
-        'token'     => $token
-    ] = getParamsWithFilters([
-        'params' => getInputParams('post'),
-        'filterMappings' => [
-            'title'     => [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]
-        ]
+    $args = filter_input_array(INPUT_POST, [
+        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'content'   => FILTER_DEFAULT
     ]);
-    if ($title && $content && verity($token, getSession('CSRF_TOKEN'))) {
-        $is = create('posts', [
-            'user_id'       => $user['id'],
-            'created_at'    => date('Y-m-d H:i:s', time()),
-            'title'         => $title,
-            'content'       => removeTags($content, 'script')
-        ]);
-        if ($is) {
-            history('info', 'Post::write:: Successful', [ $user['id'] ]);
-            return header('Location: /');
-        }
-    }
-    history('info', 'Post::write:: Failed', [ $user['id'] ]);
-    return header("Location: /post/write");
+    array_unshift($args, $_SESSION['user']['id']);
+    $args['created_at'] = date('Y-m-d H:i:s', time());
+    return post(
+        'INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)',
+        '/',
+        '/post/write.php',
+        filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING),
+        ...array_values($args)
+    );
 }
 
-
 /**
- * Get posts (GET)
+ * Read a Post by a post id (GET)
+ *
+ * @param int $id
  */
-function showPost($id)
+function show($id)
 {
-    setSession('CSRF_TOKEN', getToken());
-    $user = user();
+    $post = current(rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id));
+    [ 'username' => $username ] = current(rows('SELECT * FROM users WHERE id = ?', $post['user_id']));
 
-    [
-        'user_id'       => $userId,
-        'title'         => $title,
-        'content'       => $content,
-        'created_at'    => $createdAt
-    ] = get('posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
-
-    if ($userId) {
-        [
-            'username'      => $username,
-            'email'         => $email
-        ] = get('users', 'first', [ 'wheres' => [ 'id' ] ], $userId);
-    }
-
-    if ($userId && $title && $content && $createdAt) {
-        $is_owner = $userId == $user['id'];
-        component('app-read', array_merge(
-            compact('username', 'title', 'is_owner', 'id'),
-            [
-                'content'       => param($content, [ FILTER_SANITIZE_SPECIAL_CHARS ]),
-                'created_at'    => getPostCreatedAt($createdAt),
-                'update'        => "/post/update/" . $id,
-                'token'         => getSession('CSRF_TOKEN')
-            ]
-        ));
-        return http_response_code(200);
-    }
-    http_response_code(404);
+    return view('read', compact('post', 'id', 'username'));
 }
 
 /**
  * Update Form for Post informations (GET)
+ *
+ * @param int $id
  */
-function showPostUpdateForm($id)
+function showUpdateForm($id)
 {
-    setSession('CSRF_TOKEN', getToken());
-    $user = user();
+    if (owner($id)) {
+        output_add_rewrite_var('id', $id);
 
-    [
-        'user_id'   => $userId,
-        'title'     => $title,
-        'content'   => $content
-    ] = get('posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
-
-    if ($user['id'] != $userId) {
-        return header('Location: /');
+        return view('post', array_merge(
+            current(rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id)),
+            [
+                'requestUrl' => '/post/update.php?id=' . $id
+            ]
+        ));
     }
-
-    return component('app-post-form', array_merge(
-        compact('id', 'title'),
-        [
-            'content'       => param($content, [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]),
-            'token'         => getSession('CSRF_TOKEN'),
-            'request_url'   => '/post/' . $id,
-            'method'        => 'patch'
-        ]
-    ));
+    return header('Location: /post/read.php?id=' . $id);
 }
 
 /**
- * Update for Post informations (PATCH)
+ * Update for Post informations (POST)
+ *
+ * @param int $id
  */
-function updatePost($id)
+function update($id)
 {
-    $user = user();
-
-    [
-        'title'     => $title,
-        'content'   => $content,
-        'token'     => $token
-    ] = getParamsWithFilters([
-        'params' => getInputParams('patch'),
-        'filterMappings' => [
-            'title' => [ FILTER_SANITIZE_FULL_SPECIAL_CHARS ]
-        ]
+    $args = filter_input_array(INPUT_POST, [
+        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'content'   => FILTER_DEFAULT
     ]);
-
-    if ($id && $title && $content && verity($token, getSession('CSRF_TOKEN'))) {
-        [ 'user_id' => $userId ] = get('posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
-        if ($user['id'] == $userId) {
-            $is = patch('posts', $id, [
-                'title'     => $title,
-                'content'   => removeTags($content, 'script')
-            ]);
-            if ($is) {
-                history('info', 'Post::update:: Successful', [ $id ]);
-                return header("Location: /post/" . $id);
-            }
-        }
+    if (owner($id)) {
+        return post(
+            'UPDATE posts SET title = ?, content = ? WHERE id = ?',
+            '/post/read.php?id=' . $id,
+            '/post/update.php?id=' . $id,
+            filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING),
+            ...array_values($args)
+        );
     }
-    history('info', 'Post::update:: Failed', [ $id ]);
-    return header("Location: /post/update/" . $id);
+
+    return header('/post/read.php?id=' . $id);
 }
 
 /**
- * Delete a Post (DELETE)
+ * Delete a Post (GET)
+ *
+ * @param int $id
  */
-function deletePost($id)
+function destory($id)
 {
-    $user = user();
-
-    [ 'token' => $token ] = getParamsWithFilters([
-        'params' => getInputParams('delete'),
-        'filterMappings' => [
-            'token' => [ FILTER_SANITIZE_STRING ]
-        ]
-    ]);
-
-    if ($id && verity($token, getSession('CSRF_TOKEN'))) {
-        [ 'user_id' => $userId ] = get('posts', 'first', [ 'wheres' => [ 'id' ] ], $id);
-        if ($user['id'] == $userId) {
-            $is = remove('posts', $id);
-            if ($is) {
-                history('info', 'Post::delete:: Successful', [ $id ]);
-                return http_response_code(204);
-            }
-        }
+    if (owner($id)) {
+        return post(
+            'DELETE FROM posts WHERE id = ?',
+            '/',
+            '/post/read.php?id=' . $id,
+            filter_input(INPUT_GET, 'token', FILTER_SANITIZE_STRING),
+            $id
+        );
     }
-    history('info', 'Post::delete:: Failed', [ $id ]);
-    return http_response_code(400);
+    return header('/post/read.php?id=' . $id);
 }

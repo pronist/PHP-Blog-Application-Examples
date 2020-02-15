@@ -1,46 +1,26 @@
 <?php
 
 /**
- * Upload a file
+ * File uplodas
  *
  * @param array $file
  * @param array $accepts
  * @param string $filename
  *
- * @return string|bool
+ * @return bool
  */
 function upload($file, $accepts, $filename)
 {
-    [ 'upload' => $storage ] = include dirname(__DIR__) . '/config/storage.php';
     $pathParts = pathinfo($file['name']);
-
-    // @codeCoverageIgnoreStart
     if (in_array($pathParts['extension'], $accepts) && is_uploaded_file($file['tmp_name'])) {
-        $path = $storage . '/' . $filename;
+        $path = dirname(__DIR__) . '/uploads/' . $filename;
         if (move_uploaded_file($file['tmp_name'], $path)) {
-            return realpath($path);
+            echo json_encode([
+                'uploaded'  => 1,
+                'url'       => '/image/?path=' . $filename
+            ]);
+            return true;
         }
-    }
-    // @codeCoverageIgnoreEnd
-
-    return false;
-}
-
-/**
- * Output a file
- *
- * @param string $filename
- *
- * @return int
- */
-function outputFile($filename)
-{
-    [ 'upload' => $storage ] = include dirname(__DIR__) . '/config/storage.php';
-    $path = $storage . '/' . basename($filename);
-
-    if (file_exists($path)) {
-        header("Content-type:" . mime_content_type($path));
-        return readfile($path);
     }
     return false;
 }

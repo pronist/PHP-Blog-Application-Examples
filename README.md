@@ -5,36 +5,15 @@
 
 ## Branches
 
-* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Function based MVC(Model, View, Controller)**
 * [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classical Architecture**
+* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Similar to MVC(Model, View, Controller)**
 
 ## Getting started
 
 ```bash
 # PHP Built-in Server
 php -S localhost:8080 -t public
-# Hot reload (Webpack dev server)
-npm run watch
 ```
-
-## Testing
-
-```bash
-# Installation phpunit
-composer install
-# phpunit
-composer run test
-```
-
-## Commands
-
-Name|Description|
-----|-----------|
-composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
-composer run **test**|*PHPUnit*
-npm run **lint**|*ESLint*
-npm run **build**|Build with *Webpack*
-npm run **watch**|*Webpack Dev Server*
 
 ## Database (MySQL)
 
@@ -59,16 +38,25 @@ CREATE TABLE posts (
 );
 ```
 
-## Basic - Function based MVC(Model, View, Controller)
+## Commands
+
+Name|Description|
+----|-----------|
+composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
+npm run **lint**|*ESLint*
+
+## Basic - Similar to MVC(Model, View, Controller)
 
 <p>
     <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
     <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
 </p>
 
+* URL is endswith **'.php'**
+* Only using **GET**, **POST** HTTP Method
+* No **Testing and Logging**
 * Not using **OOP(Object-Oriented Programming)**
 * Not using **PSR-4 Autoloading**
-* Using *Vuejs 2* + *Webpack 4* (Front-end)
 
 ### Dynamic Extensions
 
@@ -78,35 +66,38 @@ CREATE TABLE posts (
 
 ### Features
 
-<https://github.com/pronist/phpblog/tree/basic/public/index.php>
+<https://github.com/pronist/phpblog/tree/basic/bootstrap/app.php>
+
+#### Index
+
+* [/](https://github.com/pronist/phpblog/tree/basic/public/index.php) - **Show** Posts (GET)
 
 #### Auth
 
-* [/auth/login](https://github.com/pronist/phpblog/tree/basic/controllers/auth.php) - Login **Form** for a User (GET)
-* [/auth/login](https://github.com/pronist/phpblog/tree/basic/controllers/auth.php) - Create a User **Session** (POST)
-* [/auth/logout](https://github.com/pronist/phpblog/tree/basic/controllers/auth.php) - Delete a User **Session** (POST)
+* [/auth/login.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login.php) - Login **Form** for a User (GET)
+* [/auth/login.php](https://github.com/pronist/phpblog/tree/beginning/auth/login.php) - Create a User **Session** (POST)
+* [/auth/logout.php](https://github.com/pronist/phpblog/tree/beginning/auth/logout.php) - Delete a User **Session** (POST)
 
 #### User
 
-* [/user/register](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - Register **Form** for a new User (GET)
-* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - **Create** a new User (POST)
-* [/user/update](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - Update **Form** for User informations (GET)
-* [/user/](https://github.com/pronist/phpblog/tree/basic/controllers/user.php) - **Update** User informations (PATCH)
+* [/user/register.php](https://github.com/pronist/phpblog/tree/basic/public/user/register.php) - Register **Form** for a new User (GET)
+* [/user/register.php](https://github.com/pronist/phpblog/tree/basic/public/user/register.php) - **Create** a new User (POST)
+* [/user/update.php](https://github.com/pronist/phpblog/tree/basic/public/user/update.php) - Update **Form** for User informations (GET)
+* [/user/update.php](https://github.com/pronist/phpblog/tree/basic/public/user/update.php) - **Update** User informations (POST)
 
 #### Post
 
-* [/](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Get** posts (GET)
-* [/post/write](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - Write **Form** for a new Post (GET)
-* [/post/](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Write** a new Post (POST)
-* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Read** a Post by a post id (GET)
-* [/post/update/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - Update **Form** for Post informations (GET)
-* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Update** for Post informations (PATCH)
-* [/post/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/post.php) - **Delete** a Post (DELETE)
+* [/post/write.php](https://github.com/pronist/phpblog/tree/basic/public/post/write.php) - Write **Form** for a new Post (GET)
+* [/post/write.php](https://github.com/pronist/phpblog/tree/basic/public/post/write.php) - **Write** a new Post (POST)
+* [/post/read.php?id={id}](https://github.com/pronist/phpblog/tree/basic/public/post/read.php) - **Read** a Post by a post id (GET)
+* [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/basic/public/post/update.php) - Update **Form** for Post informations (GET)
+* [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/basic/public/post/update.php) - **Update** for Post informations (POST)
+* [/post/delete.php?id={id}&token={token}](https://github.com/pronist/phpblog/tree/basic/public/post/delete.php) - **Delete** a Post (GET)
 
 #### Image
 
-* [/image/](https://github.com/pronist/phpblog/tree/basic/controllers/image.php) - **Upload** a Image (POST)
-* [/image/{id}](https://github.com/pronist/phpblog/tree/basic/controllers/image.php) - **Get** a Image (GET)
+* [/image.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Get** a Image (GET)
+* [/image.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Upload** a Image (POST)
 
 ## License
 
