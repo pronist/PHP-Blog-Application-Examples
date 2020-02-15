@@ -1,26 +1,18 @@
 <?php
 
 /**
- * APPLICATION BOOTSTRAP
- *
- * https://github.com/pronist/phpblog/tree/basic
- *
- * Not using OOP(Object-Oriented Programming)
- * Not using PSR-4 Autoloading
+ * Timezone
  */
 
-/**
- * Set Timezone to 'Asia/Seoul'
- */
 date_default_timezone_set('Asia/Seoul');
 
 /**
- * Set error handler with Logger
+ * Error Handling
  */
 ini_set('display_errors', 'Off');
 
 /**
- * Get Connection for Database (MySQLi)
+ * Database Connection (MySQLi)
  */
 $GLOBALS['DB_CONNECTION'] = mysqli_connect(
     'localhost',
@@ -28,19 +20,19 @@ $GLOBALS['DB_CONNECTION'] = mysqli_connect(
     'root',
     'phpblog'
 );
+if (!$GLOBALS['DB_CONNECTION']) {
+    exit;
+}
 register_shutdown_function(function () {
-    /**
-     * Close Database Connection
-     */
-    if (array_key_exists('DB_CONNECTION', $GLOBALS)) {
+    if (array_key_exists('DB_CONNECTION', $GLOBALS) && $GLOBALS['DB_CONNECTION']) {
         mysqli_close($GLOBALS['DB_CONNECTION']);
     }
 });
 
 /**
- * Start a Session
+ * Session
  */
-ini_set('session.gc_maxlietime', 1440);
+ini_set('session.gc_maxlifetime', 1440);
 session_set_cookie_params(1440);
 
 session_start();

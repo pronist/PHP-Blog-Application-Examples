@@ -10,20 +10,24 @@ if (array_key_exists('user', $_SESSION)) {
     $token = filter_input(INPUT_POST, 'token');
 
     if ($email && $password && hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
+        // pronist@naver.com -> pronist
         $username = current(explode('@', $email));
         $password = password_hash($password, PASSWORD_DEFAULT);
 
-        $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], 'UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?');
+        $stmt = mysqli_prepare(
+            $GLOBALS['DB_CONNECTION'],
+            'UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?'
+        );
         mysqli_stmt_bind_param($stmt, 'sssi', $email, $password, $username, $user['id']);
-        if (mysqli_stmt_execute($stmt)) {
+        if (mysqli_execute($stmt)) {
             session_unset();
             session_destroy();
-            header("Location: /auth/login.php");
+            header('Location: /auth/login.php');
         } else {
-            header("Location: /user/update.php");
+            header('Location: /user/update.php');
         }
         return mysqli_stmt_close($stmt);
     }
-    return header("Location: /user/update.php");
+    return header('Location: /user/update.php');
 }
-return header("Location: /auth/login.php");
+return header('Location: /auth/login.php');

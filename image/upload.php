@@ -11,15 +11,14 @@ if (array_key_exists('user', $_SESSION)) {
         'png',
         'jpg'
     ];
-
     $pathParts = pathinfo($file['name']);
 
     if (in_array($pathParts['extension'], $accepts) && is_uploaded_file($file['tmp_name'])) {
         $path = dirname(__DIR__) . '/uploads/' . $filename;
         if (move_uploaded_file($file['tmp_name'], $path)) {
             echo json_encode([
-                'uploaded' => 1,
-                'url' => '/image/?id=' . $filename
+                'uploaded'  => 1,
+                'url'       => '/uploads/' . $filename
             ]);
             return http_response_code(200);
         }

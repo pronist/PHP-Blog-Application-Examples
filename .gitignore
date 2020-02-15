@@ -1,8 +1,8 @@
 vendor
 node_modules
 
-images/*
-!images/README.md
+uploads/*
+!uploads/README.md
 
 .vscode/*
 !.vscode/settings.json
@@ -10,6 +10,3 @@ images/*
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
-.phpunit.result.cache
-coverage-report

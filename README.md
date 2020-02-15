@@ -1,24 +1,21 @@
-## What is this?
-
-A simple **blog application** example with *PHP 7+* \
-this one is created for [phplec](https://github.com/pronist/phplec)
+# PHP 7+ Blog Application Examples
 
 * *php >= 7.2*
 * Extended Coding Style: [PSR-12](https://www.php-fig.org/psr/psr-12/)
 
-### Branches
+## Branches
 
-* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Function based MVC(Model, View, Controller)**
 * [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classical Architecture**
+* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Similar to MVC(Model, View, Controller)**
 
-### Getting started
+## Getting started
 
 ```bash
 # PHP Built-in Server
 php -S localhost:8080
 ```
 
-### Database (MySQL)
+## Database (MySQL)
 
 ```sql
 use phpblog;
@@ -40,6 +37,13 @@ CREATE TABLE posts (
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 ```
+
+## Commands
+
+Name|Description|
+----|-----------|
+composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
+npm run **lint**|*ESLint*
 
 ## Beginning - Classical Architecture
 
@@ -86,20 +90,12 @@ CREATE TABLE posts (
 * [/post/write_process.php](https://github.com/pronist/phpblog/tree/beginning/post/write_process.php) - **Write** a new Post (POST)
 * [/post/read.php?id={id}](https://github.com/pronist/phpblog/tree/beginning/post/read.php) - **Read** a Post by a post id (GET)
 * [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/beginning/post/update.php) - Update **Form** for Post informations (GET)
-* [/post/update_process.php?id={id}](https://github.com/pronist/phpblog/tree/beginning/post/update_process.php) - **Update** for Post informations (POST)
+* [/post/update_process.php](https://github.com/pronist/phpblog/tree/beginning/post/update_process.php) - **Update** for Post informations (POST)
 * [/post/delete_process.php?id={id}&token={token}](https://github.com/pronist/phpblog/tree/beginning/post/delete_process.php) - **Delete** a Post (GET)
 
 #### Image
 
 * [/image/upload.php](https://github.com/pronist/phpblog/tree/beginning/image/upload.php) - **Upload** a Image (POST)
-* [/image/?id={id}](https://github.com/pronist/phpblog/tree/beginning/image/index.php) - **Get** a Image (GET)
-
-### Commands
-
-Name|Description|
-----|-----------|
-composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
-npm run **lint**|*ESLint*
 
 ## License
 

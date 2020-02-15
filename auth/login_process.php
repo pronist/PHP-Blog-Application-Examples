@@ -7,11 +7,13 @@ $password = filter_input(INPUT_POST, 'password');
 $token = filter_input(INPUT_POST, 'token');
 
 if ($email && $password && hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
-    $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], 'SELECT * FROM users WHERE email = ? LIMIT 1');
+    $stmt = mysqli_prepare(
+        $GLOBALS['DB_CONNECTION'],
+        'SELECT * FROM users WHERE email = ? LIMIT 1'
+    );
     mysqli_stmt_bind_param($stmt, 's', $email);
     if (mysqli_stmt_execute($stmt)) {
-        $result = mysqli_stmt_get_result($stmt);
-        $user = mysqli_fetch_assoc($result);
+        $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
     }
     mysqli_stmt_close($stmt);
 
@@ -22,5 +24,4 @@ if ($email && $password && hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
         }
     }
 }
-
 return header('Location: /auth/login.php');
