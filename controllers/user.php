@@ -42,14 +42,27 @@ function showUpdateForm()
  */
 function update($id)
 {
-    return __user(function ($args) use ($id) {
-        $args['id'] = $id;
-        if ($is = execute('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', ...array_values($args))) {
-            header('Location: /auth/login.php');
-            return $is;
-        }
-        header('Location /user/update.php');
-    });
+    if (__exists($id)) {
+        return __user(function ($args) use ($id) {
+            $args['id'] = $id;
+            if ($is = execute('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', ...array_values($args))) {
+                header('Location: /auth/login.php');
+                return $is;
+            }
+            header('Location /user/update.php');
+        });
+    }
+}
+
+/**
+ * @return array|void
+ */
+function __exists($id)
+{
+    if ($user = exists('SELECT * FROM users WHERE id = ? LIMIT 1', $id)) {
+        return $user;
+    }
+    http_response_code(404);
 }
 
 /**

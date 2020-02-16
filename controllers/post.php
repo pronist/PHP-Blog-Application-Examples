@@ -53,7 +53,6 @@ function showUpdateForm($id)
             'requestUrl' => '/post/update.php?id=' . $id
         ]));
     }
-    http_response_code(404);
 }
 
 /**
@@ -63,14 +62,16 @@ function showUpdateForm($id)
  */
 function update($id)
 {
-    return __post(function ($args) use ($id) {
-        $args['id'] = $id;
-        if ($is = (owner($id) && execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', ...array_values($args)))) {
-            header('Location: /post/read.php?id=' . $id);
-            return $is;
-        }
-        header('Location: /post/update.php?id=' . $id);
-    });
+    if (__exists($id)) {
+        return __post(function ($args) use ($id) {
+            $args['id'] = $id;
+            if ($is = (owner($id) && execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', ...array_values($args)))) {
+                header('Location: /post/read.php?id=' . $id);
+                return $is;
+            }
+            header('Location: /post/update.php?id=' . $id);
+        });
+    }
 }
 
 /**
@@ -80,23 +81,24 @@ function update($id)
  */
 function destory($id)
 {
-    if ($is = (owner($id) && execute('DELETE FROM posts WHERE id = ?', $id))) {
-        header('Location: /');
-        return $is;
+    if (__exists($id)) {
+        if ($is = (owner($id) && execute('DELETE FROM posts WHERE id = ?', $id))) {
+            header('Location: /');
+            return $is;
+        }
+        header('Location: /post/read.php?id=' . $id);
     }
-    header('Location: /post/read.php?id=' . $id);
 }
 
 /**
- * @return mixed
+ * @return array|void
  */
 function __exists($id)
 {
-    $post = rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id);
-    if (count($post) < 1) {
-        return false;
+    if ($post = exists('SELECT * FROM posts WHERE id = ? LIMIT 1', $id)) {
+        return $post;
     }
-    return current($post);
+    http_response_code(404);
 }
 
 /**

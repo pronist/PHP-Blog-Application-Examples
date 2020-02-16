@@ -72,3 +72,20 @@ function guard($guards)
     }
     return true;
 }
+
+/**
+ * Exists
+ *
+ * @param string $query
+ * @param array $params
+ *
+ * @return mixed
+ */
+function exists($query, ...$params)
+{
+    $item = rows($query, ...$params);
+    if (count($item) < 1) {
+        return false;
+    }
+    return current($item);
+}

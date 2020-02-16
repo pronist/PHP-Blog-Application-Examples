@@ -62,7 +62,11 @@
     /**
      * Middlewares
      */
-    foreach ([ 'auth.php', 'csrfToken.php' ] as $file) {
+    $middlewares = [
+        'auth.php',
+        'csrfToken.php'
+    ];
+    foreach ($middlewares as $file) {
         require_once dirname(__DIR__) . '/middlewares/' . $file ?: exit;
     }
 
