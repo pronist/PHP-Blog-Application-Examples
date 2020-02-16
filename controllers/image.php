@@ -3,17 +3,25 @@
 /**
  * Upload a Image (POST)
  */
-function create()
+function store()
 {
     $file = $_FILES['upload'];
-    return upload(
-        $file,
-        [
-            'png',
-            'jpg'
-        ],
-        $_SESSION['user']['id'] . "_" . time() . "_" . hash('md5', $file['name'])
-    );
+    $accepts = [
+        'png',
+        'jpg'
+    ];
+    $filename = $_SESSION['user']['id'] . "_" . time() . "_" . hash('md5', $file['name']);
+
+    $pathParts = pathinfo($file['name']);
+    if (in_array($pathParts['extension'], $accepts) && is_uploaded_file($file['tmp_name'])) {
+        $path = dirname(__DIR__) . '/uploads/' . $filename;
+        if (move_uploaded_file($file['tmp_name'], $path)) {
+            echo json_encode([
+                'uploaded'  => 1,
+                'url'       => '/image/?path=' . $filename
+            ]);
+        }
+    }
 }
 
 /**

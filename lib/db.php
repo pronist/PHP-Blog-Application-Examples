@@ -44,7 +44,7 @@ function execute($query, ...$params)
 function __raw($query, $params = [], $callback = null)
 {
     $is = false;
-    if (array_key_exists('DB_CONNECTION', $GLOBALS) && $GLOBALS['DB_CONNECTION']) {
+    if (count($params) == count(array_filter($params)) && array_key_exists('DB_CONNECTION', $GLOBALS) && $GLOBALS['DB_CONNECTION']) {
         $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], $query);
         if (count($params) > 0) {
             $mappings = [

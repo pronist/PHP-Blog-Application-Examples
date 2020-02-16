@@ -6,7 +6,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         return show(filter_input(INPUT_GET, 'path', FILTER_SANITIZE_STRING));
     case 'POST':
-        return create();
+        return store();
     default:
         http_response_code(404);
 }

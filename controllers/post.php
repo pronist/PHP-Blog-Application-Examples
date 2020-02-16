@@ -3,7 +3,7 @@
 /**
  * Write Form for a new Post (GET)
  */
-function showCreateForm()
+function showStoreForm()
 {
     return view('post', [
         'requestUrl' => '/post/write.php'
@@ -13,21 +13,18 @@ function showCreateForm()
 /**
  * Write a new Post (POST)
  */
-function create()
+function store()
 {
-    $args = filter_input_array(INPUT_POST, [
-        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        'content'   => FILTER_DEFAULT
-    ]);
-    array_unshift($args, $_SESSION['user']['id']);
-    $args['created_at'] = date('Y-m-d H:i:s', time());
-    return post(
-        'INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)',
-        '/',
-        '/post/write.php',
-        filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING),
-        ...array_values($args)
-    );
+    return __post(function ($args) {
+        array_unshift($args, $_SESSION['user']['id']);
+        $args['created_at'] = date('Y-m-d H:i:s', time());
+
+        if ($is = execute('INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)', ...array_values($args))) {
+            header('Location: /');
+            return $is;
+        }
+        header('Location: /post/write.php');
+    });
 }
 
 /**
@@ -37,10 +34,11 @@ function create()
  */
 function show($id)
 {
-    $post = current(rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id));
-    [ 'username' => $username ] = current(rows('SELECT * FROM users WHERE id = ?', $post['user_id']));
-
-    return view('read', compact('post', 'id', 'username'));
+    if ($post = __exists($id)) {
+        [ 'username' => $username ] = current(rows('SELECT * FROM users WHERE id = ?', $post['user_id']));
+        return view('read', compact('post', 'id', 'username'));
+    }
+    http_response_code(404);
 }
 
 /**
@@ -50,17 +48,12 @@ function show($id)
  */
 function showUpdateForm($id)
 {
-    if (owner($id)) {
-        output_add_rewrite_var('id', $id);
-
-        return view('post', array_merge(
-            current(rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id)),
-            [
-                'requestUrl' => '/post/update.php?id=' . $id
-            ]
-        ));
+    if ($post = __exists($id)) {
+        return owner($id) && view('post', array_merge($post, [
+            'requestUrl' => '/post/update.php?id=' . $id
+        ]));
     }
-    return header('Location: /post/read.php?id=' . $id);
+    http_response_code(404);
 }
 
 /**
@@ -70,21 +63,14 @@ function showUpdateForm($id)
  */
 function update($id)
 {
-    $args = filter_input_array(INPUT_POST, [
-        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        'content'   => FILTER_DEFAULT
-    ]);
-    if (owner($id)) {
-        return post(
-            'UPDATE posts SET title = ?, content = ? WHERE id = ?',
-            '/post/read.php?id=' . $id,
-            '/post/update.php?id=' . $id,
-            filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING),
-            ...array_values($args)
-        );
-    }
-
-    return header('/post/read.php?id=' . $id);
+    return __post(function ($args) use ($id) {
+        $args['id'] = $id;
+        if ($is = (owner($id) && execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', ...array_values($args)))) {
+            header('Location: /post/read.php?id=' . $id);
+            return $is;
+        }
+        header('Location: /post/update.php?id=' . $id);
+    });
 }
 
 /**
@@ -94,14 +80,38 @@ function update($id)
  */
 function destory($id)
 {
-    if (owner($id)) {
-        return post(
-            'DELETE FROM posts WHERE id = ?',
-            '/',
-            '/post/read.php?id=' . $id,
-            filter_input(INPUT_GET, 'token', FILTER_SANITIZE_STRING),
-            $id
-        );
+    if ($is = (owner($id) && execute('DELETE FROM posts WHERE id = ?', $id))) {
+        header('Location: /');
+        return $is;
     }
-    return header('/post/read.php?id=' . $id);
+    header('Location: /post/read.php?id=' . $id);
+}
+
+/**
+ * @return mixed
+ */
+function __exists($id)
+{
+    $post = rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id);
+    if (count($post) < 1) {
+        return false;
+    }
+    return current($post);
+}
+
+/**
+ * @param callback $callback
+ *
+ * @return mixed
+ */
+function __post($callback)
+{
+    $args = filter_input_array(INPUT_POST, [
+        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'content'   => FILTER_DEFAULT
+    ]);
+    if (count($args) == count(array_filter($args))) {
+        return call_user_func($callback, $args);
+    }
+    http_response_code(400);
 }

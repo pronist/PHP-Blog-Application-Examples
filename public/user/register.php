@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__DIR__) . '/bootstrap/app.php';
+require_once dirname(__DIR__, 2) . '/bootstrap/app.php';
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
-        return create();
+        return store();
     case 'GET':
         return showRegisterForm();
     default:
