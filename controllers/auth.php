@@ -18,7 +18,7 @@ function login()
     $args = filter_input_array(INPUT_POST, [
         'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL
     ]);
-    if ($user = exists('SELECT * FROM users WHERE email = ? LIMIT 1', ...array_values($args))) {
+    if ($user = first('SELECT * FROM users WHERE email = ? LIMIT 1', ...array_values($args))) {
         $password = filter_input(INPUT_POST, 'password');
         if (password_verify($password, $user['password'])) {
             $_SESSION['user'] = $user;

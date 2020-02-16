@@ -25,7 +25,7 @@ function view($view, $vars = [])
  */
 function owner($id)
 {
-    [ 'user_id' => $userId ] = current(rows('SELECT * FROM posts WHERE id = ? LIMIT 1', $id));
+    [ 'user_id' => $userId ] = first('SELECT * FROM posts WHERE id = ? LIMIT 1', $id);
     if (array_key_exists('user', $_SESSION)) {
         return $userId == $_SESSION['user']['id'];
     }
@@ -43,7 +43,7 @@ function verify($guards)
 {
     foreach ($guards as [ $path, $method ]) {
         if ($_SERVER['SCRIPT_NAME'] == $path && $_SERVER['REQUEST_METHOD'] == $method) {
-            $token = filter_var($_REQUEST['token'], FILTER_SANITIZE_STRING);
+            $token = array_key_exists('token', $_REQUEST) ? filter_var($_REQUEST['token'], FILTER_SANITIZE_STRING) : '';
             if (hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
                 return true;
             }
@@ -71,21 +71,4 @@ function guard($guards)
         }
     }
     return true;
-}
-
-/**
- * Exists
- *
- * @param string $query
- * @param array $params
- *
- * @return mixed
- */
-function exists($query, ...$params)
-{
-    $item = rows($query, ...$params);
-    if (count($item) < 1) {
-        return false;
-    }
-    return current($item);
 }

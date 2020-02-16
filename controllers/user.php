@@ -16,7 +16,7 @@ function showRegisterForm()
 function store()
 {
     return __user(function ($args) {
-        if ($is = execute('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', $args)) {
+        if ($is = execute('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', ...array_values($args))) {
             header('Location: /auth/login.php');
             return $is;
         }
@@ -59,7 +59,7 @@ function update($id)
  */
 function __exists($id)
 {
-    if ($user = exists('SELECT * FROM users WHERE id = ? LIMIT 1', $id)) {
+    if ($user = first('SELECT * FROM users WHERE id = ? LIMIT 1', $id)) {
         return $user;
     }
     http_response_code(404);

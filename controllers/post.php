@@ -35,10 +35,9 @@ function store()
 function show($id)
 {
     if ($post = __exists($id)) {
-        [ 'username' => $username ] = current(rows('SELECT * FROM users WHERE id = ?', $post['user_id']));
+        [ 'username' => $username ] = first('SELECT * FROM users WHERE id = ? LIMIT 1', $post['user_id']);
         return view('read', compact('post', 'id', 'username'));
     }
-    http_response_code(404);
 }
 
 /**
@@ -95,7 +94,7 @@ function destory($id)
  */
 function __exists($id)
 {
-    if ($post = exists('SELECT * FROM posts WHERE id = ? LIMIT 1', $id)) {
+    if ($post = first('SELECT * FROM posts WHERE id = ? LIMIT 1', $id)) {
         return $post;
     }
     http_response_code(404);

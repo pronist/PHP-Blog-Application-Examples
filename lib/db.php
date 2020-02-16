@@ -1,6 +1,26 @@
 <?php
 
 /**
+ * Exists
+ *
+ * @param string $query
+ * @param array $params
+ *
+ * @return mixed
+ */
+function first($query, ...$params)
+{
+    return __raw($query, $params, function ($result) {
+        if ($item = mysqli_fetch_assoc($result)) {
+            if (is_array($item) && count($item) > 0) {
+                return $item;
+            }
+        }
+        return [];
+    });
+}
+
+/**
  * get Rows
  *
  * @param string $query
@@ -59,9 +79,9 @@ function __raw($query, $params = [], $callback = null)
         }
         if (mysqli_stmt_execute($stmt)) {
             if (is_callable($callback)) {
-                $rows = call_user_func($callback, mysqli_stmt_get_result($stmt));
+                $res = call_user_func($callback, mysqli_stmt_get_result($stmt));
             }
-            $is = $rows ?? true;
+            $is = $res ?? true;
         }
         mysqli_stmt_close($stmt);
     }

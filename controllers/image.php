@@ -33,7 +33,7 @@ function show($path)
 {
     $filepath = realpath(dirname(__DIR__) . '/uploads/' . basename($path));
     if (file_exists($filepath)) {
-        header("Content-type:" . mime_content_type($path));
+        header("Content-type:" . mime_content_type($filepath));
         return readfile($filepath);
     }
 }

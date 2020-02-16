@@ -1,10 +1,13 @@
 <?php
 
 /**
- * CSRF_TOKEN
+ * CSRF Token
  */
 
 return (function () {
+    /**
+     * CSRF Token Verify
+     */
     $is = verify([
         [ '/auth/login.php', 'POST' ],
         [ '/post/write.php', 'POST' ],

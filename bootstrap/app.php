@@ -9,7 +9,15 @@
  * Not using PSR-4 Autoloading
  */
 
-(function () {
+return (function () {
+    /**
+     * Libraries
+     */
+    foreach (scandir(dirname(__DIR__) . '/lib') as $file) {
+        if (fnmatch('*.php', $file)) {
+            require_once dirname(__DIR__) . '/lib/' . $file;
+        }
+    }
 
     /**
      * Set Timezone to 'Asia/Seoul'
@@ -51,15 +59,6 @@
     session_start();
 
     /**
-     * Libraries
-     */
-    foreach (scandir(dirname(__DIR__) . '/lib') as $file) {
-        if (fnmatch('*.php', $file)) {
-            require_once dirname(__DIR__) . '/lib/' . $file;
-        }
-    }
-
-    /**
      * Middlewares
      */
     $middlewares = [
@@ -67,7 +66,7 @@
         'csrfToken.php'
     ];
     foreach ($middlewares as $file) {
-        require_once dirname(__DIR__) . '/middlewares/' . $file ?: exit;
+        (require_once dirname(__DIR__) . '/middlewares/' . $file) ?: exit;
     }
 
     /**
