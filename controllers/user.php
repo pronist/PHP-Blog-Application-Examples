@@ -70,7 +70,7 @@ function __user($callback)
         if (call_user_func($callback, $args)) {
             session_unset();
             return session_destroy();
-        };
+        }
     }
     http_response_code(400);
 }
