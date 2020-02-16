@@ -72,3 +72,22 @@ function guard($guards)
     }
     return true;
 }
+
+/**
+ * Execute and Redirect
+ *
+ * @param string $query
+ * @param array $params
+ * @param string $redirecOnSuccess
+ * @param string $redirecOnFailure
+ *
+ * @return mixed
+ */
+function go($query, $params, $redirecOnSuccess, $redirecOnFailure)
+{
+    if ($is = execute($query, ...array_values($params))) {
+        header('Location: ' . $redirecOnSuccess);
+        return $is;
+    }
+    header('Location: ' . $redirecOnFailure);
+}

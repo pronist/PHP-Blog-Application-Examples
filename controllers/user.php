@@ -16,11 +16,12 @@ function showRegisterForm()
 function store()
 {
     return __user(function ($args) {
-        if ($is = execute('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', ...array_values($args))) {
-            header('Location: /auth/login.php');
-            return $is;
-        }
-        header('Location /user/register.php');
+        return go(
+            'INSERT INTO users(email, password, username) VALUES(?, ? ,?)',
+            $args,
+            '/auth/login.php',
+            '/user/register.php'
+        );
     });
 }
 
@@ -42,16 +43,16 @@ function showUpdateForm()
  */
 function update($id)
 {
-    if (__exists($id)) {
-        return __user(function ($args) use ($id) {
-            $args['id'] = $id;
-            if ($is = execute('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', ...array_values($args))) {
-                header('Location: /auth/login.php');
-                return $is;
-            }
-            header('Location /user/update.php');
-        });
-    }
+    return __exists($id) && __user(function ($args) use ($id) {
+        $args['id'] = $id;
+
+        return go(
+            'UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?',
+            $args,
+            '/auth/login.php',
+            '/user/update.php'
+        );
+    });
 }
 
 /**

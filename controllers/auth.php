@@ -25,7 +25,7 @@ function login()
             return header('Location: /');
         }
     }
-    return header('Location: /auth/login.php');
+    header('Location: /auth/login.php');
 }
 
 /**

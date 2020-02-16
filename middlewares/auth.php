@@ -17,7 +17,7 @@ return (function () {
     if (!$is) {
         header("Location: /auth/login.php");
         return false;
-    };
+    }
 
     /**
      * Async Request (Ajax etc.)

@@ -19,11 +19,12 @@ function store()
         array_unshift($args, $_SESSION['user']['id']);
         $args['created_at'] = date('Y-m-d H:i:s', time());
 
-        if ($is = execute('INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)', ...array_values($args))) {
-            header('Location: /');
-            return $is;
-        }
-        header('Location: /post/write.php');
+        return go(
+            'INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)',
+            $args,
+            '/',
+            '/post/write.php'
+        );
     });
 }
 
@@ -61,16 +62,16 @@ function showUpdateForm($id)
  */
 function update($id)
 {
-    if (__exists($id)) {
-        return __post(function ($args) use ($id) {
-            $args['id'] = $id;
-            if ($is = (owner($id) && execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', ...array_values($args)))) {
-                header('Location: /post/read.php?id=' . $id);
-                return $is;
-            }
-            header('Location: /post/update.php?id=' . $id);
-        });
-    }
+    return __exists($id) && __post(function ($args) use ($id) {
+        $args['id'] = $id;
+
+        return owner($id) && go(
+            'UPDATE posts SET title = ?, content = ? WHERE id = ?',
+            $args,
+            '/post/read.php?id=' . $id,
+            '/post/update.php?id=' . $id
+        );
+    });
 }
 
 /**
@@ -80,13 +81,12 @@ function update($id)
  */
 function destory($id)
 {
-    if (__exists($id)) {
-        if ($is = (owner($id) && execute('DELETE FROM posts WHERE id = ?', $id))) {
-            header('Location: /');
-            return $is;
-        }
-        header('Location: /post/read.php?id=' . $id);
-    }
+    return __exists($id) && owner($id) && go(
+        'DELETE FROM posts WHERE id = ?',
+        [ $id ],
+        '/',
+        '/post/read.php?id=' . $id
+    );
 }
 
 /**
