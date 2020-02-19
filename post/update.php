@@ -36,8 +36,7 @@ if ($user['id'] != $userId) {
 <?php require_once dirname(__DIR__) . '/layouts/top.php'; ?>
 
 <div id="main__form-post">
-    <form action="/post/update_process.php" method="POST">
-        <input type="hidden" name="id" value="<?=$id?>">
+    <form action="/post/update_process.php?id=<?=$id?>"  method="POST">
         <input type="text" name="title" value="<?=$title?>"placeholder="Type a post title" class="uk-input uk-article-title">
         <hr>
         <div class="editor uk-align-center">

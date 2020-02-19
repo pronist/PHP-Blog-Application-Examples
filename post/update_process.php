@@ -8,7 +8,8 @@ if (array_key_exists('user', $_SESSION)) {
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content');
     $token = filter_input(INPUT_POST, 'token');
-    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
+    $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
     if ($id && $title && $content && hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
         $stmt = mysqli_prepare(

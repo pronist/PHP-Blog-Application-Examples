@@ -78,7 +78,7 @@ npm run **lint**|*ESLint*
 
 * [/auth/login.php](https://github.com/pronist/phpblog/tree/beginning/auth/login.php) - Login **Form** for a User (GET)
 * [/auth/login_process.php](https://github.com/pronist/phpblog/tree/beginning/auth/login_process.php) - Create a User **Session** (POST)
-* [/auth/logout.php](https://github.com/pronist/phpblog/tree/beginning/auth/logout.php) - Delete a User **Session** (POST)
+* [/auth/logout.php](https://github.com/pronist/phpblog/tree/beginning/auth/logout.php) - Delete a User **Session** (GET)
 
 #### User
 
@@ -93,7 +93,7 @@ npm run **lint**|*ESLint*
 * [/post/write_process.php](https://github.com/pronist/phpblog/tree/beginning/post/write_process.php) - **Write** a new Post (POST)
 * [/post/read.php?id={id}](https://github.com/pronist/phpblog/tree/beginning/post/read.php) - **Read** a Post by a post id (GET)
 * [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/beginning/post/update.php) - Update **Form** for Post informations (GET)
-* [/post/update_process.php](https://github.com/pronist/phpblog/tree/beginning/post/update_process.php) - **Update** for Post informations (POST)
+* [/post/update_process.php?id={id}](https://github.com/pronist/phpblog/tree/beginning/post/update_process.php) - **Update** for Post informations (POST)
 * [/post/delete_process.php?id={id}&token={token}](https://github.com/pronist/phpblog/tree/beginning/post/delete_process.php) - **Delete** a Post (GET)
 
 #### Image
