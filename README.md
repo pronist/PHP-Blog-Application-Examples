@@ -75,8 +75,8 @@ npm run **lint**|*ESLint*
 #### Auth
 
 * [/auth/login.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login.php) - Login **Form** for a User (GET)
-* [/auth/login.php](https://github.com/pronist/phpblog/tree/beginning/auth/login.php) - Create a User **Session** (POST)
-* [/auth/logout.php](https://github.com/pronist/phpblog/tree/beginning/auth/logout.php) - Delete a User **Session** (POST)
+* [/auth/login.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login.php) - Create a User **Session** (POST)
+* [/auth/logout.php](https://github.com/pronist/phpblog/tree/basic/public/auth/logout.php) - Delete a User **Session** (GET)
 
 #### User
 
