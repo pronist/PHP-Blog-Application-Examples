@@ -16,12 +16,7 @@ function showRegisterForm()
 function store()
 {
     return __user(function ($args) {
-        return go(
-            'INSERT INTO users(email, password, username) VALUES(?, ? ,?)',
-            $args,
-            '/auth/login.php',
-            '/user/register.php'
-        );
+        return go('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', $args, '/auth/login.php');
     });
 }
 
@@ -41,29 +36,12 @@ function showUpdateForm()
  *
  * @param int $id
  */
-function update($id)
+function update()
 {
-    return __exists($id) && __user(function ($args) use ($id) {
-        $args['id'] = $id;
-
-        return go(
-            'UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?',
-            $args,
-            '/auth/login.php',
-            '/user/update.php'
-        );
+    return __user(function ($args) use ($id) {
+        $args['id'] = $_SESSION['user']['id'];
+        return go('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', $args, '/auth/login.php');
     });
-}
-
-/**
- * @return array|void
- */
-function __exists($id)
-{
-    if ($user = first('SELECT * FROM users WHERE id = ? LIMIT 1', $id)) {
-        return $user;
-    }
-    http_response_code(404);
 }
 
 /**
@@ -77,14 +55,11 @@ function __user($callback)
         'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
         'password'  => FILTER_SANITIZE_STRING
     ]);
-    if (count($args) == count(array_filter($args))) {
-        $args['username'] = current(explode('@', $args['email']));
-        $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
+    $args['username'] = current(explode('@', $args['email']));
+    $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
 
-        if (call_user_func($callback, $args)) {
-            session_unset();
-            return session_destroy();
-        }
+    if (call_user_func($callback, $args)) {
+        session_unset();
+        return session_destroy();
     }
-    http_response_code(400);
 }

@@ -17,6 +17,24 @@ function view($view, $vars = [])
 }
 
 /**
+ * Execute and Redirect
+ *
+ * @param string $query
+ * @param array $params
+ * @param string $redirecOnSuccess
+ *
+ * @return mixed
+ */
+function go($query, $params, $redirecOnSuccess)
+{
+    if ($is = execute($query, ...array_values($params))) {
+        header('Location: ' . $redirecOnSuccess);
+        return $is;
+    }
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+}
+
+/**
  * is Owner
  *
  * @param int $id
@@ -43,10 +61,11 @@ function verify($guards)
 {
     foreach ($guards as [ $path, $method ]) {
         if ($_SERVER['SCRIPT_NAME'] == $path && $_SERVER['REQUEST_METHOD'] == $method) {
-            $token = array_key_exists('token', $_REQUEST) ? filter_var($_REQUEST['token'], FILTER_SANITIZE_STRING) : '';
+            $token = array_key_exists('token', $_REQUEST) ? filter_var($_REQUEST['token'], FILTER_SANITIZE_STRING) : null;
             if (hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
                 return true;
             }
+            http_response_code(400);
             return false;
         }
     }
@@ -67,6 +86,7 @@ function guard($guards)
             if (array_key_exists('user', $_SESSION)) {
                 return true;
             }
+            header("Location: /auth/login.php");
             return false;
         }
     }
@@ -74,20 +94,17 @@ function guard($guards)
 }
 
 /**
- * Execute and Redirect
+ * Check request params
  *
- * @param string $query
- * @param array $params
- * @param string $redirecOnSuccess
- * @param string $redirecOnFailure
+ * @param array $requires
  *
- * @return mixed
+ * @return bool
  */
-function go($query, $params, $redirecOnSuccess, $redirecOnFailure)
+function requires($requires)
 {
-    if ($is = execute($query, ...array_values($params))) {
-        header('Location: ' . $redirecOnSuccess);
-        return $is;
+    if (count($requires) == count(array_filter($requires))) {
+        return true;
     }
-    header('Location: ' . $redirecOnFailure);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    return false;
 }

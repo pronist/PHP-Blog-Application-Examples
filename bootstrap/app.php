@@ -30,6 +30,26 @@ return (function () {
     ini_set('display_errors', 'Off');
 
     /**
+     * Start a Session
+     */
+    ini_set('session.gc_maxlietime', 1440);
+    session_set_cookie_params(1440);
+
+    session_start();
+
+    /**
+     * Middlewares
+     */
+    $middlewares = [
+        'auth.php',
+        'csrfToken.php',
+        'require.php'
+    ];
+    foreach ($middlewares as $file) {
+        (require_once dirname(__DIR__) . '/middlewares/' . $file) ?: exit;
+    }
+
+    /**
      * Get Connection for Database (MySQLi)
      */
     $GLOBALS['DB_CONNECTION'] = mysqli_connect(
@@ -49,25 +69,6 @@ return (function () {
             mysqli_close($GLOBALS['DB_CONNECTION']);
         }
     });
-
-    /**
-     * Start a Session
-     */
-    ini_set('session.gc_maxlietime', 1440);
-    session_set_cookie_params(1440);
-
-    session_start();
-
-    /**
-     * Middlewares
-     */
-    $middlewares = [
-        'auth.php',
-        'csrfToken.php'
-    ];
-    foreach ($middlewares as $file) {
-        (require_once dirname(__DIR__) . '/middlewares/' . $file) ?: exit;
-    }
 
     /**
      * Controller Mappings
@@ -98,6 +99,7 @@ return (function () {
     foreach ($controllers as $category => $scripts) {
         if (in_array($_SERVER['SCRIPT_NAME'], $scripts)) {
             require_once dirname(__DIR__) . '/controllers/' . $category . '.php';
+            break;
         }
     }
 })();

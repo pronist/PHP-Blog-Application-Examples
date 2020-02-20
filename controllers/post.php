@@ -18,13 +18,7 @@ function store()
     return __post(function ($args) {
         array_unshift($args, $_SESSION['user']['id']);
         $args['created_at'] = date('Y-m-d H:i:s', time());
-
-        return go(
-            'INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)',
-            $args,
-            '/',
-            '/post/write.php'
-        );
+        return go('INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)', $args, '/');
     });
 }
 
@@ -62,15 +56,9 @@ function showUpdateForm($id)
  */
 function update($id)
 {
-    return __exists($id) && __post(function ($args) use ($id) {
+    return __exists($id) && owner($id) && __post(function ($args) use ($id) {
         $args['id'] = $id;
-
-        return owner($id) && go(
-            'UPDATE posts SET title = ?, content = ? WHERE id = ?',
-            $args,
-            '/post/read.php?id=' . $id,
-            '/post/update.php?id=' . $id
-        );
+        return go('UPDATE posts SET title = ?, content = ? WHERE id = ?', $args, '/post/read.php?id=' . $id);
     });
 }
 
@@ -81,12 +69,7 @@ function update($id)
  */
 function destory($id)
 {
-    return __exists($id) && owner($id) && go(
-        'DELETE FROM posts WHERE id = ?',
-        [ $id ],
-        '/',
-        '/post/read.php?id=' . $id
-    );
+    return __exists($id) && owner($id) && go('DELETE FROM posts WHERE id = ?', [ $id ], '/');
 }
 
 /**
@@ -111,8 +94,5 @@ function __post($callback)
         'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'content'   => FILTER_DEFAULT
     ]);
-    if (count($args) == count(array_filter($args))) {
-        return call_user_func($callback, $args);
-    }
-    http_response_code(400);
+    return call_user_func($callback, $args);
 }
