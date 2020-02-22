@@ -6,7 +6,7 @@
 function showLoginForm()
 {
     return view('auth', [
-        'requestUrl' => '/auth/login.php'
+        'requestUrl' => '/auth/login'
     ]);
 }
 
@@ -25,7 +25,7 @@ function login()
             return header('Location: /');
         }
     }
-    header('Location: /auth/login.php');
+    header('Location: /auth/login');
 }
 
 /**

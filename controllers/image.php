@@ -18,7 +18,7 @@ function store()
         if (move_uploaded_file($file['tmp_name'], $path)) {
             echo json_encode([
                 'uploaded'  => 1,
-                'url'       => '/image/?path=' . $filename
+                'url'       => '/image?path=' . $filename
             ]);
         }
     }

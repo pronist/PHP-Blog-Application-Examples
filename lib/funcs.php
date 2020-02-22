@@ -51,6 +51,23 @@ function owner($id)
 }
 
 /**
+ * match
+ *
+ * @param string $path
+ * @param string $method
+ *
+ * @return bool
+ */
+function hit($path, $method = null)
+{
+    $is = ($_SERVER['PATH_INFO'] ?? '/') == $path;
+    if ($method) {
+        $is = $is && strtoupper($method) == $_SERVER['REQUEST_METHOD'];
+    }
+    return $is;
+}
+
+/**
  * CSRF_TOKEN
  *
  * @param array $guards
@@ -60,7 +77,7 @@ function owner($id)
 function verify($guards)
 {
     foreach ($guards as [ $path, $method ]) {
-        if ($_SERVER['SCRIPT_NAME'] == $path && $_SERVER['REQUEST_METHOD'] == $method) {
+        if (hit($path, $method)) {
             $token = array_key_exists('token', $_REQUEST) ? filter_var($_REQUEST['token'], FILTER_SANITIZE_STRING) : null;
             if (hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
                 return true;
@@ -69,7 +86,7 @@ function verify($guards)
             return false;
         }
     }
-    return true;
+    return false;
 }
 
 /**
@@ -82,15 +99,15 @@ function verify($guards)
 function guard($guards)
 {
     foreach ($guards as $path) {
-        if ($_SERVER['SCRIPT_NAME'] == $path) {
+        if (hit($path)) {
             if (array_key_exists('user', $_SESSION)) {
                 return true;
             }
-            header("Location: /auth/login.php");
+            header("Location: /auth/login");
             return false;
         }
     }
-    return true;
+    return false;
 }
 
 /**
@@ -107,4 +124,23 @@ function requires($requires)
     }
     header('Location: ' . $_SERVER['HTTP_REFERER']);
     return false;
+}
+
+/**
+ * set Routes
+ *
+ * @param array $routes
+ *
+ * @return void
+ */
+function routes($routes)
+{
+    foreach ($routes as [ $path, $method, $callbackString ]) {
+        if (hit($path, $method)) {
+            [ $file, $callback ] = explode('.', $callbackString);
+            require_once dirname(__DIR__) . '/controllers/' . $file . '.php';
+            return call_user_func($callback, ...array_values($_GET));
+        }
+    }
+    return http_response_code(404);
 }

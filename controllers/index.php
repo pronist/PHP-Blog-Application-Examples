@@ -5,7 +5,7 @@
  *
  * @param int $page
  */
-function index($page)
+function index($page = 0)
 {
     if ($posts = rows('SELECT * FROM posts ORDER BY id DESC LIMIT 3 OFFSET ' .  $page * 3)) {
         $posts = array_map(function ($post) {
@@ -18,7 +18,7 @@ function index($page)
                 compact('username', 'content'),
                 [
                     'created_at' => date('h:i A, M j', strtotime($post['created_at'])),
-                    'url'        => "/post/read.php?id=" . $post['id']
+                    'url'        => "/post/read?id=" . $post['id']
                 ]
             );
             return array_merge($post, $mappings);

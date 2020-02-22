@@ -3,10 +3,10 @@
 /**
  * Write Form for a new Post (GET)
  */
-function showStoreForm()
+function showStoreForm() // create
 {
     return view('post', [
-        'requestUrl' => '/post/write.php'
+        'requestUrl' => '/post/write'
     ]);
 }
 
@@ -40,11 +40,11 @@ function show($id)
  *
  * @param int $id
  */
-function showUpdateForm($id)
+function showUpdateForm($id) // edit
 {
     if ($post = __exists($id)) {
         return owner($id) && view('post', array_merge($post, [
-            'requestUrl' => '/post/update.php?id=' . $id
+            'requestUrl' => '/post/update?id=' . $id
         ]));
     }
 }
@@ -58,7 +58,7 @@ function update($id)
 {
     return __exists($id) && owner($id) && __post(function ($args) use ($id) {
         $args['id'] = $id;
-        return go('UPDATE posts SET title = ?, content = ? WHERE id = ?', $args, '/post/read.php?id=' . $id);
+        return go('UPDATE posts SET title = ?, content = ? WHERE id = ?', $args, '/post/read?id=' . $id);
     });
 }
 

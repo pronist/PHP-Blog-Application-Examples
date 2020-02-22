@@ -5,9 +5,9 @@
  */
 
 return guard([
-    '/user/update.php',
-    '/post/write.php',
-    '/post/update.php',
-    '/post/delete.php',
-    '/image/index.php'
+    '/user/update',
+    '/post/write',
+    '/post/update',
+    '/post/delete',
+    '/image/index'
 ]);

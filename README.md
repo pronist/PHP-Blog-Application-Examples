@@ -52,7 +52,6 @@ npm run **lint**|*ESLint*
     <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
 </p>
 
-* URL is endswith **'.php'**
 * Only using **GET**, **POST** HTTP Method
 * No **Testing and Logging**
 * Not using **OOP(Object-Oriented Programming)**
@@ -70,34 +69,34 @@ npm run **lint**|*ESLint*
 
 #### Index
 
-* [/](https://github.com/pronist/phpblog/tree/basic/public/index.php) - **Show** Posts (GET)
+* [/](https://github.com/pronist/phpblog/blob/basic/controllers/index.php#L8) - **Show** Posts (GET)
 
 #### Auth
 
-* [/auth/login.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login.php) - Login **Form** for a User (GET)
-* [/auth/login.php](https://github.com/pronist/phpblog/tree/basic/public/auth/login.php) - Create a User **Session** (POST)
-* [/auth/logout.php](https://github.com/pronist/phpblog/tree/basic/public/auth/logout.php) - Delete a User **Session** (GET)
+* [/auth/login](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#L6) - Login **Form** for a User (GET)
+* [/auth/login](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#L16) - Create a User **Session** (POST)
+* [/auth/logout](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#L34) - Delete a User **Session** (GET)
 
 #### User
 
-* [/user/register.php](https://github.com/pronist/phpblog/tree/basic/public/user/register.php) - Register **Form** for a new User (GET)
-* [/user/register.php](https://github.com/pronist/phpblog/tree/basic/public/user/register.php) - **Create** a new User (POST)
-* [/user/update.php](https://github.com/pronist/phpblog/tree/basic/public/user/update.php) - Update **Form** for User informations (GET)
-* [/user/update.php](https://github.com/pronist/phpblog/tree/basic/public/user/update.php) - **Update** User informations (POST)
+* [/user/register](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L6) - Register **Form** for a new User (GET)
+* [/user/register](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L16) - **Create** a new User (POST)
+* [/user/update](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L26) - Update **Form** for User informations (GET)
+* [/user/update](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L39) - **Update** User informations (POST)
 
 #### Post
 
-* [/post/write.php](https://github.com/pronist/phpblog/tree/basic/public/post/write.php) - Write **Form** for a new Post (GET)
-* [/post/write.php](https://github.com/pronist/phpblog/tree/basic/public/post/write.php) - **Write** a new Post (POST)
-* [/post/read.php?id={id}](https://github.com/pronist/phpblog/tree/basic/public/post/read.php) - **Read** a Post by a post id (GET)
-* [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/basic/public/post/update.php) - Update **Form** for Post informations (GET)
-* [/post/update.php?id={id}](https://github.com/pronist/phpblog/tree/basic/public/post/update.php) - **Update** for Post informations (POST)
-* [/post/delete.php?id={id}&token={token}](https://github.com/pronist/phpblog/tree/basic/public/post/delete.php) - **Delete** a Post (GET)
+* [/post/write](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L6) - Write **Form** for a new Post (GET)
+* [/post/write](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L16) - **Write** a new Post (POST)
+* [/post/read?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L30) - **Read** a Post by a post id (GET)
+* [/post/update?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L43) - Update **Form** for Post informations (GET)
+* [/post/update?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L57) - **Update** for Post informations (POST)
+* [/post/delete?id={id}&token={token}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L70) - **Delete** a Post (GET)
 
 #### Image
 
-* [/image/index.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Get** a Image (GET)
-* [/image/index.php](https://github.com/pronist/phpblog/tree/basic/public/image/index.php) - **Upload** a Image (POST)
+* [/image](https://github.com/pronist/phpblog/blob/basic/controllers/image.php#L32) - **Get** a Image (GET)
+* [/image](https://github.com/pronist/phpblog/blob/basic/controllers/image.php#L6) - **Upload** a Image (POST)
 
 ## License
 

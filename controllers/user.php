@@ -3,10 +3,10 @@
 /**
  * Register Form for a new User (GET)
  */
-function showRegisterForm()
+function showRegisterForm() // create
 {
     return view('auth', [
-        'requestUrl' => '/user/register.php'
+        'requestUrl' => '/user/register'
     ]);
 }
 
@@ -16,17 +16,17 @@ function showRegisterForm()
 function store()
 {
     return __user(function ($args) {
-        return go('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', $args, '/auth/login.php');
+        return go('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', $args, '/auth/login');
     });
 }
 
 /**
  * Update Form for User informations (GET)
  */
-function showUpdateForm()
+function showUpdateForm() // edit
 {
     return view('auth', [
-        'requestUrl' => '/user/update.php',
+        'requestUrl' => '/user/update',
         'email'      => $_SESSION['user']['email']
     ]);
 }
@@ -40,7 +40,7 @@ function update()
 {
     return __user(function ($args) use ($id) {
         $args['id'] = $_SESSION['user']['id'];
-        return go('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', $args, '/auth/login.php');
+        return go('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', $args, '/auth/login');
     });
 }
 
