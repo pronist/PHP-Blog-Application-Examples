@@ -65,7 +65,7 @@ npm run **lint**|*ESLint*
 
 ### Features
 
-<https://github.com/pronist/phpblog/tree/basic/bootstrap/app.php>
+<https://github.com/pronist/phpblog/tree/basic/public/index.php>
 
 #### Index
 
