@@ -8,8 +8,8 @@
             <?=$post['created_at']?>
             <?php if (owner($id)) : ?>
                 <span class="owner">
-                    <a href="/post/delete.php?id=<?=$post['id']?>&token=<?=$_SESSION['CSRF_TOKEN']?>" class="uk-link-text" id="delete">Delete</a>
-                    <a href="/post/update.php?id=<?=$post['id']?>" class="uk-link-text" id="delete">Update</a>
+                    <a href="/post/delete?id=<?=$post['id']?>&token=<?=$_SESSION['CSRF_TOKEN']?>" class="uk-link-text" id="delete">Delete</a>
+                    <a href="/post/update?id=<?=$post['id']?>" class="uk-link-text" id="delete">Update</a>
                 </span>
             <?php endif; ?>
         </div>

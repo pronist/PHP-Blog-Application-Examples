@@ -86,7 +86,7 @@ function verify($guards)
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 /**
@@ -107,7 +107,7 @@ function guard($guards)
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 /**
