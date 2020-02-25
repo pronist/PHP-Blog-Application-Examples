@@ -3,7 +3,7 @@
 /**
  * Register Form for a new User (GET)
  */
-function showRegisterForm() // create
+function create()
 {
     return view('auth', [
         'requestUrl' => '/user/register'
@@ -15,15 +15,24 @@ function showRegisterForm() // create
  */
 function store()
 {
-    return __user(function ($args) {
-        return go('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', $args, '/auth/login');
-    });
+    $args = filter_input_array(INPUT_POST, [
+        'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
+        'password'  => FILTER_SANITIZE_STRING
+    ]);
+    $args['username'] = current(explode('@', $args['email']));
+    $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
+
+    if (__storeUser(...array_values($args))) {
+        __logout();
+        return header('Location: /auth/login');
+    }
+    return header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 /**
  * Update Form for User informations (GET)
  */
-function showUpdateForm() // edit
+function edit()
 {
     return view('auth', [
         'requestUrl' => '/user/update',
@@ -38,19 +47,6 @@ function showUpdateForm() // edit
  */
 function update()
 {
-    return __user(function ($args) use ($id) {
-        $args['id'] = $_SESSION['user']['id'];
-        return go('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', $args, '/auth/login');
-    });
-}
-
-/**
- * @param callback $callback
- *
- * @return void
- */
-function __user($callback)
-{
     $args = filter_input_array(INPUT_POST, [
         'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
         'password'  => FILTER_SANITIZE_STRING
@@ -58,8 +54,11 @@ function __user($callback)
     $args['username'] = current(explode('@', $args['email']));
     $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
 
-    if (call_user_func($callback, $args)) {
-        session_unset();
-        return session_destroy();
+    $args['id'] = $_SESSION['user']['id'];
+
+    if (__updateUser(...array_values($args))) {
+        __logout();
+        return header('Location: /auth/login');
     }
+    return header('Location: ' . $_SERVER['HTTP_REFERER']);
 }

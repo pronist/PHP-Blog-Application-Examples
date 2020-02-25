@@ -17,24 +17,6 @@ function view($view, $vars = [])
 }
 
 /**
- * Execute and Redirect
- *
- * @param string $query
- * @param array $params
- * @param string $redirecOnSuccess
- *
- * @return mixed
- */
-function go($query, $params, $redirecOnSuccess)
-{
-    if ($is = execute($query, ...array_values($params))) {
-        header('Location: ' . $redirecOnSuccess);
-        return $is;
-    }
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
-}
-
-/**
  * is Owner
  *
  * @param int $id
@@ -82,7 +64,6 @@ function verify($guards)
             if (hash_equals($token, $_SESSION['CSRF_TOKEN'])) {
                 return true;
             }
-            http_response_code(400);
             return false;
         }
     }
@@ -103,7 +84,6 @@ function guard($guards)
             if (array_key_exists('user', $_SESSION)) {
                 return true;
             }
-            header("Location: /auth/login");
             return false;
         }
     }
@@ -122,7 +102,6 @@ function requires($requires)
     if (count($requires) == count(array_filter($requires))) {
         return true;
     }
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
     return false;
 }
 
@@ -139,8 +118,50 @@ function routes($routes)
         if (hit($path, $method)) {
             [ $file, $callback ] = explode('.', $callbackString);
             require_once dirname(__DIR__) . '/controllers/' . $file . '.php';
-            return call_user_func($callback, ...array_values($_GET));
+            call_user_func($callback, ...array_values($_GET));
+            return true;
         }
     }
-    return http_response_code(404);
+    return false;
+}
+
+/**
+ * Transform posts
+ *
+ * @param array $posts
+ */
+function transform($posts)
+{
+    return array_map(function ($post) {
+        [ 'username' => $username ] = user($post['user_id']);
+        $content = filter_var(
+            mb_substr(strip_tags($post['content']), 0, 200),
+            FILTER_SANITIZE_FULL_SPECIAL_CHARS
+        );
+        $mappings = array_merge(compact('username', 'content'), [
+            'created_at' => date('h:i A, M j', strtotime($post['created_at'])),
+            'url'        => "/post/read?id=" . $post['id']
+        ]);
+        return array_merge($post, $mappings);
+    }, $posts);
+}
+
+/**
+ * Get a post
+ *
+ * @param int $id
+ */
+function post($id)
+{
+    return first('SELECT * FROM posts WHERE id = ? LIMIT 1', $id);
+}
+
+/**
+ * Get a user
+ *
+ * @param int $id
+ */
+function user($id)
+{
+    return first('SELECT * FROM users WHERE id = ? LIMIT 1', $id);
 }

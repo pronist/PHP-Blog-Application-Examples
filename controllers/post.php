@@ -3,7 +3,7 @@
 /**
  * Write Form for a new Post (GET)
  */
-function showStoreForm() // create
+function create()
 {
     return view('post', [
         'requestUrl' => '/post/write'
@@ -15,11 +15,17 @@ function showStoreForm() // create
  */
 function store()
 {
-    return __post(function ($args) {
-        array_unshift($args, $_SESSION['user']['id']);
-        $args['created_at'] = date('Y-m-d H:i:s', time());
-        return go('INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)', $args, '/');
-    });
+    $args = filter_input_array(INPUT_POST, [
+        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'content'   => FILTER_DEFAULT
+    ]);
+    array_unshift($args, $_SESSION['user']['id']);
+    $args['created_at'] = date('Y-m-d H:i:s', time());
+
+    if (__storePost(...array_values($args))) {
+        return header('Location: /');
+    }
+    return header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 /**
@@ -29,10 +35,13 @@ function store()
  */
 function show($id)
 {
-    if ($post = __exists($id)) {
-        [ 'username' => $username ] = first('SELECT * FROM users WHERE id = ? LIMIT 1', $post['user_id']);
-        return view('read', compact('post', 'id', 'username'));
+    $id = filter_var($id, FILTER_VALIDATE_INT);
+
+    if ($post = post($id)) {
+        [ 'username' => $username ] = user($post['user_id']);
+        return view('read', array_merge($post, compact('username')));
     }
+    return header('HTTP/1.1 404 Not Found');
 }
 
 /**
@@ -40,13 +49,16 @@ function show($id)
  *
  * @param int $id
  */
-function showUpdateForm($id) // edit
+function edit($id)
 {
-    if ($post = __exists($id)) {
-        return owner($id) && view('post', array_merge($post, [
-            'requestUrl' => '/post/update?id=' . $id
+    $id = filter_var($id, FILTER_VALIDATE_INT);
+
+    if ($post = post($id)) {
+        return owner($post['id']) && view('post', array_merge($post, [
+            'requestUrl' => '/post/update?id=' . $post['id']
         ]));
     }
+    return header('HTTP/1.1 404 Not Found');
 }
 
 /**
@@ -56,10 +68,19 @@ function showUpdateForm($id) // edit
  */
 function update($id)
 {
-    return __exists($id) && owner($id) && __post(function ($args) use ($id) {
-        $args['id'] = $id;
-        return go('UPDATE posts SET title = ?, content = ? WHERE id = ?', $args, '/post/read?id=' . $id);
-    });
+    $args = filter_input_array(INPUT_POST, [
+        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'content'   => FILTER_DEFAULT
+    ]);
+    $args['id'] = $id = filter_var($id, FILTER_VALIDATE_INT);
+
+    if ($post = post($id)) {
+        if (owner($post['id']) && __updatePost(...array_values($args))) {
+            return header('Location: /post/read?id=' . $post['id']);
+        }
+        return header('Location: ' . $_SERVER['HTTP_REFERER']);
+    }
+    return header('HTTP/1.1 404 Not Found');
 }
 
 /**
@@ -69,30 +90,13 @@ function update($id)
  */
 function destory($id)
 {
-    return __exists($id) && owner($id) && go('DELETE FROM posts WHERE id = ?', [ $id ], '/');
-}
+    $id = filter_var($id, FILTER_VALIDATE_INT);
 
-/**
- * @return array|void
- */
-function __exists($id)
-{
-    if ($post = first('SELECT * FROM posts WHERE id = ? LIMIT 1', $id)) {
-        return $post;
+    if ($post = post($id)) {
+        if (owner($post['id']) && __destroyPost($post['id'])) {
+            return header('Location: /');
+        }
+        return header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
-    http_response_code(404);
-}
-
-/**
- * @param callback $callback
- *
- * @return mixed
- */
-function __post($callback)
-{
-    $args = filter_input_array(INPUT_POST, [
-        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        'content'   => FILTER_DEFAULT
-    ]);
-    return call_user_func($callback, $args);
+    return header('HTTP/1.1 404 Not Found');
 }

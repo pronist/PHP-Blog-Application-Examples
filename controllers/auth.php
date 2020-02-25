@@ -16,16 +16,14 @@ function showLoginForm()
 function login()
 {
     $args = filter_input_array(INPUT_POST, [
-        'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL
+        'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
+        'password'  => FILTER_DEFAULT
     ]);
-    if ($user = first('SELECT * FROM users WHERE email = ? LIMIT 1', ...array_values($args))) {
-        $password = filter_input(INPUT_POST, 'password');
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['user'] = $user;
-            return header('Location: /');
-        }
+
+    if (__login(...array_values($args))) {
+        return header('Location: /');
     }
-    header('Location: /auth/login');
+    return header('Location: ' . $_SERVER['HTTP_REFERER']);
 }
 
 /**
@@ -33,8 +31,6 @@ function login()
  */
 function logout()
 {
-    session_unset();
-    session_destroy();
-
+    __logout();
     return header('Location: /');
 }

@@ -10,4 +10,4 @@ return guard([
     '/post/update',
     '/post/delete',
     '/image/index'
-]);
+]) ?: header("Location: /auth/login");

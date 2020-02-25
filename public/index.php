@@ -52,22 +52,9 @@ return (function () {
     /**
      * Get Connection for Database (MySQLi)
      */
-    $GLOBALS['DB_CONNECTION'] = mysqli_connect(
-        'localhost',
-        'root',
-        'root',
-        'phpblog'
-    );
-    if (!$GLOBALS['DB_CONNECTION']) {
-        exit;
-    }
+    connect('localhost', 'root', 'root', 'phpblog') ?: exit;
     register_shutdown_function(function () {
-        /**
-         * Close Database Connection
-         */
-        if (array_key_exists('DB_CONNECTION', $GLOBALS) && $GLOBALS['DB_CONNECTION']) {
-            mysqli_close($GLOBALS['DB_CONNECTION']);
-        }
+        return close();
     });
 
     return routes([
@@ -75,17 +62,17 @@ return (function () {
         [ '/auth/login', 'get', 'auth.showLoginForm' ],
         [ '/auth/login', 'post', 'auth.login' ],
         [ '/auth/logout', 'get', 'auth.logout' ],
-        [ '/post/write', 'get', 'post.showStoreForm' ],
+        [ '/post/write', 'get', 'post.create' ],
         [ '/post/write', 'post', 'post.store' ],
         [ '/post/read', 'get', 'post.show' ],
-        [ '/post/update', 'get', 'post.showUpdateForm' ],
+        [ '/post/update', 'get', 'post.edit' ],
         [ '/post/update', 'post', 'post.update' ],
-        [ '/post/delete', 'post', 'post.destroy' ],
+        [ '/post/delete', 'get', 'post.destory' ],
         [ '/image', 'get', 'image.show' ],
         [ '/image', 'post', 'image.store' ],
-        [ '/user/register', 'get', 'user.showRegisterForm' ],
+        [ '/user/register', 'get', 'user.create' ],
         [ '/user/register', 'post', 'user.store' ],
-        [ '/user/update', 'get', 'user.showUpdateForm' ],
+        [ '/user/update', 'get', 'user.edit' ],
         [ '/user/update', 'post', 'user.update' ]
-    ]);
+    ]) ?: header('HTTP/1.1 404 Not Found');
 })();

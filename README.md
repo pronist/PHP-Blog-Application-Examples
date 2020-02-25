@@ -69,34 +69,34 @@ npm run **lint**|*ESLint*
 
 #### Index
 
-* [/](https://github.com/pronist/phpblog/blob/basic/controllers/index.php#L8) - **Show** Posts (GET)
+* [/](https://github.com/pronist/phpblog/blob/basic/controllers/index.php) - **Show** Posts (GET)
 
 #### Auth
 
-* [/auth/login](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#L6) - Login **Form** for a User (GET)
-* [/auth/login](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#L16) - Create a User **Session** (POST)
-* [/auth/logout](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#L34) - Delete a User **Session** (GET)
+* [/auth/login](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php) - Login **Form** for a User (GET)
+* [/auth/login](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#) - Create a User **Session** (POST)
+* [/auth/logout](https://github.com/pronist/phpblog/blob/basic/controllers/auth.php#) - Delete a User **Session** (GET)
 
 #### User
 
-* [/user/register](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L6) - Register **Form** for a new User (GET)
-* [/user/register](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L16) - **Create** a new User (POST)
-* [/user/update](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L26) - Update **Form** for User informations (GET)
-* [/user/update](https://github.com/pronist/phpblog/blob/basic/controllers/user.php#L39) - **Update** User informations (POST)
+* [/user/register](https://github.com/pronist/phpblog/blob/basic/controllers/user.php) - Register **Form** for a new User (GET)
+* [/user/register](https://github.com/pronist/phpblog/blob/basic/controllers/user.php) - **Create** a new User (POST)
+* [/user/update](https://github.com/pronist/phpblog/blob/basic/controllers/user.php) - Update **Form** for User informations (GET)
+* [/user/update](https://github.com/pronist/phpblog/blob/basic/controllers/user.php) - **Update** User informations (POST)
 
 #### Post
 
-* [/post/write](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L6) - Write **Form** for a new Post (GET)
-* [/post/write](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L16) - **Write** a new Post (POST)
-* [/post/read?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L30) - **Read** a Post by a post id (GET)
-* [/post/update?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L43) - Update **Form** for Post informations (GET)
-* [/post/update?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L57) - **Update** for Post informations (POST)
-* [/post/delete?id={id}&token={token}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php#L70) - **Delete** a Post (GET)
+* [/post/write](https://github.com/pronist/phpblog/blob/basic/controllers/post.php) - Write **Form** for a new Post (GET)
+* [/post/write](https://github.com/pronist/phpblog/blob/basic/controllers/post.php) - **Write** a new Post (POST)
+* [/post/read?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php) - **Read** a Post by a post id (GET)
+* [/post/update?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php) - Update **Form** for Post informations (GET)
+* [/post/update?id={id}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php) - **Update** for Post informations (POST)
+* [/post/delete?id={id}&token={token}](https://github.com/pronist/phpblog/blob/basic/controllers/post.php) - **Delete** a Post (GET)
 
 #### Image
 
-* [/image](https://github.com/pronist/phpblog/blob/basic/controllers/image.php#L32) - **Get** a Image (GET)
-* [/image](https://github.com/pronist/phpblog/blob/basic/controllers/image.php#L6) - **Upload** a Image (POST)
+* [/image](https://github.com/pronist/phpblog/blob/basic/controllers/image.php) - **Get** a Image (GET)
+* [/image](https://github.com/pronist/phpblog/blob/basic/controllers/image.php) - **Upload** a Image (POST)
 
 ## License
 

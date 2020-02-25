@@ -4,4 +4,4 @@
  * Requires
  */
 
-return requires($_REQUEST);
+return requires($_REQUEST) ?: header('Location: ' . $_SERVER['HTTP_REFERER']);

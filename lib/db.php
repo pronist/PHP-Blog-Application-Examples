@@ -1,8 +1,37 @@
 <?php
 
 /**
+ * Connect to MySQL database
+ *
+ * @param string $hostname
+ * @param string $username
+ * @param string $password
+ * @param string $database
+ *
+ * @return object
+ */
+function connect($hostname, $username, $password, $database)
+{
+    return $GLOBALS['DB_CONNECTION'] = mysqli_connect(...func_get_args());
+}
+
+/**
+ * Close MySQL database
+ *
+ * @return bool
+ */
+function close()
+{
+    if (array_key_exists('DB_CONNECTION', $GLOBALS) && $GLOBALS['DB_CONNECTION']) {
+        return mysqli_close($GLOBALS['DB_CONNECTION']);
+    }
+    return false;
+}
+
+/**
  * Exists
  *
+ * @param object $conn
  * @param string $query
  * @param array $params
  *
@@ -23,6 +52,7 @@ function first($query, ...$params)
 /**
  * get Rows
  *
+ * @param object $conn
  * @param string $query
  * @param array $params
  *
@@ -42,6 +72,7 @@ function rows($query, ...$params)
 /**
  * Execute a query
  *
+ * @param object $conn
  * @param string $query
  * @param array $params
  *
@@ -63,27 +94,25 @@ function execute($query, ...$params)
  */
 function __raw($query, $params = [], $callback = null)
 {
-    $is = false;
-    if (requires($params) && array_key_exists('DB_CONNECTION', $GLOBALS) && $GLOBALS['DB_CONNECTION']) {
-        $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], $query);
-        if (count($params) > 0) {
-            $mappings = [
-                'integer'   => 'i',
-                'string'    => 's',
-                'double'    => 'd'
-            ];
-            $bs = array_reduce($params, function ($bs, $arg) use ($mappings) {
-                return $bs .= $mappings[gettype($arg)];
-            }, '');
-            mysqli_stmt_bind_param($stmt, $bs, ...array_values($params));
-        }
-        if (mysqli_stmt_execute($stmt)) {
-            if (is_callable($callback)) {
-                $res = call_user_func($callback, mysqli_stmt_get_result($stmt));
-            }
-            $is = $res ?? true;
-        }
-        mysqli_stmt_close($stmt);
+    $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], $query);
+    if (requires($params) && count($params) > 0) {
+        $mappings = [
+            'integer'   => 'i',
+            'string'    => 's',
+            'double'    => 'd'
+        ];
+        $bs = array_reduce($params, function ($bs, $arg) use ($mappings) {
+            return $bs .= $mappings[gettype($arg)];
+        }, '');
+        mysqli_stmt_bind_param($stmt, $bs, ...array_values($params));
     }
-    return $is;
+    if (mysqli_stmt_execute($stmt)) {
+        if (is_callable($callback)) {
+            $res = call_user_func($callback, mysqli_stmt_get_result($stmt));
+        }
+        $is = $res ?? true;
+    }
+    mysqli_stmt_close($stmt);
+
+    return $is ?? false;
 }
