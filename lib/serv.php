@@ -83,7 +83,7 @@ function __index($page, $count)
  */
 function __storePost($userId, $title, $content, $createdAt)
 {
-    return execute('INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)', ...func_get_args());
+    return execute('INSERT INTO posts(user_id, title, content, created_at) VALUES (?, ?, ?, ?)', $userId, $title, $content, $createdAt);
 }
 
 /**
@@ -95,7 +95,7 @@ function __storePost($userId, $title, $content, $createdAt)
  */
 function __updatePost($title, $content, $id)
 {
-    return execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', ...func_get_args());
+    return execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', $title, $content, $id);
 }
 
 /**
@@ -105,7 +105,7 @@ function __updatePost($title, $content, $id)
  */
 function __destroyPost($id)
 {
-    return execute('DELETE FROM posts WHERE id = ?', ...func_get_args());
+    return execute('DELETE FROM posts WHERE id = ?', $id);
 }
 
 
@@ -118,7 +118,7 @@ function __destroyPost($id)
  */
 function __storeUser($email, $password, $username)
 {
-    return execute('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', ...func_get_args());
+    return execute('INSERT INTO users(email, password, username) VALUES(?, ? ,?)', $email, $password, $username);
 }
 
 /**
@@ -131,5 +131,5 @@ function __storeUser($email, $password, $username)
  */
 function __updateUser($email, $password, $username, $id)
 {
-    return execute('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', ...func_get_args());
+    return execute('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', $email, $password, $username, $id);
 }

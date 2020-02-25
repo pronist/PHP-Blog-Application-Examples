@@ -12,7 +12,7 @@
  */
 function connect($hostname, $username, $password, $database)
 {
-    return $GLOBALS['DB_CONNECTION'] = mysqli_connect(...func_get_args());
+    return $GLOBALS['DB_CONNECTION'] = mysqli_connect($hostname, $username, $password, $database);
 }
 
 /**
