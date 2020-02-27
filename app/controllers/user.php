@@ -22,8 +22,8 @@ function store()
     $args['username'] = current(explode('@', $args['email']));
     $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
 
-    if (__storeUser(...array_values($args))) {
-        __logout();
+    if (createUser(...array_values($args))) {
+        signOut();
         return header('Location: /auth/login');
     }
     return header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -56,8 +56,8 @@ function update()
 
     $args['id'] = $_SESSION['user']['id'];
 
-    if (__updateUser(...array_values($args))) {
-        __logout();
+    if (updateUser(...array_values($args))) {
+        signOut();
         return header('Location: /auth/login');
     }
     return header('Location: ' . $_SERVER['HTTP_REFERER']);

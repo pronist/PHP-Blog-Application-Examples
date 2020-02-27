@@ -20,7 +20,7 @@ function login()
         'password'  => FILTER_DEFAULT
     ]);
 
-    if (__login(...array_values($args))) {
+    if (signIn(...array_values($args))) {
         return header('Location: /');
     }
     return header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -31,6 +31,6 @@ function login()
  */
 function logout()
 {
-    __logout();
+    signOut();
     return header('Location: /');
 }

@@ -13,7 +13,7 @@ function view($view, $vars = [])
     foreach ($vars as $name => $value) {
         $$name = $value;
     }
-    return require_once dirname(__DIR__) . '/views/layouts/app.php';
+    return require_once dirname(__DIR__, 2) . '/resources/views/layouts/app.php';
 }
 
 /**
@@ -117,7 +117,7 @@ function routes($routes)
     foreach ($routes as [ $path, $method, $callbackString ]) {
         if (hit($path, $method)) {
             [ $file, $callback ] = explode('.', $callbackString);
-            require_once dirname(__DIR__) . '/controllers/' . $file . '.php';
+            require_once dirname(__DIR__, 2) . '/app/controllers/' . $file . '.php';
             call_user_func($callback, ...array_values($_GET));
             return true;
         }
@@ -126,9 +126,47 @@ function routes($routes)
 }
 
 /**
+ * Start a session
+ *
+ * @param string $path
+ * @param int $lifetime
+ *
+ * @return bool
+ */
+function session($path, $lifetime)
+{
+    session_save_path($path);
+
+    ini_set('session.gc_maxlietime', $lifetime);
+    session_set_cookie_params($lifetime);
+
+    return session_start();
+}
+
+/**
+ * Get Configuration
+ *
+ * @param string $conf
+ *
+ * @return mixed
+ */
+function conf($conf)
+{
+    $parts = explode('.', $conf);
+    if (count($parts) > 1) {
+        $key = next($parts);
+    }
+
+    $config = include dirname(__DIR__, 2) . '/config/' . $parts[0] . '.php';
+    return isset($key) ? $config[$key] : $config;
+}
+
+/**
  * Transform posts
  *
  * @param array $posts
+ *
+ * @return array
  */
 function transform($posts)
 {
@@ -150,6 +188,8 @@ function transform($posts)
  * Get a post
  *
  * @param int $id
+ *
+ * @return array
  */
 function post($id)
 {
@@ -160,6 +200,8 @@ function post($id)
  * Get a user
  *
  * @param int $id
+ *
+ * @return array
  */
 function user($id)
 {

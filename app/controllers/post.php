@@ -19,10 +19,10 @@ function store()
         'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'content'   => FILTER_DEFAULT
     ]);
-    array_unshift($args, $_SESSION['user']['id']);
     $args['created_at'] = date('Y-m-d H:i:s', time());
+    $args = array_merge([ 'id' => $_SESSION['user']['id'] ], $args);
 
-    if (__storePost(...array_values($args))) {
+    if (createPost(...array_values($args))) {
         return header('Location: /');
     }
     return header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -75,7 +75,7 @@ function update($id)
     $args['id'] = $id = filter_var($id, FILTER_VALIDATE_INT);
 
     if ($post = post($id)) {
-        if (owner($post['id']) && __updatePost(...array_values($args))) {
+        if (owner($post['id']) && updatePost(...array_values($args))) {
             return header('Location: /post/read?id=' . $post['id']);
         }
         return header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -93,7 +93,7 @@ function destory($id)
     $id = filter_var($id, FILTER_VALIDATE_INT);
 
     if ($post = post($id)) {
-        if (owner($post['id']) && __destroyPost($post['id'])) {
+        if (owner($post['id']) && deletePost($post['id'])) {
             return header('Location: /');
         }
         return header('Location: ' . $_SERVER['HTTP_REFERER']);
