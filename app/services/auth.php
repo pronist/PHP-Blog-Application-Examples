@@ -28,4 +28,3 @@ function signOut()
     session_unset();
     return session_destroy();
 }
-
