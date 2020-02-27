@@ -9,8 +9,9 @@ $is = guard([
     '/post/write',
     '/post/update',
     '/post/delete'
-]) ?: header("Location: /auth/login");
+]);
 
-$is = guard([ '/image/index' ]) ?: header("HTTP/1.1 400 Bad Request");
-
-return $is;
+if ($is) {
+    return guard([ '/image' ]) ?: header("HTTP/1.1 400 Bad Request");
+}
+return header("Location: /auth/login");

@@ -40,7 +40,9 @@ return (function () {
     /**
      * Routes
      */
+    $routes = [];
     foreach ([ 'web.php', 'api.php' ] as $route) {
-        require_once dirname(__DIR__) . '/routes/' . $route;
+        $routes = array_merge(require_once dirname(__DIR__) . '/routes/' . $route, $routes);
     }
+    return routes($routes) ?: header('HTTP/1.1 404 Not Found');
 })();

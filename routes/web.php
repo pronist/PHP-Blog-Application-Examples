@@ -1,6 +1,6 @@
 <?php
 
-return routes([
+return [
     [ '/', 'get', 'index.index' ],
     [ '/auth/login', 'get', 'auth.showLoginForm' ],
     [ '/auth/login', 'post', 'auth.login' ],
@@ -15,4 +15,4 @@ return routes([
     [ '/user/register', 'post', 'user.store' ],
     [ '/user/update', 'get', 'user.edit' ],
     [ '/user/update', 'post', 'user.update' ]
-]) ?: header('HTTP/1.1 404 Not Found');
+];
