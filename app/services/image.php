@@ -13,7 +13,7 @@ function uploadImage($file, $accepts, $filename)
 {
     $pathParts = pathinfo($file['name']);
     if (in_array(strtolower($pathParts['extension']), $accepts) && is_uploaded_file($file['tmp_name'])) {
-        $path = conf('image.path') . $filename;
+        $path = config('image.path') . $filename;
         if (move_uploaded_file($file['tmp_name'], $path)) {
             return json_encode([
                 'uploaded'  => 1,
@@ -21,7 +21,6 @@ function uploadImage($file, $accepts, $filename)
             ]);
         }
     }
-    return null;
 }
 
 /**

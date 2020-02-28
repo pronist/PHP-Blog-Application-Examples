@@ -12,6 +12,6 @@ $is = guard([
 ]);
 
 if ($is) {
-    return guard([ '/image' ]) ?: header("HTTP/1.1 400 Bad Request");
+    return guard([ '/image' ]) ?: reject(400);
 }
-return header("Location: /auth/login");
+return redirect("/auth/login");

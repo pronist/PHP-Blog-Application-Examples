@@ -5,9 +5,7 @@
  */
 function showLoginForm()
 {
-    return view('auth', [
-        'requestUrl' => '/auth/login'
-    ]);
+    return view('auth', [ 'requestUrl' => '/auth/login' ]);
 }
 
 /**
@@ -20,10 +18,7 @@ function login()
         'password'  => FILTER_DEFAULT
     ]);
 
-    if (signIn(...array_values($args))) {
-        return header('Location: /');
-    }
-    return header('Location: ' . $_SERVER['HTTP_REFERER']);
+    return signIn(...array_values($args)) ? redirect('/') : reject();
 }
 
 /**
@@ -31,6 +26,5 @@ function login()
  */
 function logout()
 {
-    signOut();
-    return header('Location: /');
+    return signOut() && redirect('/');
 }

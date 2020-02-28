@@ -5,9 +5,7 @@
  */
 function create()
 {
-    return view('post', [
-        'requestUrl' => '/post/write'
-    ]);
+    return view('post', [ 'requestUrl' => '/post/write' ]);
 }
 
 /**
@@ -15,17 +13,15 @@ function create()
  */
 function store()
 {
-    $args = filter_input_array(INPUT_POST, [
-        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        'content'   => FILTER_DEFAULT
-    ]);
-    $args['created_at'] = date('Y-m-d H:i:s', time());
-    $args = array_merge([ 'id' => $_SESSION['user']['id'] ], $args);
-
-    if (createPost(...array_values($args))) {
-        return header('Location: /');
-    }
-    return header('Location: ' . $_SERVER['HTTP_REFERER']);
+    return __post(function ($_, $args) {
+        $args = [
+            'id'            => user()['id'],
+            'title'         => $args['title'],
+            'content'       => $args['content'],
+            'created_at'    => date('Y-m-d H:i:s', time())
+        ];
+        return createPost(...array_values($args)) && redirect('/');
+    });
 }
 
 /**
@@ -35,13 +31,10 @@ function store()
  */
 function show($id)
 {
-    $id = filter_var($id, FILTER_VALIDATE_INT);
-
-    if ($post = post($id)) {
-        [ 'username' => $username ] = user($post['user_id']);
+    return __post(function ($post) {
+        [ 'username' => $username ] = selectOne('users', $post['user_id']);
         return view('read', array_merge($post, compact('username')));
-    }
-    return header('HTTP/1.1 404 Not Found');
+    }, $id);
 }
 
 /**
@@ -51,14 +44,11 @@ function show($id)
  */
 function edit($id)
 {
-    $id = filter_var($id, FILTER_VALIDATE_INT);
-
-    if ($post = post($id)) {
+    return __post(function ($post) {
         return owner($post['id']) && view('post', array_merge($post, [
             'requestUrl' => '/post/update?id=' . $post['id']
         ]));
-    }
-    return header('HTTP/1.1 404 Not Found');
+    }, $id);
 }
 
 /**
@@ -68,19 +58,13 @@ function edit($id)
  */
 function update($id)
 {
-    $args = filter_input_array(INPUT_POST, [
-        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        'content'   => FILTER_DEFAULT
-    ]);
-    $args['id'] = $id = filter_var($id, FILTER_VALIDATE_INT);
-
-    if ($post = post($id)) {
-        if (owner($post['id']) && updatePost(...array_values($args))) {
-            return header('Location: /post/read?id=' . $post['id']);
-        }
-        return header('Location: ' . $_SERVER['HTTP_REFERER']);
-    }
-    return header('HTTP/1.1 404 Not Found');
+    return __post(function ($post, $args) {
+        $args = array_merge($args, [ 'id' => $post['id'] ]);
+        return owner($post['id']) &&
+            updatePost(...array_values($args)) &&
+            redirect('/post/read?id=' . $post['id'])
+        ;
+    }, $id);
 }
 
 /**
@@ -90,13 +74,28 @@ function update($id)
  */
 function destory($id)
 {
-    $id = filter_var($id, FILTER_VALIDATE_INT);
+    return __post(function ($post) {
+        return owner($post['id']) && deletePost($post['id']) && redirect('/');
+    }, $id);
+}
 
-    if ($post = post($id)) {
-        if (owner($post['id']) && deletePost($post['id'])) {
-            return header('Location: /');
+/**
+ * @param callback $callback
+ * @param int $id
+ *
+ * @return bool|void
+ */
+function __post($callback, $id = null)
+{
+    $args = filter_input_array(INPUT_POST, [
+        'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+        'content'   => FILTER_DEFAULT
+    ]);
+    if ($id) {
+        $post = selectOne('posts', filter_var($id, FILTER_VALIDATE_INT));
+        if (empty($post)) {
+            return reject(404);
         }
-        return header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
-    return header('HTTP/1.1 404 Not Found');
+    return call_user_func($callback, $post ?? [], $args) ?: reject();
 }

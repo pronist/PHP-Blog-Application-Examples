@@ -1,6 +1,17 @@
 <?php
 
 /**
+ * get Logged in user
+ */
+function user()
+{
+    if (array_key_exists('user', $_SESSION)) {
+        return $_SESSION['user'];
+    }
+    return false;
+}
+
+/**
  * View
  *
  * @param string $view
@@ -17,6 +28,51 @@ function view($view, $vars = [])
 }
 
 /**
+ * Redirect
+ *
+ * @param string $path
+ *
+ * @return bool
+ */
+function redirect($url)
+{
+    header("Location: {$url}");
+    return http_response_code() == 302;
+}
+
+/**
+ * Reject
+ *
+ * @param int $code
+ *
+ * @return void
+ */
+function reject($code = null)
+{
+    switch ($code) {
+        case 400:
+            return header("HTTP/1.1 400 Bad Request");
+        case 404:
+            return header("HTTP/1.1 404 Not Found");
+        default:
+            return header("Location: {$_SERVER['HTTP_REFERER']}");
+    }
+}
+
+/**
+ * Select one row by id
+ *
+ * @param string $table
+ * @param int $id
+ *
+ * @return array
+ */
+function selectOne($table, $id)
+{
+    return first("SELECT * FROM {$table} WHERE id = ?", $id);
+}
+
+/**
  * is Owner
  *
  * @param int $id
@@ -25,9 +81,9 @@ function view($view, $vars = [])
  */
 function owner($id)
 {
-    [ 'user_id' => $userId ] = first('SELECT * FROM posts WHERE id = ? LIMIT 1', $id);
-    if (array_key_exists('user', $_SESSION)) {
-        return $userId == $_SESSION['user']['id'];
+    [ 'user_id' => $userId ] = selectOne('posts', $id);
+    if ($user = user()) {
+        return $userId == user()['id'];
     }
     return false;
 }
@@ -117,7 +173,7 @@ function routes($routes)
     foreach ($routes as [ $path, $method, $callbackString ]) {
         if (hit($path, $method)) {
             [ $file, $callback ] = explode('.', $callbackString);
-            require_once dirname(__DIR__, 2) . '/app/controllers/' . $file . '.php';
+            require_once dirname(__DIR__, 2) . "/app/controllers/{$file}.php";
             call_user_func($callback, ...array_values($_GET));
             return true;
         }
@@ -126,8 +182,6 @@ function routes($routes)
 }
 
 /**
- * Start a session
- *
  * @param string $path
  * @param int $lifetime
  *
@@ -135,10 +189,10 @@ function routes($routes)
  */
 function session($path, $lifetime)
 {
-    session_save_path($path);
-
     ini_set('session.gc_maxlietime', $lifetime);
     session_set_cookie_params($lifetime);
+
+    session_save_path($path);
 
     return session_start();
 }
@@ -146,19 +200,16 @@ function session($path, $lifetime)
 /**
  * Get Configuration
  *
- * @param string $conf
+ * @param string $config
  *
  * @return mixed
  */
-function conf($conf)
+function config($conf)
 {
-    $parts = explode('.', $conf);
-    if (count($parts) > 1) {
-        $key = next($parts);
-    }
+    $configParts = explode('.', $conf);
 
-    $config = include dirname(__DIR__, 2) . '/config/' . $parts[0] . '.php';
-    return isset($key) ? $config[$key] : $config;
+    $config = include dirname(__DIR__, 2) . '/config/' . $configParts[0] . '.php';
+    return count($configParts) > 1 ? $config[next($configParts)] : $config;
 }
 
 /**
@@ -171,7 +222,7 @@ function conf($conf)
 function transform($posts)
 {
     return array_map(function ($post) {
-        [ 'username' => $username ] = user($post['user_id']);
+        [ 'username' => $username ] = selectOne('users', $post['user_id']);
         $content = filter_var(
             mb_substr(strip_tags($post['content']), 0, 200),
             FILTER_SANITIZE_FULL_SPECIAL_CHARS
@@ -182,28 +233,4 @@ function transform($posts)
         ]);
         return array_merge($post, $mappings);
     }, $posts);
-}
-
-/**
- * Get a post
- *
- * @param int $id
- *
- * @return array
- */
-function post($id)
-{
-    return first('SELECT * FROM posts WHERE id = ? LIMIT 1', $id);
-}
-
-/**
- * Get a user
- *
- * @param int $id
- *
- * @return array
- */
-function user($id)
-{
-    return first('SELECT * FROM users WHERE id = ? LIMIT 1', $id);
 }

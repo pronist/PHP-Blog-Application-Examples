@@ -15,7 +15,6 @@ function signIn($email, $password)
             return $_SESSION['user'] = $user;
         }
     }
-    return false;
 }
 
 /**

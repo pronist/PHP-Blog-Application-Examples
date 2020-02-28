@@ -29,7 +29,7 @@ function close()
 }
 
 /**
- * Exists
+ * get First
  *
  * @param object $conn
  * @param string $query
@@ -90,7 +90,7 @@ function execute($query, ...$params)
  * @param string array
  * @param callback $callback
  *
- * @return bool|array
+ * @return mixed
  */
 function __raw($query, $params = [], $callback = null)
 {
@@ -103,7 +103,7 @@ function __raw($query, $params = [], $callback = null)
         ];
         $bs = array_reduce($params, function ($bs, $arg) use ($mappings) {
             return $bs .= $mappings[gettype($arg)];
-        }, '');
+        });
         mysqli_stmt_bind_param($stmt, $bs, ...array_values($params));
     }
     if (mysqli_stmt_execute($stmt)) {
@@ -114,5 +114,5 @@ function __raw($query, $params = [], $callback = null)
     }
     mysqli_stmt_close($stmt);
 
-    return $is ?? false;
+    return $is ?? [];
 }

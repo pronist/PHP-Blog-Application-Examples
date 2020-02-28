@@ -5,9 +5,7 @@
  */
 function create()
 {
-    return view('auth', [
-        'requestUrl' => '/user/register'
-    ]);
+    return view('auth', [ 'requestUrl' => '/user/register' ]);
 }
 
 /**
@@ -15,18 +13,9 @@ function create()
  */
 function store()
 {
-    $args = filter_input_array(INPUT_POST, [
-        'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
-        'password'  => FILTER_SANITIZE_STRING
-    ]);
-    $args['username'] = current(explode('@', $args['email']));
-    $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
-
-    if (createUser(...array_values($args))) {
-        signOut();
-        return header('Location: /auth/login');
-    }
-    return header('Location: ' . $_SERVER['HTTP_REFERER']);
+    return __user(function ($args) {
+        return createUser(...array_values($args)) && redirect('/auth/login');
+    });
 }
 
 /**
@@ -34,18 +23,26 @@ function store()
  */
 function edit()
 {
-    return view('auth', [
-        'requestUrl' => '/user/update',
-        'email'      => $_SESSION['user']['email']
-    ]);
+    return view('auth', [ 'requestUrl' => '/user/update', 'email' => user()['email'] ]);
 }
 
 /**
  * Update User informations (POST)
- *
- * @param int $id
  */
 function update()
+{
+    return __user(function ($args) {
+        $args = array_merge($args, [ 'id' => user()['id'] ]);
+        return updateUser(...array_values($args)) && redirect('/auth/login');
+    });
+}
+
+/**
+ * @param callback $callback
+ *
+ * @return bool|void
+ */
+function __user($callback)
 {
     $args = filter_input_array(INPUT_POST, [
         'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
@@ -54,11 +51,5 @@ function update()
     $args['username'] = current(explode('@', $args['email']));
     $args['password'] = password_hash($args['password'], PASSWORD_DEFAULT);
 
-    $args['id'] = $_SESSION['user']['id'];
-
-    if (updateUser(...array_values($args))) {
-        signOut();
-        return header('Location: /auth/login');
-    }
-    return header('Location: ' . $_SERVER['HTTP_REFERER']);
+    return call_user_func($callback, $args) ? signOut() : reject();
 }
