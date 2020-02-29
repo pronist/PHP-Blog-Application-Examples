@@ -112,8 +112,8 @@ function verify($guards)
  */
 function guard($guards)
 {
-    foreach ($guards as [ $path, $method ]) {
-        if (match($path, $method)) {
+    foreach ($guards as $path) {
+        if (match($path)) {
             return $_SESSION['user'] ?: false;
         }
     }

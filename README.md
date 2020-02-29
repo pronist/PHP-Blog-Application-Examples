@@ -48,7 +48,7 @@ npm run **lint**|*ESLint*
 ## Basic - Similar to MVC(Model, View, Controller)
 
 <p>
-    <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
+    <img src="https://travis-ci.com/pronist/php-blog-app-example.svg?branch=basic">
     <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
 </p>
 
