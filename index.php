@@ -2,7 +2,8 @@
 
 require_once 'bootstrap/app.php';
 
-$page = $_GET['page'] ?? $_GET['page'] = 0;
+$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+$page = $page ?: 0;
 
 $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], 'SELECT * FROM posts ORDER BY id DESC LIMIT 3 OFFSET ?');
 $page = $page * 3;
