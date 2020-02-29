@@ -13,14 +13,13 @@ function create()
  */
 function store()
 {
-    return __post(function ($_, $args) {
-        $args = [
-            'id'            => user()['id'],
-            'title'         => $args['title'],
-            'content'       => $args['content'],
-            'created_at'    => date('Y-m-d H:i:s', time())
-        ];
-        return createPost(...array_values($args)) && redirect('/');
+    return base(function ($_, $args) {
+        return createPost(
+            $_SESSION['user']['id'],
+            $args['title'],
+            $args['content'],
+            date('Y-m-d H:i:s', time())
+        ) && redirect('/');
     });
 }
 
@@ -31,9 +30,11 @@ function store()
  */
 function show($id)
 {
-    return __post(function ($post) {
-        [ 'username' => $username ] = selectOne('users', $post['user_id']);
-        return view('read', array_merge($post, compact('username')));
+    return base(function ($post) {
+        return view('read', array_merge(
+            $post,
+            first("SELECT username FROM users WHERE id = ?", $post['user_id'])
+        ));
     }, $id);
 }
 
@@ -44,7 +45,7 @@ function show($id)
  */
 function edit($id)
 {
-    return __post(function ($post) {
+    return base(function ($post) {
         return owner($post['id']) && view('post', array_merge($post, [
             'requestUrl' => '/post/update?id=' . $post['id']
         ]));
@@ -58,10 +59,9 @@ function edit($id)
  */
 function update($id)
 {
-    return __post(function ($post, $args) {
-        $args = array_merge($args, [ 'id' => $post['id'] ]);
+    return base(function ($post, $args) {
         return owner($post['id']) &&
-            updatePost(...array_values($args)) &&
+            updatePost($post['id'], ...array_values($args)) &&
             redirect('/post/read?id=' . $post['id'])
         ;
     }, $id);
@@ -74,7 +74,7 @@ function update($id)
  */
 function destory($id)
 {
-    return __post(function ($post) {
+    return base(function ($post) {
         return owner($post['id']) && deletePost($post['id']) && redirect('/');
     }, $id);
 }
@@ -85,14 +85,14 @@ function destory($id)
  *
  * @return bool|void
  */
-function __post($callback, $id = null)
+function base($callback, $id = null)
 {
     $args = filter_input_array(INPUT_POST, [
         'title'     => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'content'   => FILTER_DEFAULT
     ]);
     if ($id) {
-        $post = selectOne('posts', filter_var($id, FILTER_VALIDATE_INT));
+        $post = first("SELECT * FROM posts WHERE id = ?", filter_var($id, FILTER_VALIDATE_INT));
         if (empty($post)) {
             return reject(404);
         }

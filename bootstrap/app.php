@@ -1,7 +1,6 @@
 <?php
 
 assert_options(ASSERT_BAIL, true);
-assert_options(ASSERT_WARNING, false);
 
 foreach ([ 'lib', 'services' ] as $dir) {
     $includePath = dirname(__DIR__) . "/app/{$dir}/";
@@ -11,8 +10,8 @@ foreach ([ 'lib', 'services' ] as $dir) {
         }
     }
 }
-
 $provders = [
+    'error',
     'database',
     'session',
     'middleware',

@@ -6,7 +6,11 @@
 function store()
 {
     $file = $_FILES['upload'];
-    echo uploadImage($file, config('image.accepts'), hash('md5', time() . $file['name']));
+    echo uploadImage(
+        $file,
+        config('image.accepts'),
+        $_SESSION['user']['id'] . "_" . time() . "_" . hash('md5', $file['name'])
+    );
 }
 
 /**

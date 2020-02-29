@@ -10,3 +10,4 @@ if ($connection = connect(...array_values(config('database')))) {
     });
     return $connection;
 }
+return false;

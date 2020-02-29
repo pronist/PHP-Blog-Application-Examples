@@ -5,7 +5,9 @@
  */
 function showLoginForm()
 {
-    return view('auth', [ 'requestUrl' => '/auth/login' ]);
+    return view('auth', [
+        'requestUrl' => '/auth/login'
+    ]);
 }
 
 /**
@@ -26,5 +28,5 @@ function login()
  */
 function logout()
 {
-    return signOut() && redirect('/');
+    return signOut() ? redirect('/') : reject();
 }

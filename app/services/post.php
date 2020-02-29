@@ -16,13 +16,13 @@ function createPost($userId, $title, $content, $createdAt)
 /**
  * Update a post
  *
+ * @param int $id
  * @param string $title
  * @param string $content
- * @param int $id
  *
  * @return bool
  */
-function updatePost($title, $content, $id)
+function updatePost($id, $title, $content)
 {
     return execute('UPDATE posts SET title = ?, content = ? WHERE id = ?', $title, $content, $id);
 }

@@ -13,8 +13,10 @@ function create()
  */
 function store()
 {
-    return __user(function ($args) {
-        return createUser(...array_values($args)) && redirect('/auth/login');
+    return base(function ($args) {
+        return createUser(...array_values($args)) &&
+            redirect('/auth/login')
+        ;
     });
 }
 
@@ -23,7 +25,10 @@ function store()
  */
 function edit()
 {
-    return view('auth', [ 'requestUrl' => '/user/update', 'email' => user()['email'] ]);
+    return view('auth', [
+        'requestUrl' => '/user/update',
+        'email'      => $_SESSION['user']['email']
+    ]);
 }
 
 /**
@@ -31,9 +36,11 @@ function edit()
  */
 function update()
 {
-    return __user(function ($args) {
-        $args = array_merge($args, [ 'id' => user()['id'] ]);
-        return updateUser(...array_values($args)) && redirect('/auth/login');
+    return base(function ($args) {
+        return updateUser(
+            $_SESSION['user']['id'],
+            ...array_values($args)
+        ) && redirect('/auth/login');
     });
 }
 
@@ -42,7 +49,7 @@ function update()
  *
  * @return bool|void
  */
-function __user($callback)
+function base($callback)
 {
     $args = filter_input_array(INPUT_POST, [
         'email'     => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,

@@ -53,7 +53,7 @@ npm run **lint**|*ESLint*
 </p>
 
 * Only using **GET**, **POST** HTTP Method
-* No **Testing and Logging**
+* No **Testing**
 * Not using **OOP(Object-Oriented Programming)**
 * Not using **PSR-4 Autoloading**
 

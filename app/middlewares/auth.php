@@ -14,4 +14,4 @@ $is = guard([
 if ($is) {
     return guard([ '/image' ]) ?: reject(400);
 }
-return redirect("/auth/login");
+return reject("/auth/login");

@@ -17,14 +17,14 @@ function createUser($email, $password, $username)
 /**
  * Update a user
  *
+ * @param int $id
  * @param string $email
  * @param string $password
  * @param string $username
- * @param int $id
  *
  * @return bool
  */
-function updateUser($email, $password, $username, $id)
+function updateUser($id, $email, $password, $username)
 {
     return execute('UPDATE users SET email = ?, password = ?, username = ? WHERE id = ?', $email, $password, $username, $id);
 }

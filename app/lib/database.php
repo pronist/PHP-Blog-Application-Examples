@@ -39,10 +39,10 @@ function close()
  */
 function first($query, ...$params)
 {
-    return __raw($query, $params, function ($result) {
-        if ($item = mysqli_fetch_assoc($result)) {
-            if (is_array($item) && count($item) > 0) {
-                return $item;
+    return raw($query, $params, function ($result) {
+        if ($row = mysqli_fetch_assoc($result)) {
+            if (is_array($row) && count($row) > 0) {
+                return $row;
             }
         }
         return [];
@@ -60,7 +60,7 @@ function first($query, ...$params)
  */
 function rows($query, ...$params)
 {
-    return __raw($query, $params, function ($result) {
+    return raw($query, $params, function ($result) {
         $rows = [];
         while ($row = mysqli_fetch_assoc($result)) {
             array_push($rows, $row);
@@ -80,7 +80,7 @@ function rows($query, ...$params)
  */
 function execute($query, ...$params)
 {
-    return __raw($query, $params);
+    return raw($query, $params);
 }
 
 /**
@@ -92,27 +92,26 @@ function execute($query, ...$params)
  *
  * @return mixed
  */
-function __raw($query, $params = [], $callback = null)
+function raw($query, $params = [], $callback = null)
 {
-    $stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], $query);
-    if (requires($params) && count($params) > 0) {
-        $mappings = [
-            'integer'   => 'i',
-            'string'    => 's',
-            'double'    => 'd'
-        ];
-        $bs = array_reduce($params, function ($bs, $arg) use ($mappings) {
-            return $bs .= $mappings[gettype($arg)];
-        });
-        mysqli_stmt_bind_param($stmt, $bs, ...array_values($params));
-    }
-    if (mysqli_stmt_execute($stmt)) {
-        if (is_callable($callback)) {
-            $res = call_user_func($callback, mysqli_stmt_get_result($stmt));
+    if ($stmt = mysqli_prepare($GLOBALS['DB_CONNECTION'], $query)) {
+        if (count($params) > 0) {
+            $mappings = [
+                'integer'   => 'i',
+                'string'    => 's',
+                'double'    => 'd'
+            ];
+            $bs = array_reduce($params, function ($bs, $arg) use ($mappings) {
+                return $bs .= $mappings[gettype($arg)];
+            });
+            mysqli_stmt_bind_param($stmt, $bs, ...array_values($params));
         }
-        $is = $res ?? true;
+        if ($res = mysqli_stmt_execute($stmt)) {
+            if (is_callable($callback)) {
+                $res = call_user_func($callback, mysqli_stmt_get_result($stmt));
+            }
+        }
+        mysqli_stmt_close($stmt);
     }
-    mysqli_stmt_close($stmt);
-
-    return $is ?? [];
+    return $res ?? false;
 }
