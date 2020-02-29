@@ -5,8 +5,8 @@
 
 ## Branches
 
-* [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classical Architecture**
-* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Similar to MVC(Model, View, Controller)**
+* [Beginning](https://github.com/pronist/php-blog-app-example/tree/beginning) - **Classical Architecture**
+* [Basic](https://github.com/pronist/php-blog-app-example/tree/basic) - **Similar to MVC(Model, View, Controller)**
 
 ## Getting started
 
