@@ -4,14 +4,9 @@
  * Auth guard
  */
 
-$is = guard([
+return guard([
     '/user/update',
     '/post/write',
     '/post/update',
     '/post/delete'
-]);
-
-if ($is) {
-    return guard([ '/image' ]) ?: reject(400);
-}
-return reject("/auth/login");
+]) ?: reject("/auth/login");
