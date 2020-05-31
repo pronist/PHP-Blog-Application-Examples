@@ -1,3 +1,7 @@
 <?php
 
-require_once dirname(__DIR__) . '/bootstrap/app.php';
+require_once '../vendor/autoload.php';
+
+$app = require_once '../bootstrap/app.php';
+
+$app->boot();

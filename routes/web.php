@@ -1,18 +1,21 @@
 <?php
 
-return [
-    [ '/', 'get', 'index.index' ],
-    [ '/auth/login', 'get', 'auth.showLoginForm' ],
-    [ '/auth/login', 'post', 'auth.login' ],
-    [ '/auth/logout', 'get', 'auth.logout' ],
-    [ '/post/write', 'get', 'post.create' ],
-    [ '/post/write', 'post', 'post.store' ],
-    [ '/post/read', 'get', 'post.show' ],
-    [ '/post/update', 'get', 'post.edit' ],
-    [ '/post/update', 'post', 'post.update' ],
-    [ '/post/delete', 'get', 'post.destory' ],
-    [ '/user/register', 'get', 'user.create' ],
-    [ '/user/register', 'post', 'user.store' ],
-    [ '/user/update', 'get', 'user.edit' ],
-    [ '/user/update', 'post', 'user.update' ]
-];
+use Eclair\Routing\Route;
+use App\Middlewares\CsrfTokenMiddleware;
+use App\Middlewares\AuthMiddleware;
+
+Route::add('get', '/', '\App\Controllers\IndexController::index');
+
+Route::add('get', '/auth/login', '\App\Controllers\AuthController::showLoginForm');
+Route::add('post', '/auth', '\App\Controllers\AuthController::login');
+Route::add('post', '/auth/logout', '\App\Controllers\AuthController::logout');
+
+Route::add('get', '/users/register', '\App\Controllers\UserController::create');
+Route::add('post', '/users', '\App\Controllers\UserController::store');
+
+Route::add('get', '/posts/write', '\App\Controllers\PostController::create', [ AuthMiddleware::class ]);
+Route::add('post', '/posts', '\App\Controllers\PostController::store', [ AuthMiddleware::class, CsrfTokenMiddleware::class ]);
+Route::add('get', '/posts/{id}', '\App\Controllers\PostController::show');
+Route::add('get', '/posts/{id}/edit', '\App\Controllers\PostController::edit', [ AuthMiddleware::class ]);
+Route::add('patch', '/posts/{id}', '\App\Controllers\PostController::update', [ AuthMiddleware::class, CsrfTokenMiddleware::class ]);
+Route::add('delete', '/posts/{id}', '\App\Controllers\PostController::destory', [ AuthMiddleware::class, CsrfTokenMiddleware::class ]);
