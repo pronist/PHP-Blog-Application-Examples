@@ -15,23 +15,14 @@ use Eclair\Database\Adaptor;
 class User
 {
     /**
-     * get Posts
-     *
-     * @return \App\Post[]
+     * Create a new User
      */
-    public function posts()
+    public function create()
     {
-        return Adaptor::getAll('SELECT * FROM posts WHERE `user_id` = ?', [ $this->id ], \App\Post::class);
-    }
-
-    /**
-     * Get encryted passsword
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return password_hash($this->password, PASSWORD_DEFAULT);
+        return Adaptor::exec(
+            'INSERT INTO users(`email`, `password`) VALUES(?, ?)',
+            [ $this->email, $this->password ]
+        );
     }
 
     /**

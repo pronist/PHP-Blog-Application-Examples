@@ -2,23 +2,17 @@
 
 namespace App\Services;
 
-use Eclair\Database\Adaptor;
+use App\User;
 
 class UserService
 {
     /**
      * Write a user
      *
-     * @param string $email
-     * @param string $password
-     *
-     * @return bool
+     * @param User
      */
-    public static function register($email, $password)
+    public static function register($user)
     {
-        return Adaptor::exec(
-            'INSERT INTO users(`email`, `password`) VALUES(?, ?)',
-            [ $email, $password ]
-        );
+        return $user->create();
     }
 }

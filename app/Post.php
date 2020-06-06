@@ -18,6 +18,36 @@ use Eclair\Database\Adaptor;
 class Post
 {
     /**
+     * Create a post
+     */
+    public function create()
+    {
+        return Adaptor::exec(
+            'INSERT INTO posts(`user_id`, `title`, `content`) VALUES(?, ?, ?)',
+            [ $this->user_id, $this->title, $this->content ]
+        );
+    }
+
+    /**
+     * Update a post
+     */
+    public function update()
+    {
+        return Adaptor::exec(
+            'UPDATE posts SET `title` = ?, `content` = ? WHERE `id` = ?',
+            [ $this->title, $this->content, $this->id ]
+        );
+    }
+
+    /**
+     * Delete a post
+     */
+    public function delete()
+    {
+        return Adaptor::exec('DELETE FROM posts WHERE `id` = ?', [ $this->id ]);
+    }
+
+    /**
      * get User
      *
      * @return \App\User

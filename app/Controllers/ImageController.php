@@ -23,10 +23,14 @@ class ImageController
      */
     public static function store()
     {
-        $file = $_FILES['upload'];
-        $filename = $_SESSION['user']->id . '_' . time() . '_' . hash('md5', $file['name']);
+        if (array_key_exists('upload', $_FILES)) {
+            $file = $_FILES['upload'];
+            $filename = $_SESSION['user']->id . '_' . time() . '_' . hash('md5', $file['name']);
 
-        echo ImageService::write($file, self::$accepts, self::$uploadDirectory . $filename);
+            echo ImageService::create($file, self::$accepts, self::$uploadDirectory . $filename);
+            return;
+        }
+        return http_response_code(400);
     }
 
     /**
@@ -36,6 +40,10 @@ class ImageController
      */
     public static function show($path)
     {
-        echo ImageService::read(self::$uploadDirectory . basename($path));
+        if (preg_match('/\d_\d{10}_[0-9a-z]{32}/', $path)) {
+            echo ImageService::read(self::$uploadDirectory . basename($path));
+            return;
+        }
+        return http_response_code(404);
     }
 }

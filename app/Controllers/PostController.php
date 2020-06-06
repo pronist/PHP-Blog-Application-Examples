@@ -23,12 +23,13 @@ class PostController
      */
     public static function store()
     {
-        [ $title, $content ] = array_values(filter_input_array(INPUT_POST, [
-            'title' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'content' => FILTER_DEFAULT
-        ]));
+        $post = new Post();
 
-        return PostService::write($_SESSION['user']->id, $title, $content)
+        $post->title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $post->content = filter_input(INPUT_POST, 'content');
+        $post->user_id = $_SESSION['user']->id;
+
+        return PostService::write($post)
             ? header('Location: /')
             : header('Location: ' . $_SERVER['HTTP_REFERER'])
         ;
@@ -71,13 +72,11 @@ class PostController
      */
     public static function update($id)
     {
-        [ $title, $content ] = array_values(filter_input_array(INPUT_POST, [
-            'title' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-            'content' => FILTER_DEFAULT
-        ]));
-
         if ($post = Post::get($id)) {
-            return ($post->isOwner() && PostService::update($id, $title, $content))
+            $post->title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $post->content = filter_input(INPUT_POST, 'content');
+
+            return ($post->isOwner() && PostService::update($post))
                 ? header('Location: /posts/' . $post->id)
                 : header('Location: ' . $_SERVER['HTTP_REFERER'])
             ;
@@ -90,10 +89,10 @@ class PostController
      *
      * @param int $id
      */
-    public static function destory($id)
+    public static function destroy($id)
     {
         if ($post = Post::get($id)) {
-            if ($post->isOwner() && PostService::delete($id)) {
+            if ($post->isOwner() && PostService::delete($post)) {
                 return http_response_code(204);
             }
         }

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Eclair\Support\Theme;
 use App\Services\UserService;
+use App\User;
 
 class UserController
 {
@@ -22,12 +23,12 @@ class UserController
      */
     public static function store()
     {
-        [ $email, $password ] = array_values(filter_input_array(INPUT_POST, [
-            'email' => FILTER_VALIDATE_EMAIL | FILTER_SANITIZE_EMAIL,
-            'password' => FILTER_DEFAULT
-        ]));
+        $user = new User();
 
-        return UserService::register($email, password_hash($password, PASSWORD_DEFAULT))
+        $user->email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL, FILTER_SANITIZE_EMAIL);
+        $user->password = password_hash(filter_input(INPUT_POST, 'password'), PASSWORD_DEFAULT);
+
+        return UserService::register($user)
             ? header('Location: /auth/login')
             : header('Location: ' . $_SERVER['HTTP_REFERER'])
         ;

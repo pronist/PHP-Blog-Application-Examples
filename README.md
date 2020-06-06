@@ -5,9 +5,9 @@
 
 ## Branches
 
-* [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classical Architecture**
-* [Basic](https://github.com/pronist/phpblog/tree/basic) - **Similar to MVC(Model, View, Controller)**
-* [Intermediate](https://github.com/pronist/phpblog/tree/intermediate) - **MVC(Model, View, Controller)**
+* [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classic - Legacy**
+* [Basic](https://github.com/pronist/phpblog/tree/basic) - **VC(View, Controller) - Functional**
+* [Intermediate](https://github.com/pronist/phpblog/tree/intermediate) - **MVC(Model, View, Controller) - OOP**
 
 ## Getting started
 
@@ -38,9 +38,9 @@ CREATE TABLE users (
 
 CREATE TABLE posts (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `user_id` INT DEFAULT NULL,
-    `title` VARCHAR(255),
-    `content` TEXT,
+    `user_id` INT NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `content` TEXT NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -54,18 +54,12 @@ Name|Description|
 ----|-----------|
 composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/)*
 
-## Intermediate -  MVC(Model, View, Controller)
+## Intermediate - MVC(Model, View, Controller)
 
 <p>
     <img src="https://travis-ci.com/pronist/phpblog.svg?branch=intermediate">
     <img src="https://github.styleci.io/repos/231950937/shield?branch=intermediate" alt="StyleCI">
 </p>
-
-### Dynamic Extensions
-
-* *pdo_mysql*
-* *mb_string*
-* *fileinfo*
 
 ### Features
 
@@ -73,32 +67,32 @@ composer run **lint**|*PHPCS* with *[PSR-12](https://www.php-fig.org/psr/psr-12/
 
 #### Index
 
-* [/](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/index.php) - **Show** Posts (GET)
+* [/](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/IndexController.php) - **Show** Posts (GET)
 
 #### Auth
 
-* [/auth/login](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/auth.php) - Login **Form** for a User (GET)
-* [/auth](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/auth.php) - Create a User **Session** (POST)
-* [/auth/logout](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/auth.php) - Delete a User **Session** (POST)
+* [/auth/login](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/AuthController.php) - Login **Form** for a User (GET)
+* [/auth](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/AuthController.php) - Create a User **Session** (POST)
+* [/auth/logout](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/AuthController.php) - Delete a User **Session** (POST)
 
 #### User
 
-* [/user/register](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/user.php) - Register **Form** for a new User (GET)
-* [/user](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/user.php) - **Create** a new User (POST)
+* [/users/register](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/UserController.php) - Register **Form** for a new User (GET)
+* [/users](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/UserController.php) - **Create** a new User (POST)
 
 #### Post
 
-* [/posts/write](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/post.php) - Write **Form** for a new Post (GET)
-* [/posts](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/post.php) - **Write** a new Post (POST)
-* [/posts/{id}](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/post.php) - **Read** a Post by a post id (GET)
-* [/posts/{id}/edit](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/post.php) - Update **Form** for Post informations (GET)
-* [/posts/{id}](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/post.php) - **Update** for Post informations (PATCH)
-* [/posts/{id}](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/post.php) - **Delete** a Post (DELETE)
+* [/posts/write](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/PostController.php) - Write **Form** for a new Post (GET)
+* [/posts](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/PostController.php) - **Write** a new Post (POST)
+* [/posts/{id}](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/PostController.php) - **Read** a Post by a post id (GET)
+* [/posts/{id}/edit](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/PostController.php) - Update **Form** for Post informations (GET)
+* [/posts/{id}](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/PostController.php) - **Update** for Post informations (PATCH)
+* [/posts/{id}](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/PostController.php) - **Delete** a Post (DELETE)
 
 #### Image
 
-* [/image/{path}](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/image.php) - **Get** a Image (GET)
-* [/image](https://github.com/pronist/phpblog/blob/intermediate/app/controllers/image.php) - **Upload** a Image (POST)
+* [/images/{path}](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/ImageController.php) - **Get** a Image (GET)
+* [/images](https://github.com/pronist/phpblog/blob/intermediate/app/Controllers/ImageController.php) - **Upload** a Image (POST)
 
 ## License
 

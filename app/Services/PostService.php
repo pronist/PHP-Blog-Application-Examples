@@ -2,51 +2,37 @@
 
 namespace App\Services;
 
-use Eclair\Database\Adaptor;
+use App\Post;
 
 class PostService
 {
     /**
      * Write a post
      *
-     * @param int $userId
-     * @param string $title
-     * @param string $content
+     * @param Post $post
      */
-    public static function write($userId, $title, $content)
+    public static function write($post)
     {
-        return Adaptor::exec(
-            'INSERT INTO posts(`user_id`, `title`, `content`) VALUES(?, ?, ?)',
-            [ $userId, $title, $content ]
-        );
+        return $post->create();
     }
 
     /**
      * Update a post
      *
-     * @param int $id
-     * @param string $title
-     * @param string $content
-     *
-     * @return bool
+     * @param Post $post
      */
-    public static function update($id, $title, $content)
+    public static function update($post)
     {
-        return Adaptor::exec(
-            'UPDATE posts SET `title` = ?, `content` = ? WHERE `id` = ?',
-            [ $title, $content, $id ]
-        );
+        return $post->update();
     }
 
     /**
      * Delete a post
      *
-     * @param int $id
-     *
-     * @return bool
+     * @param Post $post
      */
-    public static function delete($id)
+    public static function delete($post)
     {
-        return Adaptor::exec('DELETE FROM posts WHERE `id` = ?', [ $id ]);
+        return $post->delete();
     }
 }

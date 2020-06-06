@@ -13,7 +13,7 @@ class ImageService
      *
      * @return string|null
      */
-    public static function write($file, $accepts, $filename)
+    public static function create($file, $accepts, $filename)
     {
         $fileinfo =  new \SplFileInfo($file['name']);
         if (in_array(strtolower($fileinfo->getExtension()), $accepts) && is_uploaded_file($file['tmp_name'])) {
