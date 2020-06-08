@@ -5,8 +5,9 @@
 
 ## Branches
 
-* [Beginning](https://github.com/pronist/php-blog-app-example/tree/beginning) - **Classical Architecture**
-* [Basic](https://github.com/pronist/php-blog-app-example/tree/basic) - **Similar to MVC(Model, View, Controller)**
+* [Beginning](https://github.com/pronist/phpblog/tree/beginning) - **Classic - Legacy**
+* [Basic](https://github.com/pronist/phpblog/tree/basic) - **VC(View, Controller) - Functional**
+* [Intermediate](https://github.com/pronist/phpblog/tree/intermediate) - **MVC(Model, View, Controller) - OOP**
 
 ## Getting started
 
@@ -48,20 +49,13 @@ npm run **lint**|*ESLint*
 ## Basic - Similar to MVC(Model, View, Controller)
 
 <p>
-    <img src="https://travis-ci.com/pronist/php-blog-app-example.svg?branch=basic">
+    <img src="https://travis-ci.com/pronist/phpblog.svg?branch=basic">
     <img src="https://github.styleci.io/repos/231950937/shield?branch=basic" alt="StyleCI">
 </p>
 
 * Only using **GET**, **POST** HTTP Method
-* No **Testing**
 * Not using **OOP(Object-Oriented Programming)**
 * Not using **PSR-4 Autoloading**
-
-### Dynamic Extensions
-
-* *MySQLi*
-* *Multibyte String*
-* *fileinfo*
 
 ### Features
 
